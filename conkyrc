@@ -1,0 +1,98 @@
+alignment top_right
+background no
+border_width 1
+cpu_avg_samples 2
+default_color lightgreen
+default_outline_color green
+default_shade_color green
+draw_borders no
+draw_graph_borders yes
+draw_outline no
+draw_shades no
+use_xft yes
+xftfont DejaVu Sans Mono:size=12
+gap_x 30
+gap_y 400
+minimum_size 5 5
+net_avg_samples 2
+no_buffers yes
+out_to_console no
+out_to_stderr no
+extra_newline no
+stippled_borders 0
+update_interval 1.0
+uppercase no
+use_spacer none
+show_graph_scale no
+show_graph_range no
+
+# Window Setting
+own_window_argb_visual true
+own_window_argb_value 0
+own_window_type desktop
+own_window yes
+own_window_transparent yes
+own_window_type normal
+own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+
+# Performance (Stop blinking)
+double_buffer yes
+
+
+# General
+TEXT
+${color grey}${font sans-serif:bold:size=20}SYS ${font}$color ${scroll 30 $nodename - $sysname $kernel on $machine | }
+
+ ${color grey}Time:$color ${time %H:%M:%S}
+ ${color grey}Uptime:$color $uptime
+
+# RAM Section
+${color grey}${font sans-serif:bold:size=20}RAM $color${membar 4}${font}
+
+ ${color grey}Use:$color $memperc% 
+ ${color grey}Free:$color $mem/$memmax $color
+
+# CPU Section
+${color grey}${font sans-serif:bold:size=20}CPU ${hr 2}${font}
+
+ ${color grey}Use:$color $cpu%
+ $color${cpubar 4}
+ ${cpugraph 100,380 00FF00 00FFB0 s}
+ ${color grey}Core1:$color ${cpu cpu1}% ${alignr}${cpubar cpu1 8,220}
+ ${color grey}Core2:$color ${cpu cpu2}% ${alignr}${cpubar cpu2 8,220}
+ ${color grey}Core3:$color ${cpu cpu3}% ${alignr}${cpubar cpu3 8,220}
+ ${color grey}Core4:$color ${cpu cpu4}% ${alignr}${cpubar cpu4 8,220}
+
+ ${color grey}Frequency (in MHz):$color $freq
+ ${color grey}Frequency (in GHz):$color $freq_g
+ ${color grey}Processes:$color $processes  ${color grey}Running:$color $running_processes
+
+ ${color grey}Name               PID   CPU%   MEM%
+ ${color lightgrey} ${top name 1} ${top pid 1} ${top cpu 1} ${top mem 1}
+ ${color lightgrey} ${top name 2} ${top pid 2} ${top cpu 2} ${top mem 2}
+ ${color lightgrey} ${top name 3} ${top pid 3} ${top cpu 3} ${top mem 3}
+ ${color lightgrey} ${top name 4} ${top pid 4} ${top cpu 4} ${top mem 4}
+
+# DISK Section
+${color grey}${font sans-serif:bold:size=20}DISK ${hr 2}${font}
+
+ ${color grey}Root:$color${alignr}${fs_used /} / ${fs_size /}
+ ${fs_bar 6 /}
+
+ ${color grey}Extern:$color${alignr}${fs_used /media/hust921/Extern} / ${fs_size /media/hust921/Extern}
+ ${fs_bar 6 /media/hust921/Extern}
+
+ ${color grey}FiveOne:$color${alignr}${fs_used /media/hust921/FiveOne} / ${fs_size /media/hust921/FiveOne}
+ ${fs_bar 6 /media/hust921/FiveOne}
+
+ ${color grey}FiveTwo:$color${alignr}${fs_used /media/hust921/FiveTwo} / ${fs_size /media/hust921/FiveTwo}
+ ${fs_bar 6 /media/hust921/FiveTwo}
+
+# Network Section
+${color grey}${font sans-serif:bold:size=20}NET ${hr 2}${font}
+
+ ${color grey}Up eth0:$color ${upspeed eth0} ${alignr}${color grey}Down eth0:$color ${downspeed eth0}
+ ${upspeedgraph eth0 25,140 000000 ff0000} ${alignr}${downspeedgraph eth0 25,140 000000 00ff00}$color
+
+ ${color grey}Up eth1:$color ${upspeed eth1} ${alignr}${color grey}Down eth1:$color ${downspeed eth1}
+ ${upspeedgraph eth1 25,140 000000 ff0000} ${alignr}${downspeedgraph eth1 25,140 000000 00ff00}$color
