@@ -1,0 +1,250 @@
+HUBIC(1)                                                                                                              HUBIC(1)
+
+
+
+NAME
+       hubic - keep your files synchronized with the hubiC cloud service.
+
+SYNOPSIS
+       hubic COMMAND [OPTIONS] [PARAMETERS]
+
+DESCRIPTION
+       hubiC can sync a local directory with your cloud storage account: it keeps track of any modifications on your local
+       computer or remote account and replicates them on the other end, so you can access your data anywhere.
+
+       This tool allows you to interact with the background synchronization process. The background process is started
+       automatically when you login in or when a command is sent. If you want to disable automatic startup, go to the startup
+       applications in your desktop environment to disable it (on GNOME: gnome-session-properties).
+
+       You need a hubiC account to use this service. If you don’t have one, you can get a 25 GB account for free at
+       https://hubic.com. The hubiC service is subjet to the General Conditions of Use
+       (https://hubic.com/en/contracts/Contrat_hubiC_2013.pdf).
+
+           Important
+           This command requires a D-Bus session to work properly, see SERVER USAGE for more info.
+
+BACKUP
+       Backup feature come in addition to synchronization. Unlike synchronized folders, only one computer is allowed to modify
+       the backup. This means that you can only read content of backup from other applications.
+
+       Each time a backup is 'update’d the new local content is uploaded. Depending on versioning settings, overwritten files
+       may be versioned. Deleted files may be kept or deleted (note that under versioning, the file will still exist and will
+       be only masked).
+
+       The versioning feature keep older versions of files. You can keep only the Nth last versions, in this case, the oldest
+       versions are deleted.
+
+       A backup is attached to one client and only that client is allowed to update it. You can attach a backup to another
+       client but you have to make sure that the previous one will not update it again (the behavior is not defined in that
+       case). Such cases includes switch to a new or formatted computer.
+
+COMMANDS
+   start
+       Starts the synchronization process and logs in (if an account has been registered). If syncing is already running, it
+       does nothing.
+
+   stop
+       Kills the synchronization process. Please note that it will be restarted automatically as soon as an application calls
+       it.
+
+   login [--exclude=PATH] [--password_path=PATH] [--] email [sync_dir]
+       Connects client to an existing account identified by email.
+
+       The password will be requested. You can also provide the --password_path with a file containing only the password.
+
+       If you want to enable synchronization, you must provide sync_dir which points to the path to synchronize (absolute or
+       relative path). If sync_dir is not provided, the application will run in backup-only mode.
+
+       Some folders can be optionally excluded from syncing by selecting --exclude options (this can be used multiple times to
+       exclude several directories).
+
+           Note
+           Once logged, your credentials will be kept in application settings so you usually don’t need to log in again. Just
+           use the start command.
+
+   logout
+       Disconnects the account that is currently logged in.
+
+           Note
+           this command should not be used to pause synchronization temporarily then resume it, use the pause and resume
+           commands for this. The reason being that it clears the local cache, which can be resource-consuming next time you
+           connect.
+
+   pause
+       Pauses synchronization and interrupts any actions in progress. Account must be logged in to perform this command.
+
+   resume
+       Resume synchronization. Account must be logged in to perform this command.
+
+   synchronize
+       Triggers an instant synchronization cycle. Account must be logged in to perform this command.
+
+   status
+       Displays information on the account and running operations. Can be combined with the watch command to keep track of
+       status.
+
+   syncdir [--none] [path]
+       Without path, displays the current synchronised directory. When path is provided and points to an existing directory,
+       changes synchronized directory (any actions in progress are aborted immediately).
+
+       To disable synchronization, just pass the --none flag (exclusive with path).
+
+       Account must be logged in to perform this command.
+
+   config [option_name [new_value]]
+       Without any parameter, all variables and their values are displayed. With option_name only, the corresponding value is
+       displayed. With both option_name and option_value, the value is changed to the new one. Known options are:
+
+       AllowBugReporting
+           Whether automated bug reports are sent for unexpected errors.
+
+       DownloadSpeedLimit
+           Maximum download speed in bytes per second (0 means unlimited).
+
+       UploadSpeedLimit
+           Maximum upload speed in bytes per second (0 means unlimited).
+
+       UseRecycleBin
+           Whether locally deleted files are placed in recycle bin or deleted directly.
+
+       TimeBetweenSynchronization
+           Interval between two complete synchronization cycles in minutes.
+
+   proxy set hostname port [username [password_path]]
+       Installs given proxy configuration for communicating with hubiC servers. This overwrites any previous proxy settings.
+
+       If proxy needs authentication, username must be provided, the password is handled in the same way as with login (either
+       interactively asked, or uses the provided file).
+
+   proxy unset
+       Reset proxy configuration and uses direct Internet access.
+
+   publish path
+       Publish a new file or folder and publish the public URL. The path must be inside the synchronized directory and must
+       already be sent to the remote storage.
+
+       Account must be logged in to perform this command.
+
+   publish list
+       Displays a list of all currently published files and their download URL. Account must be logged in to perform this
+       command.
+
+   unpublish path
+       Unpublish a published file or folder. The path must point to a file or folder that has already been published. Account
+       must be logged in to perform this command.
+
+   exclude list
+       Displays all excluded folders (absolute path).
+
+   exclude add path
+       Adds path to excluded folders. The path can be either relative or absolute and does not have to exist (in this case it
+       will not be synced when created).
+
+   exclude remove path
+       Removes path from excluded folders, synchronizing it again.
+
+   exclude clear
+       Removes all excluded folders, synchronizing all files and folders.
+
+   backup create [--name=NAME] [--frequency=FREQUENCY] [kept_versions=VERSIONS] [--keep_deleted|--drop_deleted] [--] path
+       Creates a new backup using directory pointed by path. All content inside this directory will be uploaded to hubiC. See
+       BACKUP for more information.
+
+       Backup NAME will be inferred from path (folder name) if it is not provided.
+
+       The FREQUENCY controls the automatic backup scheduling. It must be one of the following: never (default, only manual
+       backups), hourly, daily, weekly.
+
+       The VERSIONS controls how many old versions of files are kept. It must be an integer. The default value is -1, which
+       means to keep all versions, without limit. The value 0 disables the versioning.
+
+       The --keep_deleted and --drop_deleted are exclusive and controls the behavior of the application when a file is
+       deleted. The --keep_deleted (default) do not delete file on hubiC, no matter what the versioning setting is. The
+       --drop_deleted will delete file on hubiC, if versioning is enabled file will be simply masked by default, but older
+       versions will be sill available.
+
+   backup info
+       Prints some informations about all backups.
+
+   backup update path_or_name
+       Triggers an update of a backup, the argument may be its name or its local path. The backup must be attached.
+
+   backup config [--keep_deleted] [--drop_deleted] [--path=NEW_PATH] [--frequency=FREQUENCY] [--kept_versions=VERSIONS] [--]
+       path_or_name
+       Change configuration of the backup. All options are optional, only provided options are changed. The options have the
+       same meaning as backup create command.
+
+       Note that if the path is changed, the new path becomes the reference. That means that any file which exists on hubiC
+       but not in new folder will be possibly deleted.
+
+   backup download backup_path_or_name target_path
+       Downloads an entire backup to target_path (which must be an empty folder). The backup does not need to be attached.
+
+   backup attach name path
+       Attach the backup name to the local path provided. Before using this command be sure that the previously attached
+       computer will not update it again. See BACKUP for more details.
+
+       The content of given folder will become the reference content, so any file which exists on hubiC but not in the path
+       will be deleted. You may want to download the backup before 'attach’ing it.
+
+   backup delete [--force] path_or_name
+       Deletes a backup and all attached files. A confirmation will be prompted if the session is interactive, unless --force
+       flag is provided. The backup does not need to be attached.
+
+   main-loop [--verbose] [--debug]
+       Starts the syncing loop in the foreground and prints log to standard output. This is not usually required except for
+       debugging purposes. The --verbose and --debug options adds some more messages.
+
+       This command will fail if the background synchronization process is already running.
+
+TROUBLESHOOTING
+       In case of issues with synchronization, you may find more information about what is going on in logs, they are located
+       in ~/.config/hubiC/application.log.
+
+       You can also get support on https://hubic.com/en/faq.
+
+       This software is still at beta stage, please report any issue you may encounter.
+
+SERVER USAGE
+       As this program require a D-Bus session to run, running it on headless configurations such as servers or NAS machines
+       may need some tweaking.
+
+       You need to set the DBUS_SESSION_BUS_ADDRESS environment variable to run hubiC. This variable is not usually set if you
+       have opened your session with tools such as SSH.
+
+       To start a new session bus and run hubiC, you can either use dbus-launch:
+
+           $ dbus-launch --sh-syntax
+           DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-XXXX,guid=XXXXXXX
+           DBUS_SESSION_BUS_PID=1234
+           $ export DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-XXXX,guid=XXXXXXX
+           $ hubic login foo@bar.com ~/hubiC
+
+       If dbus-launch is not installed, you can also use dbus-deamon directly:
+
+           $ dbus-daemon --session --fork --print-address
+           unix:abstract=/tmp/dbus-XXXX,guid=XXXXXXX
+           $ export DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-XXXX,guid=XXXXXXX
+           $ hubic login me@foo.com ~/hubiC
+
+       Once synchronization has started, it will continue to run even after the session is closed. To interact with it from
+       another session, you need to set the DBUS_SESSION_BUS_ADDRESS to the same value as before:
+
+           $ export DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-XXXX,guid=XXXXXXX
+           $ hubic status
+
+       Do not start another session bus or you will have two hubiC services running!
+
+KNOWN ISSUES
+       ·   Trash can handling has not yet been implemented. It will be implemented in a later version
+           http://www.ramendik.ru/docs/trashspec.html.
+
+COPYRIGHT
+       Copyright © 2012-2014 OVH SAS. All rights reserved.
+
+SEE ALSO
+       The D-Bus service API located in the doc/dbusapi directory.
+
+
+
+                                                          01/27/2015                                                  HUBIC(1)
