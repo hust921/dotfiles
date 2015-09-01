@@ -91,6 +91,7 @@ Plugin 'gmarik/Vundle.vim'
 
 " YouCompleteMe
 Plugin 'Valloric/YouCompleteMe'
+Plugin 'rdnetto/YCM-Generator'
 
 " Nerd tree
 Plugin 'The-NERD-tree'
@@ -136,6 +137,9 @@ filetype plugin indent on    " required
 
 " ------------------------- End of vundle ------------------------- "
 
+" YCM auto load ycm config
+let ycm_confirm_extra_conf = 0
+
 " Color schemes
 colorscheme bubblegum-256-dark
 let g:colorscheme_switcher_define_mappings=0
@@ -157,3 +161,6 @@ map <F9> :bp<CR>:bd #<CR>
 
 " NERDTree open en current folder
 map <F5> :NERDTreeToggle %<CR>
+let NERDTreeWinSize = 35
+" If no filename given open nerdtree in CWD. Else open current file location
+autocmd VimEnter * if @% == '' | NERDTree | else |NERDTree %
