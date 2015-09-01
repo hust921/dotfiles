@@ -159,8 +159,11 @@ map <F7> :bp<CR>
 map <F8> :bn<CR>
 map <F9> :bp<CR>:bd #<CR>
 
-" NERDTree open en current folder
-map <F5> :NERDTreeToggle %<CR>
+" NERDTree Setup
+map <F5> :NERDTreeToggle<CR>
 let NERDTreeWinSize = 35
-" If no filename given open nerdtree in CWD. Else open current file location
-autocmd VimEnter * if @% == '' | NERDTree | else |NERDTree %
+" Open NERDTree if filename argument given and move cursor back
+autocmd VimEnter * if @% != '' | NERDTree %
+autocmd VimEnter * wincmd w
+" Close if NERDTree is the last buffer open
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
