@@ -84,3 +84,17 @@ if question "Do you want to install oh-my-zsh files?"; then
         ln -s $DOTDIR/custom ~/.oh-my-zsh/custom
     fi
 fi
+
+# Replace tmux.conf
+if question "Do you want to install tmux.conf?"; then
+    # If tmux.conf exist
+    if [ -f ~/.tmux.conf ];then
+        echo ".tmux.conf already exist"
+        if question "Do you want to delete it?"; then
+            rm ~/.tmux.conf
+            ln -s $DOTDIR/tmux.conf ~/.tmux.conf
+        fi
+    else
+        ln -s $DOTDIR/tmux.conf ~/.tmux.conf
+    fi
+fi
