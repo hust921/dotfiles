@@ -78,6 +78,11 @@ set expandtab
 set shiftwidth=4
 set softtabstop=4
 
+" Add powerline
+set rtp+=/usr/local/lib/python2.7/dist-packages/powerline/bindings/vim/
+" Always show statusline
+set laststatus=2
+
 " ------------------------------ Vundle ------------------------------ "
 set nocompatible              " be iMproved, required
 filetype off                  " required
