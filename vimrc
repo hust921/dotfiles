@@ -5,7 +5,6 @@ let path='vimfiles/bundle'
 " vimrc shortcut
 map <F6> :e ~/.vimrc<CR>
 
-
 " ------------------------------ LINUX Specific ------------------------------ "
 cmap w!! w !sudo tee % > /dev/null<CR>
 
@@ -83,6 +82,8 @@ set rtp+=/usr/local/lib/python2.7/dist-packages/powerline/bindings/vim/
 " Always show statusline
 set laststatus=2
 
+" Fold options
+set foldmethod=syntax
 " ------------------------------ Vundle ------------------------------ "
 set nocompatible              " be iMproved, required
 filetype off                  " required
