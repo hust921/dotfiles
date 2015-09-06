@@ -13,7 +13,7 @@ ZSH_THEME="agnoster2"
 
 # Uncomment the following line to use hyphen-insensitive completion. Case
 # sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
+HYPHEN_INSENSITIVE="true"
 
 # Uncomment the following line to disable bi-weekly auto-update checks.
 # DISABLE_AUTO_UPDATE="true"
@@ -84,3 +84,10 @@ export EDITOR='vim'
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+#
+
+# AUTO_CD funtions in custom/autocd_func.zsh
+setopt auto_cd
+
+# Insert completion on first tab even if ambiguous?
+setopt menu_complete
