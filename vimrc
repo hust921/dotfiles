@@ -6,7 +6,7 @@ let path='vimfiles/bundle'
 map <F6> :e ~/.vimrc<CR>
 
 " ------------------------------ LINUX Specific ------------------------------ "
-cmap w!! w !sudo tee % > /dev/null<CR>
+command W w !sudo tee % > /dev/null
 
 " ------------------------------ Functional ------------------------------ "
 " Change working directory
@@ -14,6 +14,9 @@ cd ~/
 
 " Saves swap (.swp) files in System var $TEMP.
 set noswapfile
+
+" ------------------------------ Command Mappings ------------------------------ "
+command CWD lcd %:p:h
 
 " ------------------------------ Mappings ------------------------------ "
 " Test Esc :
@@ -34,10 +37,8 @@ nmap <Left> :vertical resize +1<CR>
 nmap <Right> :vertical resize -1<CR>
 
 " Run current file using Python
-"map <F1> :w<CR>:cd %:p:h<CR>:!python %<CR>
+map <F1> :w<CR>:cd %:p:h<CR>:!python %<CR>
 
-" Run current node solution
-map <F1> :!node ~/Downloads/socketio/index.js<CR>
 " Run selection as python
 map <F2> :w !python<CR>
 
@@ -49,6 +50,8 @@ nmap <leader>l V>
 nmap <leader>h V<
 
 " ------------------------------ Visual ------------------------------ "
+colorscheme bubblegum-256-dark
+
 " Fix backspace
 set backspace=indent,eol,start
 
@@ -58,11 +61,6 @@ if has("gui_running")
 else
     set t_Co=256
 endif
-
-" Visual :
-set guifont=Consolas:h11:cANSI 
-" Good colorschemes:
-"colorscheme zenburn
 
 syntax enable
 set tabstop=4
@@ -129,16 +127,6 @@ Plugin 'scrooloose/syntastic'
 " Javascript advanced syntax, including jQuery, underscore, etc..
 Plugin 'othree/javascript-libraries-syntax.vim'
 
-
-" ---- Color schemes ------------------------------ "
-" Color Themes
-Bundle 'noah/vim256-color'
-
-" Color Themes randomizer
-Plugin 'xolox/vim-misc'
-Plugin 'xolox/vim-colorscheme-switcher'
-" ---- Color schemes ------------------------------ "
-
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -147,11 +135,6 @@ filetype plugin indent on    " required
 
 " YCM auto load ycm config
 let ycm_confirm_extra_conf = 0
-
-" Color schemes
-colorscheme bubblegum-256-dark
-let g:colorscheme_switcher_define_mappings=0
-nmap <F10> :RandomColorScheme<CR>
 
 " Snipmate
 imap <C-J> <esc>a<Plug>snipMateNextOrTrigger
