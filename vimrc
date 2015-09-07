@@ -84,6 +84,8 @@ set laststatus=2
 
 " Fold options
 set foldmethod=syntax
+autocmd BufWinEnter * silent! :%foldopen!
+
 " ------------------------------ Vundle ------------------------------ "
 set nocompatible              " be iMproved, required
 filetype off                  " required
