@@ -99,6 +99,11 @@ Plugin 'gmarik/Vundle.vim'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'rdnetto/YCM-Generator'
 
+
+" ConqueTerm based gdb debugger.
+" ConqueGdb to enable
+Plugin 'vim-scripts/Conque-GDB'
+
 " Nerd tree
 Plugin 'The-NERD-tree'
 
@@ -135,6 +140,11 @@ filetype plugin indent on    " required
 
 " YCM auto load ycm config
 let ycm_confirm_extra_conf = 0
+
+" Conque-GDB
+let g:ConqueTerm_Color = 2         " 1: strip color after 200 lines, 2: always with color
+let g:ConqueTerm_CloseOnEnd = 1    " close conque when program ends running
+let g:ConqueTerm_StartMessages = 0 " display warning messages if conqueTerm is configured incorrectly
 
 " Snipmate
 imap <C-J> <esc>a<Plug>snipMateNextOrTrigger
