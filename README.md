@@ -21,10 +21,11 @@ The install.sh scripts allows to select which files to replace. For the script t
 * python-dev        : Python file header, yada yada
 * clang             : LLVM C compiler (for YCM C support)
 * mono-xbuild       : Mono/C# support for YCM
+* ctags             : Exuberant ctags. Create tag file to nativagate source.
 
 **Install dependencies (Debian based):**
 ```bash
-sudo apt-get install vim vim-nox build-essential cmake python-dev clang mono-xbuild
+sudo apt-get install vim vim-nox build-essential cmake python-dev clang mono-xbuild ctags
 ```
 **Link to vim files:**
 ```bash

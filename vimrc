@@ -95,10 +95,13 @@ call vundle#begin(path)
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
 
+" ctags test
+Plugin 'xolox/vim-easytags'
+Plugin 'xolox/vim-misc'
+
 " YouCompleteMe
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'rdnetto/YCM-Generator'
-
 
 " ConqueTerm based gdb debugger.
 " ConqueGdb to enable
