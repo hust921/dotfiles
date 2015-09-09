@@ -44,10 +44,41 @@ map <F2> :w !python<CR>
 
 " Open current file in browser
 map <F3> :w<CR>:!google-chrome %<CR>
+
+" ------------------------------ Functions ------------------------------ "
+function! GetBufferList()
+  redir =>buflist
+  silent! ls!
+  redir END
+  return buflist
+endfunction
+
+function! ToggleList(bufname, pfx)
+  let buflist = GetBufferList()
+  for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.a:bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
+    if bufwinnr(bufnum) != -1
+      exec(a:pfx.'close')
+      return
+    endif
+  endfor
+  if a:pfx == 'l' && len(getloclist(0)) == 0
+      echohl ErrorMsg
+      echo "Location List is Empty."
+      return
+  endif
+  let winnr = winnr()
+  exec(a:pfx.'open')
+  if winnr() != winnr
+    wincmd p
+  endif
+endfunction
+
 " ------------------------------ Leader commands ------------------------------ "
 map <Space> <leader>
-nmap <leader>l V>
-nmap <leader>h V<
+
+" Toggle location list
+nmap <silent> <leader>l :call ToggleList("Location List", 'l')<CR>
+nmap <silent> <leader>q :call ToggleList("Quickfix List", 'c')<CR>
 
 " ------------------------------ Visual ------------------------------ "
 colorscheme bubblegum-256-dark
@@ -126,9 +157,6 @@ Plugin 'garbas/vim-snipmate'
 Plugin 'honza/vim-snippets'
 " ---- Snipmate ------------------------------ "
 
-" vCooler color picker Alt-c
-Plugin 'KabbAmine/vCoolor.vim'
-
 " Syntastic Syntactic errors and more
 Plugin 'scrooloose/syntastic'
 
@@ -171,3 +199,14 @@ autocmd VimEnter * if @% != '' | NERDTree %
 autocmd VimEnter * wincmd w
 " Close if NERDTree is the last buffer open
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+
+
+" Syntastic noobie settings. To populate locations list
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
