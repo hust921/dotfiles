@@ -1,6 +1,6 @@
 " Set rtp & path. Vundle
-set rtp+=vimfiles/bundle/Vundle.vim/
-let path='vimfiles/bundle'
+set rtp+=~/vimfiles/bundle/Vundle.vim/
+let path='~/vimfiles/bundle'
 
 " vimrc shortcut
 map <F6> :e ~/.vimrc<CR>
