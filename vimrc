@@ -17,6 +17,8 @@ set noswapfile
 
 " ------------------------------ Command Mappings ------------------------------ "
 command CWD lcd %:p:h
+" Change working dir to git repo root
+command CWDG lcd `cd %:p:h; git rev-parse --show-toplevel`
 
 " ------------------------------ Mappings ------------------------------ "
 " Test Esc :
@@ -184,6 +186,7 @@ smap <C-J> <Plug>snipMateNextOrTrigger
 " Snipmate. Enable in other file types. eg. js in html and html in python.
 autocmd BufRead,BufNewFile *.html set ft=html.javascript.css
 autocmd BufRead,BufNewFile *.js set ft=javascript.html.css
+autocmd BufRead,BufNewFile *.php set ft=php.javascript.html.css
 autocmd BufRead,BufNewFile *.py set ft=python.html.javascript.css
 
 " Buffer line
@@ -199,7 +202,6 @@ autocmd VimEnter * if @% != '' | NERDTree %
 autocmd VimEnter * wincmd w
 " Close if NERDTree is the last buffer open
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-
 
 " Syntastic noobie settings. To populate locations list
 set statusline+=%#warningmsg#
