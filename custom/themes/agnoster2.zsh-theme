@@ -148,7 +148,7 @@ prompt_dir() {
   if [[ $UID -eq 0 ]]; then
     prompt_segment red black '%~'
   else
-    prompt_segment blue black '%~'
+    prompt_segment green black '%~'
   fi
 }
 
@@ -161,7 +161,7 @@ prompt_virtualenv() {
     if [[ $UID -eq 0 ]]; then
       prompt_segment red black "(`basename $virtualenv_path`)"
     else
-      prompt_segment blue black "(`basename $virtualenv_path`)"
+      prompt_segment green black "(`basename $virtualenv_path`)"
     fi
   fi
 }
