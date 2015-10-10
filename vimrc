@@ -1,5 +1,7 @@
 " Set rtp & path. Vundle
 set rtp+=~/vimfiles/bundle/Vundle.vim/
+" FuzzyFinder
+set rtp+=~/.fzf
 let path='~/vimfiles/bundle'
 
 " vimrc shortcut
@@ -81,6 +83,9 @@ map <Space> <leader>
 " Toggle location list
 nmap <silent> <leader>l :call ToggleList("Location List", 'l')<CR>
 nmap <silent> <leader>q :call ToggleList("Quickfix List", 'c')<CR>
+
+" FuzzyFinder
+nmap <leader>ff :FZF<CR>
 
 " ------------------------------ Visual ------------------------------ "
 colorscheme bubblegum-256-dark
@@ -173,6 +178,8 @@ filetype plugin indent on    " required
 
 " YCM auto load ycm config
 let ycm_confirm_extra_conf = 0
+let g:ycm_autoclose_preview_window_after_completion=1
+nnoremap <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
 " Conque-GDB
 let g:ConqueTerm_Color = 2         " 1: strip color after 200 lines, 2: always with color

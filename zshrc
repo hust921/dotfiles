@@ -91,3 +91,5 @@ setopt auto_cd
 
 # Insert completion on first tab even if ambiguous?
 setopt menu_complete
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

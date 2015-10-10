@@ -6,6 +6,13 @@ My personal dotfiles for omz, vim, tmux, conky, etc..
 ### Overall Dependencies
 * git
 * curl
+* fzf
+
+**fzf** is a fuzzyfinder for zsh and vim. **Recommended see:** [Github-repo](https://github.com/junegunn/fzf)
+```bash
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+~/.fzf/install
+```
 
 ### Semi-interactive installation
 The install.sh scripts allows to select which files to replace. For the script to work it must be located in either /home/user/dotfiles or /root/dotfiles. If run as root it will automatically install (after a warning) the files in the root home.

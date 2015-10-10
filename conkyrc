@@ -43,19 +43,21 @@ double_buffer yes
 TEXT
 ${color grey}${font sans-serif:bold:size=20}SYS ${font}$color ${scroll 30 $nodename - $sysname $kernel on $machine | }
 
- ${color grey}Time:$color ${time %H:%M:%S}
+${font Mallige:size=14}${alignc}$color${time %H:%M:%S}
+${font Impact:size=12}${alignc}${color grey}${time %A, %e-%B %Y}
+
  ${color grey}Uptime:$color $uptime
 
 # RAM Section
 ${color grey}${font sans-serif:bold:size=20}RAM $color${membar 4}${font}
 
- ${color grey}Use:$color $memperc% 
- ${color grey}Free:$color $mem/$memmax $color
+ ${color grey}Used:$color $memperc% 
+ ${color grey}Used:$color $mem/$memmax $color
 
 # CPU Section
 ${color grey}${font sans-serif:bold:size=20}CPU ${hr 2}${font}
 
- ${color grey}Use:$color $cpu%
+ ${color grey}Used:$color $cpu%
  $color${cpubar 4}
  ${cpugraph 100,380 00FF00 00FFB0 s}
  ${color grey}Core1:$color ${cpu cpu1}% ${alignr}${cpubar cpu1 8,220}
