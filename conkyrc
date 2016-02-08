@@ -2,9 +2,9 @@ alignment top_right
 background no
 border_width 1
 cpu_avg_samples 2
-default_color lightgreen
-default_outline_color green
-default_shade_color green
+default_color lightblue
+default_outline_color blue
+default_shade_color blue
 draw_borders no
 draw_graph_borders yes
 draw_outline no
@@ -59,7 +59,7 @@ ${color grey}${font sans-serif:bold:size=20}CPU ${hr 2}${font}
 
  ${color grey}Used:$color $cpu%
  $color${cpubar 4}
- ${cpugraph 100,380 00FF00 00FFB0 s}
+ ${cpugraph 100,380 00C0FF 00FFFF s}
  ${color grey}Core1:$color ${cpu cpu1}% ${alignr}${cpubar cpu1 8,220}
  ${color grey}Core2:$color ${cpu cpu2}% ${alignr}${cpubar cpu2 8,220}
  ${color grey}Core3:$color ${cpu cpu3}% ${alignr}${cpubar cpu3 8,220}
@@ -94,7 +94,7 @@ ${color grey}${font sans-serif:bold:size=20}DISK ${hr 2}${font}
 ${color grey}${font sans-serif:bold:size=20}NET ${hr 2}${font}
 
  ${color grey}Up eth0:$color ${upspeed eth0} ${alignr}${color grey}Down eth0:$color ${downspeed eth0}
- ${upspeedgraph eth0 25,140 000000 ff0000} ${alignr}${downspeedgraph eth0 25,140 000000 00ff00}$color
+ ${upspeedgraph eth0 25,140 000000 ff0000} ${alignr}${downspeedgraph eth0 25,140 000000 00F0FF}$color
 
  ${color grey}Up eth1:$color ${upspeed eth1} ${alignr}${color grey}Down eth1:$color ${downspeed eth1}
- ${upspeedgraph eth1 25,140 000000 ff0000} ${alignr}${downspeedgraph eth1 25,140 000000 00ff00}$color
+ ${upspeedgraph eth1 25,140 000000 ff0000} ${alignr}${downspeedgraph eth1 25,140 000000 00F0FF}$color

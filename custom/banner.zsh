@@ -1,2 +1,2 @@
 echo
-screenfetch -c 2,16
+screenfetch -c 4,3

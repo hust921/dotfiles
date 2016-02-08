@@ -82,7 +82,7 @@ prompt_git() {
     if [[ -n $dirty ]]; then
       prompt_segment yellow black
     else
-      prompt_segment green black
+      prompt_segment blue black
     fi
 
     if [[ -e "${repo_path}/BISECT_LOG" ]]; then
@@ -122,7 +122,7 @@ prompt_hg() {
         st='±'
       else
         # if working copy is clean
-        prompt_segment green black
+        prompt_segment blue black
       fi
       echo -n $(hg prompt "☿ {rev}@{branch}") $st
     else
@@ -136,7 +136,7 @@ prompt_hg() {
         prompt_segment yellow black
         st='±'
       else
-        prompt_segment green black
+        prompt_segment blue black
       fi
       echo -n "☿ $rev@$branch" $st
     fi
@@ -148,7 +148,7 @@ prompt_dir() {
   if [[ $UID -eq 0 ]]; then
     prompt_segment red black '%~'
   else
-    prompt_segment green black '%~'
+    prompt_segment blue black '%~'
   fi
 }
 
@@ -161,7 +161,7 @@ prompt_virtualenv() {
     if [[ $UID -eq 0 ]]; then
       prompt_segment red black "(`basename $virtualenv_path`)"
     else
-      prompt_segment green black "(`basename $virtualenv_path`)"
+      prompt_segment blue black "(`basename $virtualenv_path`)"
     fi
   fi
 }

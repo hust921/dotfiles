@@ -49,6 +49,9 @@ map <F2> :w !python<CR>
 " Open current file in browser
 map <F3> :w<CR>:!google-chrome %<CR>
 
+" Open with GDB inside vim
+map <F4> :GDB<CR>
+
 " ------------------------------ Functions ------------------------------ "
 function! GetBufferList()
   redir =>buflist
@@ -185,6 +188,17 @@ nnoremap <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
 let g:ConqueTerm_Color = 2         " 1: strip color after 200 lines, 2: always with color
 let g:ConqueTerm_CloseOnEnd = 1    " close conque when program ends running
 let g:ConqueTerm_StartMessages = 0 " display warning messages if conqueTerm is configured incorrectly
+function! GDB()
+    :w %
+    :lcd %:p:h
+    cexpr system("make") | copen
+    if v:shell_error == 0
+        :cclose
+        :ConqueGdb a.out
+    endif
+endfunction
+command GDB call GDB()
+
 
 " Snipmate
 imap <C-J> <esc>a<Plug>snipMateNextOrTrigger
