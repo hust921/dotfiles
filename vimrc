@@ -173,6 +173,10 @@ Plugin 'scrooloose/syntastic'
 " Javascript advanced syntax, including jQuery, underscore, etc..
 Plugin 'othree/javascript-libraries-syntax.vim'
 
+" Browser link. Auto updates browser
+Plugin 'jaxbot/browserlink.vim'
+autocmd BufWrite *.html,*.js,*.css,*.php :BLReloadPage
+
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
