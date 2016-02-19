@@ -122,8 +122,7 @@ set rtp+=/usr/local/lib/python2.7/dist-packages/powerline/bindings/vim/
 set laststatus=2
 
 " Fold options
-set foldmethod=syntax
-autocmd BufWinEnter * silent! :%foldopen!
+set nofoldenable
 
 " ------------------------------ Vundle ------------------------------ "
 set nocompatible              " be iMproved, required
@@ -135,6 +134,12 @@ call vundle#begin(path)
 
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
+
+"Browser link. Auto updates browser
+Plugin 'jaxbot/browserlink.vim'
+if exists(":BLReloadPage")
+    autocmd BufWrite *.html,*.js,*.css,*.php :BLReloadPage
+endif
 
 " ctags test
 Plugin 'xolox/vim-easytags'
@@ -172,10 +177,6 @@ Plugin 'scrooloose/syntastic'
 
 " Javascript advanced syntax, including jQuery, underscore, etc..
 Plugin 'othree/javascript-libraries-syntax.vim'
-
-" Browser link. Auto updates browser
-Plugin 'jaxbot/browserlink.vim'
-autocmd BufWrite *.html,*.js,*.css,*.php :BLReloadPage
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -237,3 +238,7 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+
+" testing omnifunc for HTML, CSS, SQL and JS
+filetype plugin on
+set omnifunc=syntaxcomplete#Complete
