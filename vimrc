@@ -242,3 +242,4 @@ let g:syntastic_check_on_wq = 0
 " testing omnifunc for HTML, CSS, SQL and JS
 filetype plugin on
 set omnifunc=syntaxcomplete#Complete
+:CWD
