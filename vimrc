@@ -137,9 +137,8 @@ Plugin 'gmarik/Vundle.vim'
 
 "Browser link. Auto updates browser
 Plugin 'jaxbot/browserlink.vim'
-if exists(":BLReloadPage")
-    autocmd BufWrite *.html,*.js,*.css,*.php :BLReloadPage
-endif
+autocmd BufWrite *.html,*.js,*.css,*.php :BLReloadPage
+:set autoread
 
 " ctags test
 Plugin 'xolox/vim-easytags'
