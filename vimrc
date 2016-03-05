@@ -30,10 +30,6 @@ imap jk <Esc>
 nmap oo o<Enter>
 nmap OO O<Esc>O<Esc>k
 
-" Auto complete curly braces
-inoremap {<CR> {<CR>}<Esc>O
-inoremap { {}<Esc>i
-
 " Map arrows to resize windows :
 nmap <Down> :resize +1<CR>
 nmap <Up> :resize -1<CR>
