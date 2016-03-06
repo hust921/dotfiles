@@ -30,6 +30,12 @@ imap jk <Esc>
 nmap oo o<Enter>
 nmap OO O<Esc>O<Esc>k
 
+" Control hjkl navigation in insert mode
+imap <C-H> <C-O>h
+imap <C-J> <C-O>j
+imap <C-K> <C-O>k
+imap <C-L> <C-O>l
+
 " Map arrows to resize windows :
 nmap <Down> :resize +1<CR>
 nmap <Up> :resize -1<CR>
@@ -103,6 +109,7 @@ syntax enable
 set tabstop=4
 set nowrap
 set number
+set relativenumber
 set ruler
 set hidden " Allow unsaved files to be in buffer
 
@@ -173,6 +180,9 @@ Plugin 'scrooloose/syntastic'
 " Javascript advanced syntax, including jQuery, underscore, etc..
 Plugin 'othree/javascript-libraries-syntax.vim'
 
+" Surround plugin
+Plugin 'tpope/vim-surround'
+
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -201,8 +211,8 @@ command GDB call GDB()
 
 
 " Snipmate
-imap <C-J> <esc>a<Plug>snipMateNextOrTrigger
-smap <C-J> <Plug>snipMateNextOrTrigger
+imap <C-N> <esc>a<Plug>snipMateNextOrTrigger
+smap <C-N> <Plug>snipMateNextOrTrigger
 
 " Snipmate. Enable in other file types. eg. js in html and html in python.
 autocmd BufRead,BufNewFile *.html set ft=html.javascript.css
@@ -233,6 +243,11 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+
+" Surround mapping
+vmap s S
+nmap s viwS
+nmap S yss
 
 " testing omnifunc for HTML, CSS, SQL and JS
 filetype plugin on

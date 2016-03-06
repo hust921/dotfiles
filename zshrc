@@ -93,3 +93,6 @@ setopt auto_cd
 setopt menu_complete
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# Disables terminal control flow "Ctrl+S/Q" freezing
+set -ixon
