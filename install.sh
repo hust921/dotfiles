@@ -98,3 +98,24 @@ if question "Do you want to install tmux.conf?"; then
         ln -s $DOTDIR/tmux.conf ~/.tmux.conf
     fi
 fi
+
+# Replace tern-config (tern.js global config)
+if question "Do you want to install .tern-config?"; then
+    if npm list|grep tern-jquery-extension > /dev/null; then
+        # If tern-config exist
+        if [ -f ~/.tern-config ]; then
+            echo ".tern-config already exist"
+            if question "Do you want to delete if?"; then
+                rm ~/.tern-config
+                ln -s $DOTDIR/tern-config ~/.tern-config
+            fi
+        else
+            ln -s $DOTDIR/tern-config ~/.tern-config
+        fi
+    else
+        echo "tern-jquery-extension not installed.."
+        echo "to install type: npm install tern-jquery-extension"
+        echo "exiting.. "
+        exit 1
+    fi
+fi

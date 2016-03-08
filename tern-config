@@ -1,0 +1,11 @@
+{
+  "libs": [
+    "browser",
+    "jquery"
+  ],
+  "loadEagerly": [],
+  "plugins": {
+    "browser-extension": {},
+    "jquery-extension": {}
+  }
+}
