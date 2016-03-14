@@ -30,12 +30,6 @@ imap jk <Esc>
 nmap oo o<Enter>
 nmap OO O<Esc>O<Esc>k
 
-" Control hjkl navigation in insert mode
-imap <C-H> <C-O>h
-imap <C-J> <C-O>j
-imap <C-K> <C-O>k
-imap <C-L> <C-O>l
-
 " Map arrows to resize windows :
 nmap <Down> :resize +1<CR>
 nmap <Up> :resize -1<CR>
@@ -211,8 +205,8 @@ command GDB call GDB()
 
 
 " Snipmate
-imap <C-N> <esc>a<Plug>snipMateNextOrTrigger
-smap <C-N> <Plug>snipMateNextOrTrigger
+imap <C-J> <esc>a<Plug>snipMateNextOrTrigger
+smap <C-J> <Plug>snipMateNextOrTrigger
 
 " Snipmate. Enable in other file types. eg. js in html and html in python.
 autocmd BufRead,BufNewFile *.html set ft=html.javascript.css
