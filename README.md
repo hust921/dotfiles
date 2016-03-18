@@ -40,6 +40,7 @@ cd ~/dotfiles/
 ./install.sh
 # Select "replace vimrc & vimfiles"
 # Or manually delete and link to files.
+# Now also install and compiles tern
 ```
 
 **Install plugins:**
@@ -47,10 +48,17 @@ cd ~/dotfiles/
 vim +PluginInstall +qall
 ```
 
+**Tern javascript completion**
+```bash
+cd ~/vimfiles/bundle/tern_for_vim/
+npm install
+
+```
+
 **Compile YCM with C & C# support:** [Check YCM docs for compile flags.](https://github.com/Valloric/YouCompleteMe)
 ```bash
 cd ~/vimfiles/bundle/YouCompleteMe/
-./install.py --clang-completer --omnisharp-completer
+./install.py --clang-completer --omnisharp-completer --tern-completer
 ```
 
 ## Install tmux

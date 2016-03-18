@@ -9,3 +9,5 @@ alias l1="ls -1"
 
 # dsize: Show the size of all files in current directory
 alias dsize="/bin/ls -R -l |awk 'BEGIN {sum=0} {sum+=\$5} END {print sum}' |numfmt --to=iec-i"
+
+alias eal="cd '/home/hust921/Dropbox/Documents/Uddandelse_Arbejde/EAL Web Bachelor/'"

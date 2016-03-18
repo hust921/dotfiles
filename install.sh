@@ -99,8 +99,8 @@ if question "Do you want to install tmux.conf?"; then
     fi
 fi
 
-# Replace tern-config (tern.js global config)
-if question "Do you want to install .tern-config?"; then
+# Replace tern-config and compile tern-for-vim (tern.js global config)
+if question "Do you want to install .tern-config & compile?"; then
     if npm list|grep tern-jquery-extension > /dev/null; then
         # If tern-config exist
         if [ -f ~/.tern-config ]; then
@@ -108,9 +108,15 @@ if question "Do you want to install .tern-config?"; then
             if question "Do you want to delete if?"; then
                 rm ~/.tern-config
                 ln -s $DOTDIR/tern-config ~/.tern-config
+                cd $DOTDIR/vimfiles/bundle/tern_for_vim
+                npm install
+                cd $DOTDIR
             fi
         else
             ln -s $DOTDIR/tern-config ~/.tern-config
+            cd $DOTDIR/vimfiles/bundle/tern_for_vim
+            npm install
+            cd $DOTDIR
         fi
     else
         echo "tern-jquery-extension not installed.."
@@ -118,4 +124,24 @@ if question "Do you want to install .tern-config?"; then
         echo "exiting.. "
         exit 1
     fi
+fi
+
+# Compile YouCompleteMe
+if question "Do you want to compile YouCompleteMe? WARNING, beta deps is not checked!"; then
+    cd $DOTDIR/vimfiles/bundle/YouCompleteMe
+    ycm_args="./install.py"
+    # mono support
+    if question "Do you want C# completion (requires mono)?"; then
+        ycm_args+=' --omnisharp-completer'
+    fi
+    # Clang support
+    if question "Do you want C/C++ completion (requires clang)?"; then
+        ycm_args+=' --clang-completer'
+    fi
+    # Tern support
+    if question "Do you want JS completion (requires tern)?"; then
+        ycm_args+=' --tern-completer'
+    fi
+    $ycm_args
+    cd $DOTDIR
 fi

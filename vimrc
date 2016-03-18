@@ -145,6 +145,9 @@ Plugin 'xolox/vim-misc'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'rdnetto/YCM-Generator'
 
+" Tern (js completion)
+Plugin 'marijnh/tern_for_vim'
+
 " ConqueTerm based gdb debugger.
 " ConqueGdb to enable
 Plugin 'vim-scripts/Conque-GDB'
