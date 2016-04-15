@@ -45,9 +45,6 @@ map <F2> :w !python<CR>
 " Open current file in browser
 map <F3> :w<CR>:!google-chrome %<CR>
 
-" Open with GDB inside vim
-map <F4> :GDB<CR>
-
 " ------------------------------ Functions ------------------------------ "
 function! GetBufferList()
   redir =>buflist
@@ -84,7 +81,7 @@ nmap <silent> <leader>l :call ToggleList("Location List", 'l')<CR>
 nmap <silent> <leader>q :call ToggleList("Quickfix List", 'c')<CR>
 
 " FuzzyFinder
-nmap <leader>ff :FZF<CR>
+nmap <leader>s :FZF<CR>
 
 " ------------------------------ Visual ------------------------------ "
 colorscheme bubblegum-256-dark
@@ -141,6 +138,12 @@ endfunction
 autocmd BufWrite *.html,*.js,*.css,*.php :call RefreshTheme()
 :set autoread
 
+" Repeat
+Plugin 'tpope/vim-repeat'
+
+" Easy Motion
+Plugin 'easymotion/vim-easymotion'
+
 " Emmet
 Plugin 'mattn/emmet-vim'
 
@@ -157,10 +160,6 @@ Plugin 'rdnetto/YCM-Generator'
 
 " Tern (js completion)
 Plugin 'marijnh/tern_for_vim'
-
-" ConqueTerm based gdb debugger.
-" ConqueGdb to enable
-Plugin 'vim-scripts/Conque-GDB'
 
 " Nerd tree
 Plugin 'The-NERD-tree'
@@ -200,22 +199,6 @@ filetype plugin indent on    " required
 let ycm_confirm_extra_conf = 0
 let g:ycm_autoclose_preview_window_after_completion=1
 nnoremap <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
-
-" Conque-GDB
-let g:ConqueTerm_Color = 2         " 1: strip color after 200 lines, 2: always with color
-let g:ConqueTerm_CloseOnEnd = 1    " close conque when program ends running
-let g:ConqueTerm_StartMessages = 0 " display warning messages if conqueTerm is configured incorrectly
-function! GDB()
-    :w %
-    :lcd %:p:h
-    cexpr system("make") | copen
-    if v:shell_error == 0
-        :cclose
-        :ConqueGdb a.out
-    endif
-endfunction
-command GDB call GDB()
-
 
 " Snipmate
 imap <C-J> <esc>a<Plug>snipMateNextOrTrigger
@@ -258,6 +241,13 @@ nmap S yss
 
 " Emmet
 let g:user_emmet_leader_key='<C-E>'
+
+" EasyMotion
+let g:EasyMotion_do_mapping = 0 " Disable defaul mapping
+" Use leader+f to search in file
+nmap <leader>f <Plug>(easymotion-overwin-f)
+" case insensitive
+let g:EasyMotion_smartcase = 1
 
 " testing omnifunc for HTML, CSS, SQL and JS
 filetype plugin on
