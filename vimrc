@@ -103,7 +103,6 @@ syntax enable
 set tabstop=4
 set nowrap
 set number
-set relativenumber
 set ruler
 set hidden " Allow unsaved files to be in buffer
 
@@ -134,8 +133,19 @@ Plugin 'gmarik/Vundle.vim'
 
 "Browser link. Auto updates browser
 Plugin 'jaxbot/browserlink.vim'
-autocmd BufWrite *.html,*.js,*.css,*.php :BLReloadPage
+function! RefreshTheme()
+    " Temperary Drupal quickfix - sigh
+    :!drush cc all
+    :BLReloadPage
+endfunction
+autocmd BufWrite *.html,*.js,*.css,*.php :call RefreshTheme()
 :set autoread
+
+" Emmet
+Plugin 'mattn/emmet-vim'
+
+" css color
+Plugin 'ap/vim-css-color'
 
 " ctags test
 Plugin 'xolox/vim-easytags'
@@ -246,7 +256,11 @@ vmap s S
 nmap s viwS
 nmap S yss
 
+" Emmet
+let g:user_emmet_leader_key='<C-E>'
+
 " testing omnifunc for HTML, CSS, SQL and JS
 filetype plugin on
 set omnifunc=syntaxcomplete#Complete
+let g:ycm_python_binary_path = '/usr/bin/python'
 :CWD
