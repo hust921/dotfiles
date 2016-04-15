@@ -17,6 +17,13 @@ cd ~/
 " Saves swap (.swp) files in System var $TEMP.
 set noswapfile
 
+nmap <leader>c :setlocal spell!<CR>
+nmap <leader>8 [s
+nmap <leader>9 ]s
+nmap <leader>0 z=
+
+set spelllang=en,da
+
 " ------------------------------ Command Mappings ------------------------------ "
 command CWD lcd %:p:h
 " Change working dir to git repo root
@@ -79,6 +86,9 @@ map <Space> <leader>
 " Toggle location list
 nmap <silent> <leader>l :call ToggleList("Location List", 'l')<CR>
 nmap <silent> <leader>q :call ToggleList("Quickfix List", 'c')<CR>
+
+" Toggle set paste
+set pastetoggle=<leader>p
 
 " FuzzyFinder
 nmap <leader>s :FZF<CR>
@@ -170,7 +180,6 @@ Plugin 'bling/vim-bufferline'
 " Matches complex tags like <div> with %
 Plugin 'tmhedberg/matchit'
 
-
 " ---- Snipmate ------------------------------ "
 " Snipmate (code snippets) TAB to run snippet
 Plugin 'MarcWeber/vim-addon-mw-utils'
@@ -260,3 +269,7 @@ let g:ycm_python_binary_path = '/usr/bin/python'
 " Change local env after loading plugins
 filetype plugin on
 :CWD
+" search settings
+set incsearch        " find the next match as we type the search
+set hlsearch         " hilight searches by default
+nnoremap <CR> :noh<CR><CR>
