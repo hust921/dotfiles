@@ -189,6 +189,10 @@ Plugin 'othree/javascript-libraries-syntax.vim'
 " Surround plugin
 Plugin 'tpope/vim-surround'
 
+" vim dev icons - Super pretty icons in powerline & NERDTree
+Plugin 'ryanoasis/vim-devicons'
+set encoding=utf-8
+
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -249,8 +253,10 @@ nmap <leader>f <Plug>(easymotion-overwin-f)
 " case insensitive
 let g:EasyMotion_smartcase = 1
 
-" testing omnifunc for HTML, CSS, SQL and JS
-filetype plugin on
+" Enable omni completion.
 set omnifunc=syntaxcomplete#Complete
 let g:ycm_python_binary_path = '/usr/bin/python'
+
+" Change local env after loading plugins
+filetype plugin on
 :CWD

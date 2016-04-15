@@ -34,6 +34,8 @@ The install.sh scripts allows to select which files to replace. For the script t
 ```bash
 sudo apt-get install vim vim-nox build-essential cmake python-dev clang mono-xbuild ctags
 ```
+Install nerd-font. To work with vim-devicons. I'm using "DejaVu Sans Mono Regular" atm.
+https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/DejaVuSansMono/Regular/complete/DejaVu%20Sans%20Mono%20for%20Powerline%20Nerd%20Font%20Complete%20Mono%20Windows%20Compatible.ttf
 **Link to vim files:**
 ```bash
 cd ~/dotfiles/
