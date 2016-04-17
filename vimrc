@@ -21,6 +21,7 @@ nmap <leader>c :setlocal spell!<CR>
 nmap <leader>8 [s
 nmap <leader>9 ]s
 nmap <leader>0 z=
+vmap <leader>t :!cat \|column -t<CR>
 
 set spelllang=en,da
 
