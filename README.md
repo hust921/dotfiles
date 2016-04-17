@@ -60,6 +60,7 @@ npm install
 **Compile YCM with C & C# support:** [Check YCM docs for compile flags.](https://github.com/Valloric/YouCompleteMe)
 ```bash
 cd ~/vimfiles/bundle/YouCompleteMe/
+git submodule update --init --recursive
 ./install.py --clang-completer --omnisharp-completer --tern-completer
 ```
 
