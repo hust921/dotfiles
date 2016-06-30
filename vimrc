@@ -1,44 +1,30 @@
 " Set rtp & path. Vundle
 set rtp+=~/vimfiles/bundle/Vundle.vim/
-" FuzzyFinder
-set rtp+=~/.fzf
 let path='~/vimfiles/bundle'
 
 " vimrc shortcut
-map <F6> :e ~/.vimrc<CR>
-
-" ------------------------------ LINUX Specific ------------------------------ "
-command W w !sudo tee % > /dev/null
-
-" ------------------------------ Functional ------------------------------ "
-" Change working directory
-cd ~/
+map <F6> :e $MYVIMRC<CR>
 
 " Saves swap (.swp) files in System var $TEMP.
 set noswapfile
 
+" Spelling
 nmap <leader>c :setlocal spell!<CR>
 nmap <leader>8 [s
 nmap <leader>9 ]s
 nmap <leader>0 z=
-vmap <leader>t :!cat \|column -t<CR>
+nmap <leader>m %
 
 set spelllang=en,da
 
-" ------------------------------ Command Mappings ------------------------------ "
-command CWD lcd %:p:h
-" Change working dir to git repo root
-command CWDG lcd `cd %:p:h; git rev-parse --show-toplevel`
-
-" ------------------------------ Mappings ------------------------------ "
-" Test Esc :
+" Test Esc
 imap jk <Esc>
 
 " Insert newline remaps
 nmap oo o<Enter>
 nmap OO O<Esc>O<Esc>k
 
-" Map arrows to resize windows :
+" Map arrows to resize windows
 nmap <Down> :resize +1<CR>
 nmap <Up> :resize -1<CR>
 nmap <Left> :vertical resize +1<CR>
@@ -50,10 +36,16 @@ map <F1> :w<CR>:cd %:p:h<CR>:!python %<CR>
 " Run selection as python
 map <F2> :w !python<CR>
 
-" Open current file in browser
-map <F3> :w<CR>:!google-chrome %<CR>
-
 " ------------------------------ Functions ------------------------------ "
+"function! CWD()
+"  if (argc())
+"    lcd %:p:h
+"  else
+"    cd ~
+"  endif
+"endfunction
+"call CWD()
+
 function! GetBufferList()
   redir =>buflist
   silent! ls!
@@ -91,11 +83,8 @@ nmap <silent> <leader>q :call ToggleList("Quickfix List", 'c')<CR>
 " Toggle set paste
 set pastetoggle=<leader>p
 
-" FuzzyFinder
-nmap <leader>s :FZF<CR>
-
 " ------------------------------ Visual ------------------------------ "
-colorscheme bubblegum-256-dark
+colorscheme default
 
 " Fix backspace
 set backspace=indent,eol,start
@@ -103,12 +92,13 @@ set backspace=indent,eol,start
 if has("gui_running")
     set guioptions -=m "remove menubar
     set guioptions -=T "remove toolbar
+    set guifont=DejaVuSansMonoForPowerline\ NF:h12
+    colorscheme Spink
 else
     set t_Co=256
 endif
 
 syntax enable
-set tabstop=4
 set nowrap
 set number
 set ruler
@@ -116,12 +106,11 @@ set hidden " Allow unsaved files to be in buffer
 
 " Auto indent :
 set ai
-set expandtab
 set shiftwidth=4
 set softtabstop=4
+set tabstop=4
+set expandtab
 
-" Add powerline
-set rtp+=/usr/local/lib/python2.7/dist-packages/powerline/bindings/vim/
 " Always show statusline
 set laststatus=2
 
@@ -139,15 +128,47 @@ call vundle#begin(path)
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
 
+" ctrlp - Fuzzy file, buffer, mru, tags finder
+Plugin 'ctrlpvim/ctrlp.vim'
+let g:ctrlp_show_hidden = 1
+set wildignore+=*.swp,*.zip,*.exe,*.pyc,*.png,*.jpg,*.ini,NTUSER.DAT*
+map <C-p> :CtrlPMixed<CR>
+map <C-l> :CtrlPLine<CR>
+
+Plugin 'tacahiroy/ctrlp-funky'
+nnoremap <C-k> :CtrlPFunky<CR>
+" ctrlp speed
+Plugin 'FelikZ/ctrlp-py-matcher'
+let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
+
+
+" NerdTree & plugins
+Plugin 'scrooloose/nerdtree'
+let g:NERDTreeWinSize=40
+let g:NERDTreeRespectWildIgnore = 1
+let g:NERDTreeDirArrows = 1
+let g:NERDTreeDirArrowExpandable = '▸'
+let g:NERDTreeDirArrowCollapsible = '▾'
+map <F5> :NERDTreeToggle<CR>
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+" vim-arline
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_theme = "ubaryd"
+
+" git-gutter
+Plugin 'tpope/vim-fugitive'
+
+" git-gutter
+Plugin 'airblade/vim-gitgutter'
+map <leader>h <Plug>GitGutterNextHunk
+map <leader>H <Plug>GitGutterPrevHunk
+
 "Browser link. Auto updates browser
 Plugin 'jaxbot/browserlink.vim'
-function! RefreshTheme()
-    " Temperary Drupal quickfix - sigh
-    :!drush cc all
-    :BLReloadPage
-endfunction
-autocmd BufWrite *.html,*.js,*.css,*.php :call RefreshTheme()
-:set autoread
 
 " Repeat
 Plugin 'tpope/vim-repeat'
@@ -161,23 +182,13 @@ Plugin 'mattn/emmet-vim'
 " css color
 Plugin 'ap/vim-css-color'
 
-" ctags test
-Plugin 'xolox/vim-easytags'
-Plugin 'xolox/vim-misc'
-
 " YouCompleteMe
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'rdnetto/YCM-Generator'
 
-" Tern (js completion)
-Plugin 'marijnh/tern_for_vim'
-
 " Nerd tree
 Plugin 'The-NERD-tree'
 
-" buffer list/bar
-Plugin 'bling/vim-bufferline'
-"
 " Matches complex tags like <div> with %
 Plugin 'tmhedberg/matchit'
 
@@ -229,15 +240,6 @@ map <F7> :bp<CR>
 map <F8> :bn<CR>
 map <F9> :bp<CR>:bd #<CR>
 
-" NERDTree Setup
-map <F5> :NERDTreeToggle<CR>
-let NERDTreeWinSize = 35
-" Open NERDTree if filename argument given and move cursor back
-autocmd VimEnter * if @% != '' | NERDTree %
-autocmd VimEnter * wincmd w
-" Close if NERDTree is the last buffer open
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-
 " Syntastic noobie settings. To populate locations list
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
@@ -248,16 +250,11 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
-" Surround mapping
-vmap s S
-nmap s viwS
-nmap S yss
-
 " Emmet
 let g:user_emmet_leader_key='<C-E>'
 
 " EasyMotion
-let g:EasyMotion_do_mapping = 0 " Disable defaul mapping
+let g:EasyMotion_do_mapping = 0 " Disable default mapping
 " Use leader+f to search in file
 nmap <leader>f <Plug>(easymotion-overwin-f)
 " case insensitive
@@ -269,8 +266,28 @@ let g:ycm_python_binary_path = '/usr/bin/python'
 
 " Change local env after loading plugins
 filetype plugin on
-:CWD
 " search settings
 set incsearch        " find the next match as we type the search
-set hlsearch         " hilight searches by default
+set ignorecase       " Required for smartcase to work
+set smartcase        " Semi-Case sensitive
+set hlsearch        " hilight searches by default
 nnoremap <CR> :noh<CR><CR>
+
+map <silent> <F10> :q<CR>
+
+function! PepCheck()
+  set makeprg=python\ -m\ pep8\ %
+  :silent make
+  :copen
+  :wincmd w
+  :wincmd w
+endfunction
+map <silent> <leader>n :cn<CR>
+map <silent> <leader>N :cp<CR>
+command Pep8 call PepCheck()
+
+
+" ------------------------------ LINUX Specific ------------------------------ "
+"command W w !sudo tee % > /dev/null
+"map <F3> :w<CR>:!google-chrome %<CR>
+"vmap <leader>t :!cat \|column -t<CR>
