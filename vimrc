@@ -3,7 +3,7 @@ set rtp+=~/vimfiles/bundle/Vundle.vim/
 let path='~/vimfiles/bundle'
 
 " vimrc shortcut
-map <F6> :e $MYVIMRC<CR>
+map <F6> :e ~/dotfiles/vimrc<CR>
 
 " Saves swap (.swp) files in System var $TEMP.
 set noswapfile
@@ -37,14 +37,6 @@ map <F1> :w<CR>:cd %:p:h<CR>:!python %<CR>
 map <F2> :w !python<CR>
 
 " ------------------------------ Functions ------------------------------ "
-"function! CWD()
-"  if (argc())
-"    lcd %:p:h
-"  else
-"    cd ~
-"  endif
-"endfunction
-"call CWD()
 
 function! GetBufferList()
   redir =>buflist
@@ -84,7 +76,7 @@ nmap <silent> <leader>q :call ToggleList("Quickfix List", 'c')<CR>
 set pastetoggle=<leader>p
 
 " ------------------------------ Visual ------------------------------ "
-colorscheme default
+colorscheme Spink
 
 " Fix backspace
 set backspace=indent,eol,start
@@ -93,7 +85,6 @@ if has("gui_running")
     set guioptions -=m "remove menubar
     set guioptions -=T "remove toolbar
     set guifont=DejaVuSansMonoForPowerline\ NF:h12
-    colorscheme Spink
 else
     set t_Co=256
 endif
@@ -286,7 +277,7 @@ map <silent> <leader>n :cn<CR>
 map <silent> <leader>N :cp<CR>
 command Pep8 call PepCheck()
 
-
+autocmd BufEnter * silent! lcd %:p:h
 " ------------------------------ LINUX Specific ------------------------------ "
 "command W w !sudo tee % > /dev/null
 "map <F3> :w<CR>:!google-chrome %<CR>
