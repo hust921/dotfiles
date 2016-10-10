@@ -122,6 +122,12 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 "}}}
+" VimLaTex {{{2
+Plugin 'LaTeX-Suite-aka-Vim-LaTeX'
+set grepprg=grep\ -nH\ $*
+let g:tex_flavor='latex'
+set iskeyword+=:
+" }}}
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -143,17 +149,17 @@ nmap <Right> :vertical resize -1<CR>
 " Visual {{{1
 syntax on
 set background=dark
-colorscheme welpe
+colorscheme default
 
 " Fix backspace
 set backspace=indent,eol,start
 
-if has("gui_running")
-    set guioptions -=m "remove menubar
-    set guioptions -=T "remove toolbar
-else
-    set t_Co=256
-endif
+"if has("gui_running")
+"    set guioptions -=m "remove menubar
+"    set guioptions -=T "remove toolbar
+"else
+"    set t_Co=256
+"endif
 
 set nowrap
 set number
@@ -179,11 +185,14 @@ nnoremap <CR> :noh<CR><CR>
 " Platform specific {{{1
 " Windows {{{2
 if has("win32") || has("win64")
+    set shellslash
+
     if has("gui_running")
-        set guifont=DejaVuSansMonoForPowerline\ Nerd\ Font:12
+        set guifont=UbuntuMonoDerivativePowerline_N:h12:cANSI:qDRAFT
         colorscheme Spink
     endif
 
+  
 " Unix {{{2
 elseif has("unix")
     command W w !sudo tee % > /dev/null
@@ -256,6 +265,7 @@ autocmd BufRead,BufNewFile *.html set ft=html.javascript.css
 autocmd BufRead,BufNewFile *.js set ft=javascript.html.css
 autocmd BufRead,BufNewFile *.php set ft=php.javascript.html.css
 autocmd BufRead,BufNewFile *.py set ft=python.html.javascript.css
+autocmd BufRead,BufNewFile *.pl set ft=prolog
 
 " Leader commands {{{1
 map <Space> <leader>
