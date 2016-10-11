@@ -1,3 +1,4 @@
 vimfiles/bundle/*
 !vimfiles/bundle/Vundle.vim
 node_modules
+vimfiles/.netrwhist
