@@ -9,7 +9,6 @@ set encoding=utf-8
 
 " Vundle - Plugins {{{1
 " -----------------------------------------------------
-set nocompatible              " be iMproved, required
 filetype off                  " required
 
 call vundle#begin(path)
@@ -97,17 +96,6 @@ nnoremap <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
 set omnifunc=syntaxcomplete#Complete
 let g:ycm_python_binary_path = '/usr/bin/python'
 
-" Snipmate {{{2
-" Snipmate (code snippets) TAB to run snippet
-Plugin 'MarcWeber/vim-addon-mw-utils'
-Plugin 'tomtom/tlib_vim'
-Plugin 'garbas/vim-snipmate'
-" Optional snippets for snipmate
-Plugin 'honza/vim-snippets'
-" Snipmate
-imap <C-J> <esc>a<Plug>snipMateNextOrTrigger
-smap <C-J> <Plug>snipMateNextOrTrigger
-
 
 " Syntastic {{{2
 Plugin 'scrooloose/syntastic'
@@ -122,12 +110,10 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 "}}}
-" VimLaTex {{{2
-Plugin 'LaTeX-Suite-aka-Vim-LaTeX'
-set grepprg=grep\ -nH\ $*
-let g:tex_flavor='latex'
-set iskeyword+=:
-" }}}
+" Ultisnips {{{2
+Plugin 'Ultisnips'
+Plugin 'honza/vim-snippets'
+let g:UltiSnipsExpandTrigger="<C-J>"
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -186,6 +172,7 @@ nnoremap <CR> :noh<CR><CR>
 " Windows {{{2
 if has("win32") || has("win64")
     set shellslash
+    command Latex !pdflatex "%" && del "%:r.aux" && del "%:r.log" && "%:r.pdf"
 
     if has("gui_running")
         set guifont=UbuntuMonoDerivativePowerline_N:h12:cANSI:qDRAFT
