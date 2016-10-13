@@ -114,6 +114,7 @@ let g:syntastic_check_on_wq = 0
 Plugin 'Ultisnips'
 Plugin 'honza/vim-snippets'
 let g:UltiSnipsExpandTrigger="<C-J>"
+let g:tex_flavor = "latex"
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -140,12 +141,12 @@ colorscheme default
 " Fix backspace
 set backspace=indent,eol,start
 
-"if has("gui_running")
-"    set guioptions -=m "remove menubar
-"    set guioptions -=T "remove toolbar
-"else
-"    set t_Co=256
-"endif
+if has("gui_running")
+    set guioptions -=m "remove menubar
+    set guioptions -=T "remove toolbar
+else
+    set t_Co=256
+endif
 
 set nowrap
 set number
@@ -171,11 +172,10 @@ nnoremap <CR> :noh<CR><CR>
 " Platform specific {{{1
 " Windows {{{2
 if has("win32") || has("win64")
-    set shellslash
-    command Latex !pdflatex "%" && del "%:r.aux" && del "%:r.log" && "%:r.pdf"
+    command Latex silent !pdflatex "%" && del "%:r.aux" && del "%:r.log" && "%:r.pdf"
 
     if has("gui_running")
-        set guifont=UbuntuMonoDerivativePowerline_N:h12:cANSI:qDRAFT
+        set guifont=UbuntuMonoDerivativePowerline_N:h12:cANSI
         colorscheme Spink
     endif
 
