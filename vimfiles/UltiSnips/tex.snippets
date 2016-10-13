@@ -1,0 +1,31 @@
+priority -49
+
+extends tex
+
+snippet "doc" "Documentclass Template" b
+\documentclass[a4paper]{article}
+
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\graphicspath{ {pictures/} }
+
+\title{${1:articleTitle}}
+\author{Morten Lund}
+
+\begin{document}
+	\maketitle
+
+	\begin{abstract}
+		${2:AbstractText}
+	\end{abstract}
+
+	${0:${VISUAL}}
+\end{document}
+endsnippet
+snippet bigcup "Conjunktive Union" b
+\bigcup\limits_{i=1}^n A_{i}
+endsnippet
+snippet bigcap "Conjunktive Intersection" b
+\bigcap\limits_{i=1}^n A_{i}
+endsnippet
