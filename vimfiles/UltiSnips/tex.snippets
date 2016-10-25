@@ -5,7 +5,9 @@ extends tex
 snippet "doc" "Documentclass Template" b
 \documentclass[a4paper]{article}
 
+\usepackage[a4paper,left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}
 \usepackage{enumerate}
+\usepackage{float}
 \usepackage{graphicx}
 \usepackage[utf8]{inputenc}
 \graphicspath{ {pictures/} }
@@ -28,4 +30,16 @@ snippet bigcup "Conjunktive Union" b
 endsnippet
 snippet bigcap "Conjunktive Intersection" b
 \bigcap\limits_{i=1}^n A_{i}
+endsnippet
+
+snippet image "Insert image includegraphics" b
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{${0:filename}}
+endsnippet
+
+snippet figure "Insert figure template" b
+\begin{figure}[H]
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{${1:filename}}
+\caption{${2:description}}
+\label{fig:${3:refname}}
+\end{figure}
 endsnippet
