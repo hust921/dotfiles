@@ -67,7 +67,7 @@ Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
-let g:airline_theme = "ubaryd"
+let g:airline_theme = "base16_mocha"
 
 " git-gutter {{{2
 Plugin 'airblade/vim-gitgutter'
@@ -115,6 +115,12 @@ Plugin 'Ultisnips'
 Plugin 'honza/vim-snippets'
 let g:UltiSnipsExpandTrigger="<C-J>"
 let g:tex_flavor = "latex"
+
+" Haskell {{{2
+Plugin 'lukerandall/haskellmode-vim'
+au BufEnter *.hs compiler ghc
+let g:haddock_browser="C:/Program Files (x86)/Google/Chrome/Application/chrome.exe"
+let g:haddock_docdir="C:/Users/Morten/AppData/Local/Programs/stack/x86_64-windows/ghc-8.0.1/doc/html"
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -232,6 +238,9 @@ map <F1> :w<CR>:cd %:p:h<CR>:!python %<CR>
 
 " Run selection as python
 map <F2> :w !python<CR>
+
+" stock make
+map <F4> :silent make<CR>
 
 " vimrc shortcut
 map <F6> :e ~/dotfiles/vimrc<CR>
