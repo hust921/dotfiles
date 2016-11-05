@@ -67,7 +67,7 @@ Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
-let g:airline_theme = "base16_mocha"
+let g:airline_theme = "tender"
 
 " git-gutter {{{2
 Plugin 'airblade/vim-gitgutter'
@@ -126,6 +126,9 @@ let g:haddock_docdir="C:/Users/Morten/AppData/Local/Programs/stack/x86_64-window
 call vundle#end()            " required
 filetype plugin indent on    " required
 
+" Tender colortheme {{{2
+Plugin 'jacoborus/tender'
+
 " Normal & Insert Mode {{{1
 imap jk <Esc>
 
@@ -142,7 +145,7 @@ nmap <Right> :vertical resize -1<CR>
 " Visual {{{1
 syntax on
 set background=dark
-colorscheme default
+colorscheme tender
 
 " Fix backspace
 set backspace=indent,eol,start
@@ -182,7 +185,6 @@ if has("win32") || has("win64")
 
     if has("gui_running")
         set guifont=UbuntuMonoDerivativePowerline_N:h12:cANSI
-        colorscheme Spink
     endif
 
   
@@ -286,3 +288,5 @@ nmap <leader>m %
 
 set spelllang=en,da
 
+" Local Overites {{{1
+source ~/vimfiles/vimlocal.vim
