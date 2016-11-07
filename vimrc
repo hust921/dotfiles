@@ -109,6 +109,12 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+
+" Set Syntastic passive mode for [.tex, .xx, ...] files.
+let g:syntastic_mode_map = {
+            \ "mode": "active",
+            \ "active_filetypes": [],
+            \ "passive_filetypes": ["tex"] }
 "}}}
 " Ultisnips {{{2
 Plugin 'Ultisnips'
@@ -291,14 +297,3 @@ source ~/vimfiles/vimlocal.vim
 " Latex {{{1
 " 'Compile' command.
 command Latex silent !pdflatex "%" && del "%:r.aux" && del "%:r.log" && "%:r.pdf"
-
-" Ignores region of between arguments given.
-" Syntax highligting is also removed from this region.
-function! LatexIgnore()
-    for i in [ ['\\begin{lstlisting}','\\end{lstlisting}'] ]
-
-             syntax region texZone start=i[0] end=i[1]
-    endfor
-endfunction
-
-au filetype tex call LatexIgnore()
