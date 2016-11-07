@@ -12,6 +12,10 @@ snippet "doc" "Documentclass Template" b
 \usepackage[utf8]{inputenc}
 \graphicspath{ {pictures/} }
 
+\usepackage{listings}
+\lstset{language=Haskell}
+\lstset{breaklines=true}
+
 \title{${1:articleTitle}}
 \author{Morten Lund}
 
@@ -30,6 +34,12 @@ snippet bigcup "Conjunktive Union" b
 endsnippet
 snippet bigcap "Conjunktive Intersection" b
 \bigcap\limits_{i=1}^n A_{i}
+endsnippet
+
+snippet code "Using the listing package" b
+\begin{lstlisting}
+${0}
+\end{lstlisting}
 endsnippet
 
 snippet image "Insert image includegraphics" b
