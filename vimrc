@@ -181,8 +181,6 @@ nnoremap <CR> :noh<CR><CR>
 " Platform specific {{{1
 " Windows {{{2
 if has("win32") || has("win64")
-    command Latex silent !pdflatex "%" && del "%:r.aux" && del "%:r.log" && "%:r.pdf"
-
     if has("gui_running")
         set guifont=UbuntuMonoDerivativePowerline_N:h12:cANSI
     endif
@@ -290,3 +288,17 @@ set spelllang=en,da
 
 " Local Overites {{{1
 source ~/vimfiles/vimlocal.vim
+" Latex {{{1
+" 'Compile' command.
+command Latex silent !pdflatex "%" && del "%:r.aux" && del "%:r.log" && "%:r.pdf"
+
+" Ignores region of between arguments given.
+" Syntax highligting is also removed from this region.
+function! LatexIgnore()
+    for i in [ ['\\begin{lstlisting}','\\end{lstlisting}'] ]
+
+             syntax region texZone start=i[0] end=i[1]
+    endfor
+endfunction
+
+au filetype tex call LatexIgnore()
