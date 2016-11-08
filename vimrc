@@ -51,6 +51,10 @@ nnoremap <C-k> :CtrlPFunky<CR>
 " ctrlp speed
 Plugin 'FelikZ/ctrlp-py-matcher'
 let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
+let g:airline#extensions#tabline#enabled = 1
+let g:ctrlp_clear_cache_on_exit = 0
+let g:ctrlp_max_files = 0
+
 
 " NerdTree {{{2
 Plugin 'scrooloose/nerdtree'
