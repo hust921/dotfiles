@@ -1,34 +1,56 @@
 priority -49
 
 extends tex
-
-snippet "doc" "Documentclass Template" b
-\documentclass[a4paper]{article}
+snippet doc "Documentclass Template" b
+\documentclass[a4paper,fleqn]{report}
 
 \usepackage[a4paper,left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}
+\setcounter{secnumdepth}{3}
 \usepackage{enumerate}
 \usepackage{float}
+\usepackage{color}
 \usepackage{graphicx}
+
 \usepackage[utf8]{inputenc}
 \graphicspath{ {pictures/} }
 
 \usepackage{listings}
-\lstset{language=Haskell}
-\lstset{breaklines=true}
+\definecolor{light-grey}{gray}{0.80}
+\definecolor{light-brown}{RGB}{150,90,40}
+\lstset{language=Prolog,
+		frame=shadowbox,
+		basicstyle=\ttfamily,
+		rulesepcolor=\color{light-grey},
+		commentstyle=\color{light-brown}\ttfamily,
+		breaklines=true
+}
 
-\title{${1:articleTitle}}
-\author{Morten Lund}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{bbold}
+
+\title{
+\vspace{2in}
+\textmd{\textbf{${1:articleTitle}}}\\\
+\vspace{0.1in}\normalsize{Class: \textit{${2:class}}}\\\
+\vspace{0.1in}\normalsize{Instructor: \textit{${3:instructor}}}\\\
+\vspace{3in}
+}
+
+\author{\textbf{Morten Kohl Lund}}
+\date{${4:date}}
 
 \begin{document}
 	\maketitle
 
 	\begin{abstract}
-		${2:AbstractText}
+		${5:AbstractText}
 	\end{abstract}
 
 	${0:${VISUAL}}
 \end{document}
 endsnippet
+
 snippet bigcup "Conjunktive Union" b
 \bigcup\limits_{i=1}^n A_{i}
 endsnippet
@@ -60,4 +82,25 @@ snippet figure "Insert figure template" b
 \caption{${2:description}}
 \label{fig:${3:refname}}
 \end{figure}
+endsnippet
+
+
+snippet line "Short line, (from left)" b
+\noindent\rule{8cm}{0.2pt} \\
+endsnippet
+
+snippet break "Long line spanning whole document" b
+\noindent\makebox[\linewidth]{\rule{\paperwidth}{0.4pt}} \\
+endsnippet
+
+snippet it "Itallic" w
+\textit{${1:text}} ${0}
+endsnippet
+
+snippet bf "Bold" w
+\textbf{${1:text}} ${0}
+endsnippet
+
+snippet mod "Modular texttrm" w
+\textrm{${1:mod}}\ ${0}
 endsnippet
