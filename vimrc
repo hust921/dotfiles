@@ -300,4 +300,4 @@ set spelllang=en,da
 source ~/vimfiles/vimlocal.vim
 " Latex {{{1
 " 'Compile' command.
-command Latex silent !pdflatex "%" && del "%:r.aux" && del "%:r.log" && "%:r.pdf"
+command Latex silent w | !pdflatex "%" && del "%:r.aux" && del "%:r.log" && "%:r.pdf"
