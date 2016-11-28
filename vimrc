@@ -124,6 +124,7 @@ let g:syntastic_mode_map = {
 Plugin 'Ultisnips'
 Plugin 'honza/vim-snippets'
 let g:UltiSnipsExpandTrigger="<C-J>"
+let g:UltiSnipsJumpBackwardTrigger="<C-H>"
 let g:tex_flavor = "latex"
 
 " Haskell {{{2
@@ -191,6 +192,9 @@ nnoremap <CR> :noh<CR><CR>
 " Platform specific {{{1
 " Windows {{{2
 if has("win32") || has("win64")
+    " Latex {{{1
+    " 'Compile' command.
+    command Latex silent w | !pdflatex "%" && del "%:r.aux" && del "%:r.log" && "%:r.pdf"
     if has("gui_running")
         set guifont=UbuntuMonoDerivativePowerline_N:h12:cANSI
     endif
@@ -198,6 +202,10 @@ if has("win32") || has("win64")
   
 " Unix {{{2
 elseif has("unix")
+    " Latex {{{1
+    " 'Compile' command.
+    command Latex silent w | !pdflatex "%" && rm "%:r.aux" "%:r.log"; google-chrome "%:r.pdf"
+
     command W w !sudo tee % > /dev/null
     map <F3> :w<CR>:!google-chrome %<CR>
     vmap <leader>t :!cat \|column -t<CR>
@@ -298,6 +306,3 @@ set spelllang=en,da
 
 " Local Overites {{{1
 source ~/vimfiles/vimlocal.vim
-" Latex {{{1
-" 'Compile' command.
-command Latex silent w | !pdflatex "%" && del "%:r.aux" && del "%:r.log" && "%:r.pdf"
