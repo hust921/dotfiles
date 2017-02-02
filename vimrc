@@ -43,8 +43,9 @@ Plugin 'ryanoasis/vim-devicons'
 Plugin 'ctrlpvim/ctrlp.vim'
 let g:ctrlp_show_hidden = 1
 set wildignore+=*.swp,*.zip,*.exe,*.pyc,*.png,*.jpg,*.ini,NTUSER.DAT*
-map <C-p> :CtrlPMixed<CR>
+map <C-p> :CtrlPBuffer<CR>
 map <C-l> :CtrlPLine<CR>
+let g:ctrlp_working_path_mode = 'ra'
 
 Plugin 'tacahiroy/ctrlp-funky'
 nnoremap <C-k> :CtrlPFunky<CR>
@@ -92,12 +93,12 @@ let g:user_emmet_leader_key='<C-E>'
 
 " YouCompleteMe {{{2
 Plugin 'Valloric/YouCompleteMe'
-Plugin 'rdnetto/YCM-Generator'
 let ycm_confirm_extra_conf = 0
 let g:ycm_autoclose_preview_window_after_completion=1
-nnoremap <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
+nnoremap <leader>g :YcmCompleter GoTo<CR>
 " Enable omni completion.
 set omnifunc=syntaxcomplete#Complete
+let g:ycm_global_ycm_extra_conf = '~/vimfiles/.ycm_extra_conf.py'
 let g:ycm_python_binary_path = '/usr/bin/python'
 
 
