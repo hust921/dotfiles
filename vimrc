@@ -16,6 +16,9 @@ Plugin 'gmarik/Vundle.vim'
 " -----------------------------------------------------
 
 " MISC PLUGINS {{{2
+" Auto-Pairs. For bracket autocomplete
+Plugin 'auto-pairs'
+
 "Browser link. Auto updates browser
 Plugin 'jaxbot/browserlink.vim'
 
