@@ -99,6 +99,20 @@ if question "Do you want to install tmux.conf?"; then
     fi
 fi
 
+# Replace .emacs config
+if question "Do you want to install .emacs?"; then
+    # If .emacs exist
+    if [ -f ~/.tmux.conf ];then
+        echo ".emacs already exist"
+        if question "Do you want to delete it?"; then
+            rm ~/.emacs
+            ln -s $DOTDIR/.emacs ~/.emacs
+        fi
+    else
+        ln -s $DOTDIR/.emacs ~/.emacs
+    fi
+fi
+
 # Replace tern-config and compile tern-for-vim (tern.js global config)
 if question "Do you want to install .tern-config & compile?"; then
     if npm list|grep tern-jquery-extension > /dev/null; then
