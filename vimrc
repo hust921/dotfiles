@@ -42,6 +42,17 @@ Plugin 'tpope/vim-surround'
 
 " vim dev icons - Super pretty icons in powerline & NERDTree
 Plugin 'ryanoasis/vim-devicons'
+
+" Tmux integration {{{2
+Plugin 'benmills/vimux'
+let g:VimuxOrientation = "h"
+let g:VimuxHeight = "40"
+map <leader>mm :VimuxPromptCommand<CR>
+map <leader>mq :VimuxCloseRunner<CR>
+map <leader>ml :VimuxRunLastCommand<CR>
+map <leader>mi :VimuxInspectRunner<CR>
+
+
 " CtrlP {{{2
 Plugin 'ctrlpvim/ctrlp.vim'
 let g:ctrlp_show_hidden = 1
