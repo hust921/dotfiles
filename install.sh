@@ -102,7 +102,7 @@ fi
 # Replace .emacs config
 if question "Do you want to install .emacs?"; then
     # If .emacs exist
-    if [ -f ~/.tmux.conf ];then
+    if [ -f ~/.emacs ];then
         echo ".emacs already exist"
         if question "Do you want to delete it?"; then
             rm ~/.emacs
