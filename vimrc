@@ -170,6 +170,7 @@ nmap <Right> :vertical resize -1<CR>
 
 " Visual {{{1
 syntax on
+set foldmethod=syntax
 set background=dark
 colorscheme tender
 
@@ -207,8 +208,7 @@ nnoremap <CR> :noh<CR><CR>
 " Platform specific {{{1
 " Windows {{{2
 if has("win32") || has("win64")
-    " Latex {{{1
-    " 'Compile' command.
+    " Latex 'Compile' command.
     command Latex silent w | !pdflatex "%" && del "%:r.aux" && del "%:r.log" && "%:r.pdf"
     if has("gui_running")
         set guifont=UbuntuMonoDerivativePowerline_N:h12:cANSI
@@ -217,10 +217,10 @@ if has("win32") || has("win64")
   
 " Unix {{{2
 elseif has("unix")
-    " Latex {{{1
-    " 'Compile' command.
+    " Latex 'Compile' command.
     command Latex silent w | !pdflatex "%" && rm "%:r.aux" "%:r.log"; google-chrome "%:r.pdf"
 
+    " Misc
     command W w !sudo tee % > /dev/null
     map <F3> :w<CR>:!google-chrome %<CR>
     vmap <leader>t :!cat \|column -t<CR>
@@ -230,6 +230,7 @@ elseif has("unix")
 endif
 
 " Functions {{{1
+" PepCheck {{{2
 function! PepCheck()
   set makeprg=python\ -m\ pep8\ %
   :silent make
@@ -238,6 +239,7 @@ function! PepCheck()
   :wincmd w
 endfunction
 
+" GetBufferList {{{2
 function! GetBufferList()
   redir =>buflist
   silent! ls!
@@ -245,6 +247,7 @@ function! GetBufferList()
   return buflist
 endfunction
 
+" ToggleList {{{2
 function! ToggleList(bufname, pfx)
   let buflist = GetBufferList()
   for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.a:bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
@@ -310,7 +313,7 @@ map <silent> <leader>N :cp<CR>
 " Toggle set paste
 set pastetoggle=<leader>p
 
-" Spelling {{{2
+" Spelling {{{1
 nmap <leader>c :setlocal spell!<CR>
 nmap <leader>8 [s
 nmap <leader>9 ]s
@@ -319,5 +322,5 @@ nmap <leader>m %
 
 set spelllang=en,da
 
-" Local Overites {{{1
+" Local Overwrite {{{1
 source ~/vimfiles/vimlocal.vim
