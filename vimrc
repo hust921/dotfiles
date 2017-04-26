@@ -106,9 +106,11 @@ Plugin 'mattn/emmet-vim'
 let g:user_emmet_leader_key='<C-E>'
 
 " YouCompleteMe {{{2
+Plugin 'YCM-Generator'
 Plugin 'Valloric/YouCompleteMe'
 let ycm_confirm_extra_conf = 0
-let g:ycm_autoclose_preview_window_after_completion=1
+let g:ycm_autoclose_preview_window_after_completion=0
+let g:ycm_autoclose_preview_window_after_insertion=1
 nnoremap <leader>g :YcmCompleter GoTo<CR>
 " Enable omni completion.
 set omnifunc=syntaxcomplete#Complete
