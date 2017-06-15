@@ -106,7 +106,7 @@ Plugin 'mattn/emmet-vim'
 let g:user_emmet_leader_key='<C-E>'
 
 " YouCompleteMe {{{2
-Plugin 'YCM-Generator'
+Plugin 'rdnetto/YCM-Generator'
 Plugin 'Valloric/YouCompleteMe'
 let ycm_confirm_extra_conf = 0
 let g:ycm_autoclose_preview_window_after_completion=0
@@ -154,8 +154,9 @@ let g:haddock_docdir="C:/Users/Morten/AppData/Local/Programs/stack/x86_64-window
 call vundle#end()            " required
 filetype plugin indent on    " required
 
-" Tender colortheme {{{2
+" colorthemes {{{2
 Plugin 'jacoborus/tender'
+Plugin 'LanFly/vim-colors'
 
 " Normal & Insert Mode {{{1
 imap jk <Esc>
@@ -298,7 +299,8 @@ autocmd BufEnter * silent! lcd %:p:h
 autocmd BufRead,BufNewFile *.html set ft=html.javascript.css
 autocmd BufRead,BufNewFile *.js set ft=javascript.html.css
 autocmd BufRead,BufNewFile *.php set ft=php.javascript.html.css
-autocmd BufRead,BufNewFile *.py set ft=python.html.javascript.css
+"autocmd BufRead,BufNewFile *.py set ft=python.html.javascript.css
+autocmd BufRead,BufNewFile *.py set ft=python
 autocmd BufRead,BufNewFile *.pl set ft=prolog
 
 " Leader commands {{{1
