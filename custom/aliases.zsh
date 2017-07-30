@@ -14,3 +14,6 @@ alias xc="xclip -selection c"
 alias dsize="/bin/ls -R -l |awk 'BEGIN {sum=0} {sum+=\$5} END {print sum}' |numfmt --to=iec-i"
 
 alias datalogi="cd '/home/hust921/Dropbox/Documents/Uddandelse_Arbejde/Datalogi/'"
+
+# Search running processes
+alias psa="ps aux |grep"
