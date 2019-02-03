@@ -99,33 +99,6 @@ if question "Do you want to install .gitconfig"; then
     fi
 fi
 
-# Replace tern-config and compile tern-for-vim (tern.js global config)
-if question "Do you want to install .tern-config & compile?"; then
-    if npm list|grep tern-jquery-extension > /dev/null; then
-        # If tern-config exist
-        if [ -f ~/.tern-config ]; then
-            echo ".tern-config already exist"
-            if question "Do you want to delete if?"; then
-                rm ~/.tern-config
-                ln -s $DOTDIR/tern-config ~/.tern-config
-                cd $DOTDIR/vimfiles/bundle/tern_for_vim
-                npm install
-                cd $DOTDIR
-            fi
-        else
-            ln -s $DOTDIR/tern-config ~/.tern-config
-            cd $DOTDIR/vimfiles/bundle/tern_for_vim
-            npm install
-            cd $DOTDIR
-        fi
-    else
-        echo "tern-jquery-extension not installed.."
-        echo "to install type: npm install tern-jquery-extension"
-        echo "exiting.. "
-        exit 1
-    fi
-fi
-
 # Compile YouCompleteMe
 if question "Do you want to compile YouCompleteMe? WARNING, beta deps is not checked!"; then
     cd $DOTDIR/vimfiles/bundle/YouCompleteMe
@@ -137,10 +110,6 @@ if question "Do you want to compile YouCompleteMe? WARNING, beta deps is not che
     # Clang support
     if question "Do you want C/C++ completion (requires clang)?"; then
         ycm_args+=' --clang-completer'
-    fi
-    # Tern support
-    if question "Do you want JS completion (requires tern)?"; then
-        ycm_args+=' --tern-completer'
     fi
     $ycm_args
     cd $DOTDIR
