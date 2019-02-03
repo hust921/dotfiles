@@ -17,3 +17,6 @@ alias datalogi="cd '/home/hust921/Dropbox/Documents/Uddandelse_Arbejde/Datalogi/
 
 # Search running processes
 alias psa="ps aux |grep"
+
+# Download video
+alias Video-Download 'youtube-dl --format "best" --prefer-ffmpeg -o "%(title)s.%(ext)s"'
