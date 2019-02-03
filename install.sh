@@ -99,6 +99,20 @@ if question "Do you want to install tmux.conf?"; then
     fi
 fi
 
+# Replace .gitconfig
+if question "Do you want to install .gitconfig"; then
+    # If .gitconfig exist
+    if [ -f ~/.gitconfig ]; then
+        echo ".gitconfig already exist"
+        if question "Do you want to delete it?"; then
+            rm ~/.gitconfig
+            ln -s $DOTDIR/.gitconfig ~/.gitconfig
+        fi
+    else
+        ln -s $DOTDIR/.gitconfig ~/.gitconfig
+    fi
+fi
+
 # Replace .emacs config
 if question "Do you want to install .emacs?"; then
     # If .emacs exist
