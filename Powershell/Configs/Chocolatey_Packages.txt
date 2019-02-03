@@ -1,0 +1,60 @@
+﻿# ====== Runtime Enviroments & Drivers ======
+javaruntime
+python python2
+geforce-experience
+haskell-stack
+
+# ====== Misc Desktop ======
+googlechrome
+firefox
+dropbox
+
+# ====== Entertainment & Social ======
+steam discord
+skype
+
+# ====== Media & Editing  ======
+vlc
+mp3tag filebot
+
+# --- Downloader
+youtube-dl ffmpeg aria2
+
+# --- DVD burn/rip
+imgburn dvddecrypter
+
+# --- Video editing
+HandBrake
+
+# --- Latex/editing
+miktex pandoc typora texstudio
+
+# ====== Tools & Development ======
+git
+7zip teamviewer
+curl putty winscp
+virtualbox
+packetsender
+
+# ====== Build tools ======
+clang mingw 
+
+# ====== .Net Framework ======
+visualstudio2017community
+ilspy
+
+# --- Web development
+nodejs
+postman
+
+# --- powershell
+poshgit fzf
+
+# --- Wireshark & Network analysis
+winpcap wireshark
+nmap netcat
+fiddler
+
+# --- RE
+dependencywalker
+windbg ida-free x64dbg.portable radare

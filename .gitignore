@@ -5,3 +5,7 @@ vimfiles/.netrwhist
 vimfiles/spell
 vimfiles/vimlocal.vim
 *.pyc
+
+Powershell/Logs/*
+Powershell/Configs/WindowsPowerShell/*
+!Powershell/Configs/WindowsPowerShell/profile.ps1
