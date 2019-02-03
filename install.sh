@@ -29,20 +29,6 @@ if [[ $UID == 0 ]]; then
     fi
 fi
 
-# Replace conkyrc
-if question "Do you want to install conkyrc?"; then
-    # If .conkyrc exist
-    if [ -f ~/.conkyrc ]; then
-        echo "~/.conkyrc already exist."
-        if question "Do you want to delete it?"; then
-            rm ~/.conkyrc
-            ln -s $DOTDIR/conkyrc ~/.conkyrc
-        fi
-    else
-        ln -s $DOTDIR/conkyrc ~/.conkyrc
-    fi
-fi
-
 # Replace vim & vimfiles
 if question "Do you want to install vimrc and vimfiles?"; then
     # If .vimrc exist
