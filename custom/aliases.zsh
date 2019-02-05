@@ -17,3 +17,7 @@ alias datalogi="cd '/home/hust921/Dropbox/Documents/Uddandelse_Arbejde/Datalogi/
 
 # Search running processes
 alias psa="ps aux |grep"
+
+# Git
+alias glol='git log --graph --pretty='\''%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ci) %C(bold blue)<%an>%Creset'\'
+alias glola='git log --graph --pretty='\''%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ci) %C(bold blue)<%an>%Creset'\'' --all'
