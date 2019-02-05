@@ -25,8 +25,8 @@ Set-PSReadlineOption -BellStyle None # Disable bell
 Set-Alias chrome "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"
 
 # Git (partially from oh-my-zsh)
-function glol {git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit $args}
-function glola {git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --all $args}
+function glol {git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ci) %C(bold blue)<%an>%Creset' --abbrev-commit $args}
+function glola {git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ci) %C(bold blue)<%an>%Creset' --abbrev-commit --all $args}
 function gst {git status $args}
 function gss {git status -s $args}
 function gcv {git commit -v $args}
