@@ -1,0 +1,16 @@
+# This is Git's per-user configuration file.
+[user]
+    name = Morten Lund
+    #email = Left for different logins
+[core]
+    editor = vim
+    autocrlf = true
+    
+    # cat short output
+    pager = less -F -X
+[diff]
+    tool = vimdiff
+[difftool]
+    prompt = false
+[alias]
+    d = difftool

@@ -29,20 +29,6 @@ if [[ $UID == 0 ]]; then
     fi
 fi
 
-# Replace conkyrc
-if question "Do you want to install conkyrc?"; then
-    # If .conkyrc exist
-    if [ -f ~/.conkyrc ]; then
-        echo "~/.conkyrc already exist."
-        if question "Do you want to delete it?"; then
-            rm ~/.conkyrc
-            ln -s $DOTDIR/conkyrc ~/.conkyrc
-        fi
-    else
-        ln -s $DOTDIR/conkyrc ~/.conkyrc
-    fi
-fi
-
 # Replace vim & vimfiles
 if question "Do you want to install vimrc and vimfiles?"; then
     # If .vimrc exist
@@ -99,44 +85,17 @@ if question "Do you want to install tmux.conf?"; then
     fi
 fi
 
-# Replace .emacs config
-if question "Do you want to install .emacs?"; then
-    # If .emacs exist
-    if [ -f ~/.emacs ];then
-        echo ".emacs already exist"
+# Replace .gitconfig
+if question "Do you want to install .gitconfig"; then
+    # If .gitconfig exist
+    if [ -f ~/.gitconfig ]; then
+        echo ".gitconfig already exist"
         if question "Do you want to delete it?"; then
-            rm ~/.emacs
-            ln -s $DOTDIR/.emacs ~/.emacs
+            rm ~/.gitconfig
+            ln -s $DOTDIR/.gitconfig ~/.gitconfig
         fi
     else
-        ln -s $DOTDIR/.emacs ~/.emacs
-    fi
-fi
-
-# Replace tern-config and compile tern-for-vim (tern.js global config)
-if question "Do you want to install .tern-config & compile?"; then
-    if npm list|grep tern-jquery-extension > /dev/null; then
-        # If tern-config exist
-        if [ -f ~/.tern-config ]; then
-            echo ".tern-config already exist"
-            if question "Do you want to delete if?"; then
-                rm ~/.tern-config
-                ln -s $DOTDIR/tern-config ~/.tern-config
-                cd $DOTDIR/vimfiles/bundle/tern_for_vim
-                npm install
-                cd $DOTDIR
-            fi
-        else
-            ln -s $DOTDIR/tern-config ~/.tern-config
-            cd $DOTDIR/vimfiles/bundle/tern_for_vim
-            npm install
-            cd $DOTDIR
-        fi
-    else
-        echo "tern-jquery-extension not installed.."
-        echo "to install type: npm install tern-jquery-extension"
-        echo "exiting.. "
-        exit 1
+        ln -s $DOTDIR/.gitconfig ~/.gitconfig
     fi
 fi
 
@@ -151,10 +110,6 @@ if question "Do you want to compile YouCompleteMe? WARNING, beta deps is not che
     # Clang support
     if question "Do you want C/C++ completion (requires clang)?"; then
         ycm_args+=' --clang-completer'
-    fi
-    # Tern support
-    if question "Do you want JS completion (requires tern)?"; then
-        ycm_args+=' --tern-completer'
     fi
     $ycm_args
     cd $DOTDIR
