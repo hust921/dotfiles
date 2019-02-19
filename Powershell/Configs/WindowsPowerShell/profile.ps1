@@ -40,8 +40,14 @@ function gaa {git add --all $args}
 # Preset for youtube-dl for ffmpeg and fast download
 function Video-Download
 {
+    $downloader = '--external-downloader "C:\aria2\aria2c.exe"'
     $output = '"' + $(Get-ScriptDirectory) + '\%(title)s.%(ext)s"'
-    youtube-dl --format "best" --prefer-ffmpeg "ffmpeg" --external-downloader "aria2" -o $output $args
+    $scargs = "$output $args"
+    $runCmd = 'youtube-dl --format "best" --prefer-ffmpeg --ffmpeg-location "C:\ffmpeg-win64-static\bin" --external-downloader "C:\aria2\aria2c.exe" -o ' + $scargs
+
+    echo $runCmd
+
+    Start-Job { Invoke-Expression $args[0] } -ArgumentList $runCmd
 }
 
 # Gets the directory from where a script is located
