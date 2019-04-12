@@ -24,3 +24,5 @@ alias glola='git log --graph --pretty='\''%Cred%h%Creset -%C(auto)%d%Creset %s %
 
 # Download video
 alias Video-Download 'youtube-dl --format "best" --prefer-ffmpeg -o "%(title)s.%(ext)s"'
+
+alias mysql='mycli'
