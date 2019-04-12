@@ -20,7 +20,7 @@ Plugin 'gmarik/Vundle.vim'
 Plugin 'auto-pairs'
 
 "Browser link. Auto updates browser
-Plugin 'jaxbot/browserlink.vim'
+"Plugin 'jaxbot/browserlink.vim'
 
 " Repeat
 Plugin 'tpope/vim-repeat'
@@ -174,6 +174,7 @@ nmap <Right> :vertical resize -1<CR>
 " Visual {{{1
 syntax on
 set foldmethod=syntax
+autocmd BufWinEnter * silent! :%foldopen!
 set background=dark
 colorscheme tender
 
