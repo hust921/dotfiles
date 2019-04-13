@@ -19,6 +19,9 @@ Plugin 'gmarik/Vundle.vim'
 " Auto-Pairs. For bracket autocomplete
 Plugin 'auto-pairs'
 
+" Marks in "gutter"
+Plugin 'jeetsukumaran/vim-markology'
+
 "Browser link. Auto updates browser
 "Plugin 'jaxbot/browserlink.vim'
 
