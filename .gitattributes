@@ -1,3 +1,9 @@
-# LF (not CRLF) for line endings
+# LF for everything not windows
 * text eol=LF
 Powershell/* text eol=CRLF
+
+# force binary diff
+*.png binary
+*.jpg binary
+*.ttf binary
+
