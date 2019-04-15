@@ -4,7 +4,8 @@
     #email = Left for different logins
 [core]
     editor = vim
-    autocrlf = true
+    autocrlf = input
+    safecrlf = true
     
     # cat short output
     pager = less -F -X
