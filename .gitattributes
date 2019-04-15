@@ -1,3 +1,6 @@
+# Normalize all line endings
+* text=auto
+
 # LF for everything not windows
 * text eol=LF
 Powershell/* text eol=CRLF
