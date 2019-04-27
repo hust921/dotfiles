@@ -93,3 +93,6 @@ setopt auto_cd
 setopt menu_complete
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# Start ssh-agent
+eval $(ssh-agent)
