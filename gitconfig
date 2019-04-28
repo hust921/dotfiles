@@ -5,7 +5,6 @@
 [core]
     editor = vim
     autocrlf = input
-    safecrlf = true
     
     # cat short output
     pager = less -F -X

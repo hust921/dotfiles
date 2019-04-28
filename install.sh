@@ -85,32 +85,16 @@ if question "Do you want to install tmux.conf?"; then
     fi
 fi
 
-# Replace .gitconfig
-if question "Do you want to install .gitconfig"; then
-    # If .gitconfig exist
+# Replace gitconfig
+if question "Do you want to install gitconfig"; then
+    # If gitconfig exist
     if [ -f ~/.gitconfig ]; then
         echo ".gitconfig already exist"
         if question "Do you want to delete it?"; then
             rm ~/.gitconfig
-            ln -s $DOTDIR/.gitconfig ~/.gitconfig
+            cp $DOTDIR/gitconfig ~/.gitconfig
         fi
     else
-        ln -s $DOTDIR/.gitconfig ~/.gitconfig
+        cp $DOTDIR/gitconfig ~/.gitconfig
     fi
-fi
-
-# Compile YouCompleteMe
-if question "Do you want to compile YouCompleteMe? WARNING, beta deps is not checked!"; then
-    cd $DOTDIR/vimfiles/bundle/YouCompleteMe
-    ycm_args="./install.py"
-    # mono support
-    if question "Do you want C# completion (requires mono)?"; then
-        ycm_args+=' --omnisharp-completer'
-    fi
-    # Clang support
-    if question "Do you want C/C++ completion (requires clang)?"; then
-        ycm_args+=' --clang-completer'
-    fi
-    $ycm_args
-    cd $DOTDIR
 fi
