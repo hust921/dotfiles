@@ -14,11 +14,7 @@ if (Test-Path($ChocolateyProfile)) {
 }
 
 # fzf
-Remove-PSReadlineKeyHandler 'CTRL+R'
-Import-Module PSFzf
-
-# ================= Terminal Options =================
-Set-PSReadlineOption -BellStyle None # Disable bell
+Import-Module PSFzf -ArgumentList 'Ctrl+t', 'Ctrl+r'
 
 # ================= Aliases =================
 # Chrome
@@ -40,14 +36,8 @@ function gaa {git add --all $args}
 # Preset for youtube-dl for ffmpeg and fast download
 function Video-Download
 {
-    $downloader = '--external-downloader "C:\aria2\aria2c.exe"'
     $output = '"' + $(Get-ScriptDirectory) + '\%(title)s.%(ext)s"'
-    $scargs = "$output $args"
-    $runCmd = 'youtube-dl --format "best" --prefer-ffmpeg --ffmpeg-location "C:\ffmpeg-win64-static\bin" --external-downloader "C:\aria2\aria2c.exe" -o ' + $scargs
-
-    echo $runCmd
-
-    Start-Job { Invoke-Expression $args[0] } -ArgumentList $runCmd
+    youtube-dl --format "best" --prefer-ffmpeg "ffmpeg" --external-downloader "aria2" -o $output $args
 }
 
 # Gets the directory from where a script is located
