@@ -1,0 +1,21 @@
+# Normalize all line endings
+* text=auto
+
+# LF for everything not windows
+* text eol=LF
+Powershell/* text eol=CRLF
+
+# ===== IMAGES =====
+*.[aA][pP][nN][gG] binary
+*.[pP][nN][gG] binary
+*.[jJ][pP][gG] binary
+*.[tT][tT][fF] binary
+*.[tT][tT][fF][fF] binary
+
+# JPEG
+*.[jJ][pP][gG] binary
+*.[jJ][pP][eE][gG] binary
+*.[jJ][pP][eE] binary
+*.[jJ][iI][fF] binary
+*.[jJ][fF][iI][fF] binary
+*.[jJ][fF][iI] binary
