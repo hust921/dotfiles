@@ -37,7 +37,8 @@ function gaa {git add --all $args}
 function Video-Download
 {
     $output = '"' + $(Get-ScriptDirectory) + '\%(title)s.%(ext)s"'
-    youtube-dl --format "best" --prefer-ffmpeg "ffmpeg" --external-downloader "aria2" -o $output $args
+    $ariapath = '"' + $(Get-Command aria2c | % { $_.Source }) + '"'
+    youtube-dl --format "best" --prefer-ffmpeg --external-downloader $($ariapath) -o $output $args
 }
 
 # Gets the directory from where a script is located
