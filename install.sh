@@ -85,6 +85,22 @@ if question "Do you want to install tmux.conf?"; then
     fi
 fi
 
+# Install TPM (Tmux Plugin Manager)
+if question "Do you want to install tpm (tmux plugin manager)"; then
+    # If tmux.conf exist
+    if [ -d ~/.tmux/plugins ];then
+        echo ".tmux/plugins already exist"
+        if question "Do you want to delete it?"; then
+            rm -rf ~/.tmux/plugins
+            git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+            tmux new "~/.tmux/plugins/tpm/bin/install_plugins; exit"
+        fi
+    else
+        git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+        tmux new "~/.tmux/plugins/tpm/bin/install_plugins; exit"
+    fi
+fi
+
 # Replace gitconfig
 if question "Do you want to install gitconfig"; then
     # If gitconfig exist
