@@ -5,7 +5,7 @@ export ZSH=~/.oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="agnoster2"
+ZSH_THEME="agnoster"
 #ZSH_THEME="tonotdo"
 
 # Uncomment the following line to use case-sensitive completion.
@@ -54,7 +54,7 @@ plugins=(git dirhistory)
 
 # User configuration
 
-export PATH=".:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games"
+export PATH=".:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:/home/hust921/.local/bin"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
@@ -96,3 +96,4 @@ setopt menu_complete
 
 # Start ssh-agent
 eval $(ssh-agent)
+eval $(dircolors ~/dotfiles/zshconfig/dircolors.256dark)
