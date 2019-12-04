@@ -101,6 +101,25 @@ if question "Do you want to install tpm (tmux plugin manager)"; then
     fi
 fi
 
+# Install nvim
+if question "Do you want to install nvim?"; then
+    source $DOTDIR/install_nvim.sh
+fi
+
+# Install minttyrc
+if question "Do you want to install minttyrc (remember to set in wsl/min-tty options)"; then
+    # If minttyrc exist
+    if [ -f ~/.minttyrc ]; then
+        echo ".minttyrc already exist"
+        if question "Do you want to delete it?"; then
+            rm ~/.minttyrc
+            cp $DOTDIR/minttyrc ~/.minttyrc
+        fi
+    else
+        cp $DOTDIR/minttyrc ~/.minttyrc
+    fi
+fi
+
 # Replace gitconfig
 if question "Do you want to install gitconfig"; then
     # If gitconfig exist
