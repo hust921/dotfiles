@@ -101,11 +101,6 @@ if question "Do you want to install tpm (tmux plugin manager)"; then
     fi
 fi
 
-# Install nvim
-if question "Do you want to install nvim?"; then
-    source $DOTDIR/install_nvim.sh
-fi
-
 # Install minttyrc
 if question "Do you want to install minttyrc (remember to set in wsl/min-tty options)"; then
     # If minttyrc exist
@@ -132,4 +127,9 @@ if question "Do you want to install gitconfig"; then
     else
         cp $DOTDIR/gitconfig ~/.gitconfig
     fi
+fi
+
+# Install nvim
+if question "Do you want to install nvim?"; then
+    source $DOTDIR/install_nvim.sh
 fi
