@@ -191,6 +191,11 @@ Plug 'ryanoasis/vim-devicons'
 " -- PlugInstall and PlugUpdate will clone fzf in ~/.fzf and run the install script
 " -----
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+nnoremap <C-p> :Files<CR>
+nnoremap <C-g> :GFiles<CR>
+nnoremap <C-l> :BLines<CR>
+nnoremap <C-f> :Buffers<CR>
 
 call plug#end()
 
