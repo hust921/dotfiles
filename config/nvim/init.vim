@@ -1,50 +1,46 @@
+" vim: foldmethod=marker
+"=== Terminal Settings / Mappings {{{1    --
 "------------------------------------------
-"-- Terminal Mappings
-"------------------------------------------
+" Mappings
 tnoremap jk <C-\><C-n>
+tnoremap <Esc> <C-\><C-n>
 
+"=== Environment {{{1                     --
 "------------------------------------------
-"-- Environment
-"------------------------------------------
-autocmd BufEnter * silent! lcd %:p:h
 set noswapfile " Saves swap (.swp) files in System var $TEMP.
 set hidden " Allow unsaved files to be in buffer
 
 set spelllang=en,da
-"------------------------------------------
-"-- Ready for uncomment: (old vimrc)
-"------------------------------------------
-"syntax on
-"set foldmethod=syntax
-"autocmd BufWinEnter * silent! :%foldopen!
-"set background=dark
+syntax on
+set foldmethod=syntax
+autocmd BufWinEnter * silent! :%foldopen!
+autocmd BufEnter * silent! lcd %:p:h
 
-"" Fix backspace
-"set backspace=indent,eol,start
+" Fix backspace
+set backspace=indent,eol,start
 
 set nowrap
 set number
 set ruler
 
-"" Auto indent :
+" Auto indent :
 set ai
 set shiftwidth=4
 set softtabstop=4
 set tabstop=4
 set expandtab
 
-"" Always show statusline
+" Always show statusline
 set laststatus=2
 
-"" Search settings {{{1
+" Search settings
 set incsearch        " find the next match as we type the search
 set ignorecase       " Required for smartcase to work
 set smartcase        " Semi-Case sensitive
 set hlsearch        " hilight searches by default
 nnoremap <CR> :noh<CR><CR>
 
-"------------------------------------------
-"-- Functions
+"=== Functions {{{1                       --
 "------------------------------------------
 " GetBufferList {{{2
 function! GetBufferList()
@@ -75,14 +71,17 @@ function! ToggleList(bufname, pfx)
   endif
 endfunction
 
-"------------------------------------------
-"-- Basic mappings
+"=== Basic mappings {{{1                  --
 "------------------------------------------
 " -- Misc Bidings
 imap jk <Esc>
 map <Space> <leader>
 command W w !sudo tee % > /dev/null
 vmap <leader>t :!cat \|column -t<CR>
+
+" Insert newline remaps
+nmap oo o<Enter>
+nmap OO O<Esc>O<Esc>k
 
 " -- Toggle location list
 nmap <silent> <leader>l :call ToggleList("Location List", 'l')<CR>
@@ -94,7 +93,7 @@ nmap <Up> :resize -1<CR>
 nmap <Left> :vertical resize +1<CR>
 nmap <Right> :vertical resize -1<CR>
 
-" -- Spelling {{{1
+"=== Spelling {{{1
 nmap <leader>c :setlocal spell!<CR>
 nmap <leader>8 [s
 nmap <leader>9 ]s
@@ -108,22 +107,20 @@ map <F8> :bn<CR>
 map <F9> :bp<CR>:bd #<CR>
 map <silent> <F10> :q<CR>
 
-"------------------------------------------
-"-- Plugin Manager (vim-plug)
+"=== Plugin Manager (vim-plug) {{{1       --
 "------------------------------------------
 call plug#begin('~/.local/share/nvim/plugged')
 
-" -----
-" -- Neomake: Code syntax & build automation
+" -- Neomake: Code syntax & build automation {{{2
 " -----
 Plug 'neomake/neomake'
 let g:neomake_python_enabled_markers = ['flake8']
 "call neomake#configure#automake('w')
 
-" -----
-" -- NerdTree
+" -- NerdTree {{{2
 " -----
 Plug 'scrooloose/nerdtree'
+Plug 'ryanoasis/vim-devicons'
 map <F5> :NERDTreeToggle<CR>
 let g:NERDTreeWinSize=40
 let g:NERDTreeRespectWildIgnore = 1
@@ -132,8 +129,7 @@ let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
-" -----
-" -- Deoplete (dark powered neo-completion)
+" -- Deoplete (dark powered neo-completion) {{{2
 " -- Auto-Completion framework for neovim/vim
 
 " -- Specific language support:
@@ -143,22 +139,52 @@ Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 let g:deoplete#enable_at_startup = 1
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | silent! pclose | endif " Auto close doc_string window when complete
 
-" -- Deoplete Plugin: deoplete-jedi
+" -- Deoplete Plugin: neoinclude {{{3
+" -- Include completion framekwork for neocomplete/deoplete
+Plug 'Shougo/neoinclude.vim/'
+
+" -- Deoplete Plugin: deoplete-jedi {{{3
 " -- Python support for deoplete
 Plug 'davidhalter/jedi-vim'
 let g:jedi#completion_enabled = 0 " Use deoplete (not jedi-vim) for completion
 let g:jedi#goto_command = "<F12>"
-
 Plug 'deoplete-plugins/deoplete-jedi'
 let g:deoplete#sources#jedi#show_docstring = 1
 
+" -- Deoplete Plugin: neco-vim {{{3
+" -- Vimscript completion for deoplete
+Plug 'Shougo/neco-vim'
+
+" -- Deoplete Plugin: autocomplete-flow {{{3
+" -- Javascript support for deoplete
+Plug 'wokalski/autocomplete-flow'
+
+" -- Deoplete Plugin: Shougo/deoplete-clangx {{{3
+" -- Clang C/C++ Completion support for deoplete
+Plug 'Shougo/deoplete-clangx'
+
+" -- Neosnippet + neosnippet-snippets {{{2
 " -----
-" -- Colorscheme: tender
+Plug 'Shougo/neosnippet'
+Plug 'Shougo/neosnippet-snippets'
+let g:neosnippet#enable_completed_snippet = 1
+imap <C-j> <Plug>(neosnippet_expand_or_jump)
+smap <C-j> <Plug>(neosnippet_expand_or_jump)
+xmap <C-j> <Plug>(neosnippet_expand_target)
+" SuperTab like snippets behavior
+" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
+imap <expr><TAB>
+	\ pumvisible() ? "\<C-n>" :
+	\ neosnippet#expandable_or_jumpable() ?
+	\    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+	\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"<Paste>
+
+" -- Colorscheme: tender {{{2
 " -----
 Plug 'jacoborus/tender', { 'as': 'tender' }
 
-" -----
-" -- vim-airline
+" -- vim-airline {{{2
 " -----
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -166,28 +192,20 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
 let g:airline_theme = "tender"
 
-" -----
-" -- Auto-pair: Matching brackets
+" -- Auto-pair: Matching brackets {{{2
 " -----
 Plug 'jiangmiao/auto-pairs'
 
-" -----
-" -- gitgutter
+" -- gitgutter {{{2
 " -----
 Plug 'airblade/vim-gitgutter'
 
 " -----
-" -- css colors
+" -- css colors {{{2
 " -----
 Plug'ap/vim-css-color'
 
-" -----
-" -- css colors
-" -----
-Plug 'ryanoasis/vim-devicons'
-
-" -----
-" -- Fzf + Auto "System install"
+" -- Fzf + Auto "System install" {{{2
 " -- PlugInstall and PlugUpdate will clone fzf in ~/.fzf and run the install script
 " -----
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -199,8 +217,10 @@ nnoremap <C-f> :Buffers<CR>
 
 call plug#end()
 
-" -----------------------------------
-" -- Local Overwrite
+"=== Local Overwrite {{{1          --
 " -----------------------------------
 " From old (Vim 7.4 vimrc config: "source ~/vimfiles/vimlocal.vim
+
+"=== Colorscheme {{{1              --
+" -----------------------------------
 colorscheme tender
