@@ -29,25 +29,13 @@ if [[ $UID == 0 ]]; then
     fi
 fi
 
-# Replace vim & vimfiles
-if question "Do you want to install vimrc and vimfiles?"; then
-    # If .vimrc exist
-    if [ -f ~/.vimrc ] || [ -d ~/vimfiles ]; then
-        echo "vimrc and vimfiles already exist."
-        if question "Do you want to delete them?"; then
-            rm ~/.vimrc
-            rm -rf ~/vimfiles
-            ln -s $DOTDIR/vimrc ~/.vimrc
-            ln -s $DOTDIR/vimfiles ~/vimfiles
-        fi
-    else
-        ln -s $DOTDIR/vimrc ~/.vimrc
-        ln -s $DOTDIR/vimfiles ~/vimfiles
-    fi
-fi
-
 # Replace oh-my-zsh files
 if question "Do you want to install oh-my-zsh files?"; then
+    # If oh-my-zsh is missing -> Install it
+    if [ ! -d ~/.oh-my-zsh ]; then
+        sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    fi
+
     # If .zshrc exist
     if [ -f ~/.zshrc ]; then
         echo ".zshrc already exist"
@@ -70,6 +58,15 @@ if question "Do you want to install oh-my-zsh files?"; then
         ln -s $DOTDIR/custom ~/.oh-my-zsh/custom
     fi
 fi
+
+# fzf fuzzy search
+if question "Do you want to install fzf fuzzy search?"; then
+    # Install if missing
+    if [ ! -d ~/.fzf ]; then
+        git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+        ~/.fzf/install
+    fi
+
 
 # Replace tmux.conf
 if question "Do you want to install tmux.conf?"; then
