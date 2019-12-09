@@ -111,11 +111,14 @@ map <silent> <F10> :q<CR>
 "------------------------------------------
 call plug#begin('~/.local/share/nvim/plugged')
 
-" -- Neomake: Code syntax & build automation {{{2
+" -- Ale: Async Linting Engine
 " -----
-Plug 'neomake/neomake'
-let g:neomake_python_enabled_markers = ['flake8']
-"call neomake#configure#automake('w')
+Plug 'dense-analysis/ale'
+let g:airline#extensions#ale#enabled = 1
+let g:ale_sign_column_always = 1
+"let g:ale_sign_error = '>>'
+"let g:ale_sign_warning = '--'
+let g:ale_set_highlights = 1
 
 " -- NerdTree {{{2
 " -----
@@ -174,11 +177,11 @@ xmap <C-j> <Plug>(neosnippet_expand_target)
 " SuperTab like snippets behavior
 " Note: It must be "imap" and "smap".  It uses <Plug> mappings.
 imap <expr><TAB>
-	\ pumvisible() ? "\<C-n>" :
-	\ neosnippet#expandable_or_jumpable() ?
-	\    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+    \ pumvisible() ? "\<C-n>" :
+    \ neosnippet#expandable_or_jumpable() ?
+    \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-	\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"<Paste>
+    \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"<Paste>
 
 " -- Colorscheme: tender {{{2
 " -----
@@ -214,6 +217,7 @@ nnoremap <C-p> :Files<CR>
 nnoremap <C-g> :GFiles<CR>
 nnoremap <C-l> :BLines<CR>
 nnoremap <C-f> :Buffers<CR>
+nnoremap <C-k> :Commands<CR>
 
 call plug#end()
 
