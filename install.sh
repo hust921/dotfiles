@@ -66,6 +66,7 @@ if question "Do you want to install fzf fuzzy search?"; then
         git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
         ~/.fzf/install
     fi
+fi
 
 
 # Replace tmux.conf
@@ -124,6 +125,28 @@ if question "Do you want to install gitconfig"; then
     else
         cp $DOTDIR/gitconfig ~/.gitconfig
     fi
+fi
+
+# Install rust, racer & src code (for deoplete, neovim)
+if question "Do you want to install rust? (+ vim dep)"; then
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+    rustup toolchain install nightly
+
+    setup_olddir=$(pwd)
+    rm -rf ~/.config/nvim/rustsetup
+    mkdir -p ~/.config/nvim/rustsetup
+    cd ~/.config/nvim/rustsetup
+
+    git clone https://github.com/phildawes/racer.git
+    cd racer
+    cargo +nightly build --release
+
+    cd ..
+    mkdir -p src
+    cd src
+    git clone --depth=1 https://github.com/rust-lang/rust.git
+
+    cd $setup_olddir
 fi
 
 # Install nvim

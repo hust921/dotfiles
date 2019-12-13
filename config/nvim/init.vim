@@ -162,6 +162,15 @@ Plug 'Shougo/neco-vim'
 " -- Javascript support for deoplete
 Plug 'wokalski/autocomplete-flow'
 
+" -- Deoplete Plugin: deoplete-rust
+" -- Rust completion using racer (cargo craite)
+Plug 'sebastianmarkow/deoplete-rust'
+let g:deoplete#sources#rust#racer_binary='~/.config/nvim/rustsetup/target/release/racer'
+let g:deoplete#sources#rust#rust_source='~/.config/nvim/rustsetup/src'
+let g:deoplete#sources#rust#show_duplicates=1
+"let g:deoplete#sources#rust#disable_keymap=1 " Disable gd & K
+let g:deoplete#sources#rust#documentation_max_height=30
+
 " -- Deoplete Plugin: Shougo/deoplete-clangx {{{3
 " -- Clang C/C++ Completion support for deoplete
 Plug 'Shougo/deoplete-clangx'
