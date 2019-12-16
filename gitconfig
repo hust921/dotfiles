@@ -3,8 +3,10 @@
     name = Morten Lund
     #email = Left for different logins
 [core]
-    editor = vim
+    editor = nvim
     autocrlf = input
+    safecrlf = false
+    ignorecase = false
     
     # cat short output
     pager = less -F -X
