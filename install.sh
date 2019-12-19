@@ -135,5 +135,14 @@ fi
 
 # Install nvim
 if question "Do you want to install nvim?"; then
-    source $DOTDIR/install_nvim.sh
+    sudo add-apt-repository -y ppa:neovim-ppa/stable && \
+    sudo apt-get update -y && \
+    sudo apt-get install -y neovim python-dev python-pip python3-dev python3-pip && \
+    pip3 install pynvim jedi flake8 && \
+    curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim && \
+    mkdir -p ~/.config && \
+    if ! [ -d ~/.config/nvim ]; then
+        ln -s ~/dotfiles/config/nvim ~/.config/nvim
+    fi && \
+    nvim +PlugInstall +qall
 fi
