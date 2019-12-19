@@ -97,4 +97,3 @@ setopt menu_complete
 
 # Start ssh-agent
 eval $(ssh-agent)
-eval $(dircolors ~/dotfiles/zshconfig/dircolors.256dark)
