@@ -142,6 +142,13 @@ Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 let g:deoplete#enable_at_startup = 1
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | silent! pclose | endif " Auto close doc_string window when complete
 
+" -- Deoplete (ish) Plugin: EchoDoc {{{3
+" -- Displays function signatures from completions in the command line.
+Plug 'Shougo/echodoc.vim'
+let g:echodoc#enable_at_startup = 1
+let g:echodoc#type = 'virtual'
+"let g:echodoc#events = ['CompleteDone']
+
 " -- Deoplete Plugin: neoinclude {{{3
 " -- Include completion framekwork for neocomplete/deoplete
 Plug 'Shougo/neoinclude.vim/'
@@ -165,11 +172,16 @@ Plug 'wokalski/autocomplete-flow'
 " -- Deoplete Plugin: deoplete-rust
 " -- Rust completion using racer (cargo craite)
 Plug 'sebastianmarkow/deoplete-rust'
-let g:deoplete#sources#rust#racer_binary='~/.config/nvim/rustsetup/target/release/racer'
-let g:deoplete#sources#rust#rust_source='~/.config/nvim/rustsetup/src'
-let g:deoplete#sources#rust#show_duplicates=1
-"let g:deoplete#sources#rust#disable_keymap=1 " Disable gd & K
-let g:deoplete#sources#rust#documentation_max_height=30
+Plug 'racer-rust/vim-racer'
+Plug 'rust-lang/rust.vim', { 'for': 'rust' }
+let g:rustfmt_autosave = 1
+let g:racer_experimental_completer = 1
+
+"let g:deoplete#sources#rust#racer_binary='~/.config/nvim/rustsetup/target/release/racer'
+"let g:deoplete#sources#rust#rust_source='~/.config/nvim/rustsetup/src'
+"let g:deoplete#sources#rust#show_duplicates=1
+""let g:deoplete#sources#rust#disable_keymap=1 " Disable gd & K
+"let g:deoplete#sources#rust#documentation_max_height=30
 
 " -- Deoplete Plugin: Shougo/deoplete-clangx {{{3
 " -- Clang C/C++ Completion support for deoplete
@@ -236,4 +248,4 @@ call plug#end()
 
 "=== Colorscheme {{{1              --
 " -----------------------------------
-colorscheme tender
+colorscheme afterglow
