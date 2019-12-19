@@ -24,7 +24,7 @@ if [[ $UID == 0 ]]; then
     echo "You are running as root!"
     echo "This script will install the dotfiles in root home"
     echo ""
-    if question "Are you sure you want to continue?"; then
+    if ! question "Are you sure you want to continue?"; then
         exit
     fi
 fi
@@ -106,10 +106,10 @@ if question "Do you want to install minttyrc (remember to set in wsl/min-tty opt
         echo ".minttyrc already exist"
         if question "Do you want to delete it?"; then
             rm ~/.minttyrc
-            cp $DOTDIR/minttyrc ~/.minttyrc
+            ln -s $DOTDIR/minttyrc ~/.minttyrc
         fi
     else
-        cp $DOTDIR/minttyrc ~/.minttyrc
+        ln -s $DOTDIR/minttyrc ~/.minttyrc
     fi
 fi
 
