@@ -65,6 +65,7 @@ if question "Do you want to install fzf fuzzy search?"; then
     if [ ! -d ~/.fzf ]; then
         git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
         ~/.fzf/install
+        ln -s ~/.fzf.zsh $DOTDIR/custom/fzf.zsh
     fi
 fi
 
@@ -131,6 +132,7 @@ fi
 if question "Do you want to install rust? (+ vim dep)"; then
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
     rustup toolchain install nightly && rustup component add rls rust-analysis rust-src && cargo +nightly install racer
+    ln -s ~/.cargo/env $DOTDIR/custom/cargo.zsh
 fi
 
 # Install nvim
@@ -142,7 +144,7 @@ if question "Do you want to install nvim?"; then
     curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim && \
     mkdir -p ~/.config && \
     if ! [ -d ~/.config/nvim ]; then
-        ln -s ~/dotfiles/config/nvim ~/.config/nvim
+        ln -s $DOTDIR/config/nvim ~/.config/nvim
     fi && \
     nvim +PlugInstall +qall
 fi

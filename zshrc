@@ -1,3 +1,8 @@
+# Local config. Logins / Creds / Etc
+if [ -d ~/.zshlocal.zsh ]; then
+    source ~/.zshlocal.zsh
+fi
+
 # Path to your oh-my-zsh installation.
 export ZSH=~/.oh-my-zsh
 
@@ -91,9 +96,6 @@ setopt auto_cd
 
 # Insert completion on first tab even if ambiguous?
 setopt menu_complete
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-[ -f ~/.cargo/env ] && source ~/.cargo/env
 
 # Start ssh-agent
 eval $(ssh-agent)
