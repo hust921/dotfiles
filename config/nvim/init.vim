@@ -229,6 +229,11 @@ Plug 'airblade/vim-gitgutter'
 " -----
 Plug'ap/vim-css-color'
 
+" -----
+" -- Startify: The fancy start screen for Vim
+" -----
+Plug 'mhinz/vim-startify'
+
 " -- Fzf + Auto "System install" {{{2
 " -- PlugInstall and PlugUpdate will clone fzf in ~/.fzf and run the install script
 " -----
