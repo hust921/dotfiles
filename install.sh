@@ -134,9 +134,11 @@ fi
 # Install rust, racer & src code (for deoplete, neovim)
 if question "Do you want to install rust? (+ vim dep)"; then
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-    rustup toolchain install nightly 
-    rustup component add rls rust-analysis rust-src 
-    cargo +nightly install racer
+    rustup toolchain install nightly && \
+    rustup default nightly && \
+        rustup component add rls rust-analysis rust-src && \
+        cargo install racer && \
+    rustup default stable && \
     ln -s ~/.cargo/env $DOTDIR/custom/cargo.zsh
 fi
 
