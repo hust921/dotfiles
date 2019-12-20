@@ -62,9 +62,12 @@ fi
 # fzf fuzzy search
 if question "Do you want to install fzf fuzzy search?"; then
     # Install if missing
-    if [ ! -d ~/.fzf ]; then
+    if ! [ -d ~/.fzf ]; then
         git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
         ~/.fzf/install
+    fi
+
+    if ! [ -f $DOTDIR/custom/fzf.zsh ]; then
         ln -s ~/.fzf.zsh $DOTDIR/custom/fzf.zsh
     fi
 fi
@@ -131,7 +134,11 @@ fi
 # Install rust, racer & src code (for deoplete, neovim)
 if question "Do you want to install rust? (+ vim dep)"; then
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-    rustup toolchain install nightly && rustup component add rls rust-analysis rust-src && cargo +nightly install racer
+    rustup toolchain install nightly && \
+    rustup default nightly && \
+        rustup component add rls rust-analysis rust-src && \
+        cargo install racer && \
+    rustup default stable && \
     ln -s ~/.cargo/env $DOTDIR/custom/cargo.zsh
 fi
 

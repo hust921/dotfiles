@@ -1,5 +1,5 @@
 # Local config. Logins / Creds / Etc
-if [ -d ~/.zshlocal.zsh ]; then
+if [ -f ~/.zshlocal.zsh ]; then
     source ~/.zshlocal.zsh
 fi
 
