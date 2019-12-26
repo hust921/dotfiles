@@ -119,6 +119,8 @@ let g:ale_sign_column_always = 1
 "let g:ale_sign_error = '>>'
 "let g:ale_sign_warning = '--'
 let g:ale_set_highlights = 1
+nmap <silent> <leader>e :ALENext<CR>
+nmap <silent> <leader>E :ALEPrevious<CR>
 
 " -- NerdTree {{{2
 " -----
@@ -174,7 +176,7 @@ Plug 'wokalski/autocomplete-flow'
 Plug 'sebastianmarkow/deoplete-rust'
 Plug 'racer-rust/vim-racer'
 Plug 'rust-lang/rust.vim', { 'for': 'rust' }
-let g:rustfmt_autosave = 1
+let g:rustfmt_autosave = 0
 let g:racer_experimental_completer = 1
 
 "let g:deoplete#sources#rust#racer_binary='~/.config/nvim/rustsetup/target/release/racer'
@@ -219,6 +221,10 @@ let g:airline_theme = "tender"
 " -- Auto-pair: Matching brackets {{{2
 " -----
 Plug 'jiangmiao/auto-pairs'
+
+" -- Surround by Tpope {{{2
+" -----
+Plug 'tpope/vim-surround'
 
 " -- gitgutter {{{2
 " -----
