@@ -1,10 +1,17 @@
 #!/bin/bash
+
+# Add this sometime ..
+#set -o errexit   # to cause script to exit if any line fails
+#set -o nounset   # to cause an error if you use an empty variable
+#set -o noclobber # the '>' symbol not allowed to overwrite "existing" files
+#set -o pipefail  # cmd_a | cmd_b . Fails if cmd_a doesn't cleanly exit (0) 
+
 # script file location
 readonly DOTDIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 # Ask a Y/N question
 function question {
-    echo $1
+    echo "$1"
     ret=1
     select yn in "Yes" "No"; do
         case $yn in
@@ -40,10 +47,10 @@ if question "Do you want to install oh-my-zsh files?"; then
         echo ".zshrc already exist"
         if question "Do you want to delete it?"; then
             rm ~/.zshrc
-            ln -s $DOTDIR/zshrc ~/.zshrc
+            ln -s "$DOTDIR/zshrc" ~/.zshrc
         fi
     else
-        ln -s $DOTDIR/zshrc ~/.zshrc
+        ln -s "$DOTDIR/zshrc" ~/.zshrc
     fi
 
     # If .oh-my-zsh exist
@@ -51,10 +58,10 @@ if question "Do you want to install oh-my-zsh files?"; then
         echo ".oh-my-zsh/custom already exist."
         if question "Do you want to delete it?"; then
             rm -rf ~/.oh-my-zsh/custom
-            ln -s $DOTDIR/custom ~/.oh-my-zsh/custom
+            ln -s "$DOTDIR/custom" ~/.oh-my-zsh/custom
         fi
     else
-        ln -s $DOTDIR/custom ~/.oh-my-zsh/custom
+        ln -s "$DOTDIR/custom" ~/.oh-my-zsh/custom
     fi
 fi
 
@@ -66,8 +73,8 @@ if question "Do you want to install fzf fuzzy search?"; then
         ~/.fzf/install
     fi
 
-    if ! [ -f $DOTDIR/custom/fzf.zsh ]; then
-        ln -s ~/.fzf.zsh $DOTDIR/custom/fzf.zsh
+    if ! [ -f "$DOTDIR/custom/fzf.zsh" ]; then
+        ln -s ~/.fzf.zsh "$DOTDIR/custom/fzf.zsh"
     fi
 fi
 
@@ -79,10 +86,10 @@ if question "Do you want to install tmux.conf?"; then
         echo ".tmux.conf already exist"
         if question "Do you want to delete it?"; then
             rm ~/.tmux.conf
-            ln -s $DOTDIR/tmux.conf ~/.tmux.conf
+            ln -s "$DOTDIR/tmux.conf" ~/.tmux.conf
         fi
     else
-        ln -s $DOTDIR/tmux.conf ~/.tmux.conf
+        ln -s "$DOTDIR/tmux.conf" ~/.tmux.conf
     fi
 fi
 
@@ -94,11 +101,11 @@ if question "Do you want to install tpm (tmux plugin manager)"; then
         if question "Do you want to delete it?"; then
             rm -rf ~/.tmux/plugins
             git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-            tmux new "~/.tmux/plugins/tpm/bin/install_plugins; exit"
+            tmux new "$HOME/.tmux/plugins/tpm/bin/install_plugins; exit"
         fi
     else
         git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-        tmux new "~/.tmux/plugins/tpm/bin/install_plugins; exit"
+        tmux new "$HOME/.tmux/plugins/tpm/bin/install_plugins; exit"
     fi
 fi
 
@@ -109,10 +116,10 @@ if question "Do you want to install minttyrc (remember to set in wsl/min-tty opt
         echo ".minttyrc already exist"
         if question "Do you want to delete it?"; then
             rm ~/.minttyrc
-            ln -s $DOTDIR/minttyrc ~/.minttyrc
+            ln -s "$DOTDIR/minttyrc" ~/.minttyrc
         fi
     else
-        ln -s $DOTDIR/minttyrc ~/.minttyrc
+        ln -s "$DOTDIR/minttyrc" ~/.minttyrc
     fi
 fi
 
@@ -123,22 +130,23 @@ if question "Do you want to install gitconfig"; then
         echo ".gitconfig already exist"
         if question "Do you want to delete it?"; then
             rm ~/.gitconfig
-            cp $DOTDIR/gitconfig ~/.gitconfig
+            cp "$DOTDIR/gitconfig" ~/.gitconfig
         fi
     else
-        cp $DOTDIR/gitconfig ~/.gitconfig
+        cp "$DOTDIR/gitconfig" ~/.gitconfig
     fi
 fi
 
 # Install rust, racer & src code (for deoplete, neovim)
 if question "Do you want to install rust? (+ vim dep)"; then
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+    source "$HOME/.cargo/env"
     rustup toolchain install nightly && \
     rustup default nightly && \
         rustup component add rls rust-analysis rust-src && \
         cargo install racer && \
     rustup default stable && \
-    ln -s ~/.cargo/env $DOTDIR/custom/cargo.zsh
+    ln -s ~/.cargo/env "$DOTDIR/custom/cargo.zsh"
 fi
 
 # Install nvim
@@ -150,7 +158,7 @@ if question "Do you want to install nvim?"; then
     curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim && \
     mkdir -p ~/.config && \
     if ! [ -d ~/.config/nvim ]; then
-        ln -s $DOTDIR/config/nvim ~/.config/nvim
+        ln -s "$DOTDIR/config/nvim" ~/.config/nvim
     fi && \
     nvim +PlugInstall +qall
 fi
