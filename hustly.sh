@@ -53,27 +53,26 @@ function print_help() {
     echo -e "\t\tNo module(s) implies operation on ALL available modules"
     echo -e ""
     echo -e "OPTIONS:"
-    echo -e "\t-h, --help\tShow a short usage summary"
-    echo -e "\t-i, --interactive\tInteractive [yN] installation"
-    echo -e "\t-y, --yes, --assume-yes\tAutomatic yes to prompts; assume \"yes\" as answer to all prompts and run non-interactively"
-    echo -e "\t-o, --output <file>\tWrite output to <file> instead of stdout & stderr"
-    echo -e "\t-V, --version\tPrint version information and exit successfully"
+    echo -e "\t-h, --help\t\t\tShow a short usage summary"
+    echo -e "\t-i, --interactive\t\tInteractive [yN] installation"
+    echo -e "\t-y, --yes, --assume-yes\t\tAutomatic yes to prompts; assume \"yes\" as answer to all prompts and run non-interactively"
+    echo -e "\t-o, --output <file>\t\tWrite output to <file> instead of stdout & stderr"
+    echo -e "\t-V, --version\t\t\tPrint version information and exit successfully"
     echo -e ""
     echo -e "SUBCOMMANDS:"
-    echo -e "\tinstall\t"
-    echo -e "\tuninstall\t"
-    echo -e "\tupdate\t"
-    echo -e "\tcheck\t"
-    echo -e "\t\t"
+    echo -e "\tinstall\t\tinstall module(s)"
+    echo -e "\tuninstall\tuninstall module(s)"
+    echo -e "\tupdate\t\tupdate modules(s)"
+    echo -e "\tcheck\t\tconfirm installation for module(s)"
     echo -e ""
     echo -e "MODULES:"
-    echo -e "\tOMZ\tZsh, zshrc scipts, Oh-My-Zsh and plugins"
-    echo -e "\tFZF\tFuzzy finder for shell & vim"
-    echo -e "\tTMUX\tTerminal Multiplexer, setup and plugin manager (tpm)"
-    echo -e "\tMINTTY\tWSLTTY / MINTTY Setup. Mainly color corrections"
-    echo -e "\tGIT\tGit config and setup"
-    echo -e "\tRUST\tRust Stable,Nightly environment for build, tests and vim plugins"
-    echo -e "\tNVIM\tNeoVim setup with vim-plug"
+    echo -e "\tOMZ\t\tZsh, zshrc scipts, Oh-My-Zsh and plugins"
+    echo -e "\tFZF\t\tFuzzy finder for shell & vim"
+    echo -e "\tTMUX\t\tTerminal Multiplexer, setup and plugin manager (tpm)"
+    echo -e "\tMINTTY\t\tWSLTTY / MINTTY Setup. Mainly color corrections"
+    echo -e "\tGIT\t\tGit config and setup"
+    echo -e "\tRUST\t\tRust Stable,Nightly environment for build, tests and vim plugins"
+    echo -e "\tNVIM\t\tNeoVim setup with vim-plug"
     echo -e ""
 
     # Print error message if provided
@@ -139,9 +138,13 @@ case "$1" in
         ;;
     "-o"|"--output")
         shift
-        #exec >> $1
-        #exec 2>&1
+        exec >> $1
+        exec 2>&1
         shift
+        ;;
+    "install"|"uninstall"|"update"|"check")
+        print_help "install,uninstall,update,check NOT IMPLEMENTED YET!"
+        exit 3
         ;;
     *)
         print_help "Unknown option: \"$1\""
