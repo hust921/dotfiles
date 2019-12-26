@@ -1,7 +1,6 @@
 #!/bin/bash
-
 # script file location
-DOTDIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+readonly DOTDIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 # Ask a Y/N question
 function question {
