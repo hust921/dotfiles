@@ -106,14 +106,6 @@ function mod_all() {
     done
 }
 
-function sample_argument_parsed() {
-    list=()
-    list+=(${MODULES[omz]})
-    list+=(${MODULES[fzf]})
-    list+=(${MODULES[tmux]})
-    mod_all "INSTALL" ${list[@]}
-}
-
 # ===== Parse CommandLine arguments =====
 # Requires > 0 arguments
 if [[ $# -eq 0 ]];then
@@ -143,8 +135,21 @@ case "$1" in
         shift
         ;;
     "install"|"uninstall"|"update"|"check")
-        print_help "install,uninstall,update,check NOT IMPLEMENTED YET!"
-        exit 3
+        echo "NOT IMPLEMENTED!!!!"
+        echo "NOT IMPLEMENTED!!!!"
+        echo "NOT IMPLEMENTED!!!!"
+        echo "NOT IMPLEMENTED!!!!"
+        echo "NOT IMPLEMENTED!!!!"
+        exit 10
+        operation="$@"
+        list=()
+        while [[ $# > 0 ]] ; do
+            list+=(${MODULES[omz]})
+            list+=(${MODULES[fzf]})
+            list+=(${MODULES[tmux]})
+            mod_all "INSTALL" ${list[@]}
+        done
+        break;
         ;;
     *)
         print_help "Unknown option: \"$1\""
