@@ -94,36 +94,27 @@ function parse_subcommand_args() {
     [[ $FLAG_i == true ]] && shift;
     [[ $# == 0 ]] && print_help "Please specify an operation: install, uninstall, .."
 
-    case "$1" in
-        "install")
-            echo "[INSTALL] module ACTIVE"
-            return 0
-            ;;
-        "uninstall")
-            echo "[UNINSTALL] module ACTIVE"
-            return 0
-            ;;
-        "update")
-            echo "[UPDATE] module ACTIVE"
-            return 0
-            ;;
-        "check")
-            echo "[CHECK] module ACTIVE"
-            return 0
-            ;;
-        *)
-            print_help "Unknown module \"$1\""
-            ;;
-    esac
+    # Cache operation
+    local operation=$1
+    shift;
 
-    #operation="$@"
-    #list=()
-    #while [[ $# > 0 ]] ; do
-    #    list+=(${MODULES[omz]})
-    #    list+=(${MODULES[fzf]})
-    #    list+=(${MODULES[tmux]})
-    #    mod_all "INSTALL" ${list[@]}
-    #done
+    mods=()
+    if [[ $# == 0 ]]; then
+        # All mods
+        mods=${MODULES[@]}
+    else
+        # Check valid arguments
+        for m in $@; do
+            local mUpper=${m^^}
+            if [ ${MODULES["$mUpper"]+x} ]; then
+                mods+=(${MODULES["$mUpper"]})
+            else
+                print_help "Unknown module name: \"$mUpper\""
+            fi
+        done
+    fi
+
+    mod_all $operation ${mods[@]}
 }
 
 function parse_option_args() {
@@ -175,7 +166,7 @@ function mod_all() {
     local readonly funcs=("$@")
 
     for func in ${funcs[@]}; do
-        $func $operation
+        echo "func: $func operation: $operation"
     done
 }
 
