@@ -19,20 +19,22 @@ declare -rgA MODULES=(
     [NVIM]=mod_nvim
 )
 
-# ===== Module implementations =====
+# ============================== ==============================
+# =====               Module Implementations              =====
+# ============================== ==============================
 function mod_omz() {
     case "$1" in
-        "INSTALL")
-            echo "Running (OMZ) INSTALL"
+        "install")
+            echo "Running (omz) install"
             ;;
-        "UNINSTALL")
-            echo "Running (OMZ) UNINSTALL"
+        "uninstall")
+            echo "Running (omz) uninstall"
             ;;
-        "UPDATE")
-            echo "Running (OMZ) UPDATE"
+        "update")
+            echo "Running (omz) update"
             ;;
-        "CHECK")
-            echo "Running (OMZ) CHECK"
+        "check")
+            echo "Running (omz) check"
             ;;
         *)
             echo "$1 Didn't match anything operation for OMZ"
@@ -40,6 +42,129 @@ function mod_omz() {
     esac
 }
 
+function mod_fzf() {
+    case "$1" in
+        "install")
+            echo "Running (fzf) install"
+            ;;
+        "uninstall")
+            echo "Running (fzf) uninstall"
+            ;;
+        "update")
+            echo "Running (fzf) update"
+            ;;
+        "check")
+            echo "Running (fzf) check"
+            ;;
+        *)
+            echo "$1 Didn't match anything operation for fzf"
+            exit 2
+    esac
+}
+
+function mod_tmux() {
+    case "$1" in
+        "install")
+            echo "Running (tmux) install"
+            ;;
+        "uninstall")
+            echo "Running (tmux) uninstall"
+            ;;
+        "update")
+            echo "Running (tmux) update"
+            ;;
+        "check")
+            echo "Running (tmux) check"
+            ;;
+        *)
+            echo "$1 Didn't match anything operation for tmux"
+            exit 2
+    esac
+}
+
+function mod_mintty() {
+    case "$1" in
+        "install")
+            echo "Running (mintty) install"
+            ;;
+        "uninstall")
+            echo "Running (mintty) uninstall"
+            ;;
+        "update")
+            echo "Running (mintty) update"
+            ;;
+        "check")
+            echo "Running (mintty) check"
+            ;;
+        *)
+            echo "$1 Didn't match anything operation for mintty"
+            exit 2
+    esac
+}
+
+function mod_git() {
+    case "$1" in
+        "install")
+            echo "Running (git) install"
+            ;;
+        "uninstall")
+            echo "Running (git) uninstall"
+            ;;
+        "update")
+            echo "Running (git) update"
+            ;;
+        "check")
+            echo "Running (git) check"
+            ;;
+        *)
+            echo "$1 Didn't match anything operation for git"
+            exit 2
+    esac
+}
+
+function mod_rust() {
+    case "$1" in
+        "install")
+            echo "Running (rust) install"
+            ;;
+        "uninstall")
+            echo "Running (rust) uninstall"
+            ;;
+        "update")
+            echo "Running (rust) update"
+            ;;
+        "check")
+            echo "Running (rust) check"
+            ;;
+        *)
+            echo "$1 Didn't match anything operation for rust"
+            exit 2
+    esac
+}
+
+function mod_nvim() {
+    case "$1" in
+        "install")
+            echo "Running (nvim) install"
+            ;;
+        "uninstall")
+            echo "Running (nvim) uninstall"
+            ;;
+        "update")
+            echo "Running (nvim) update"
+            ;;
+        "check")
+            echo "Running (nvim) check"
+            ;;
+        *)
+            echo "$1 Didn't match anything operation for nvim"
+            exit 2
+    esac
+}
+
+# ============================== ==============================
+# =====               hustly Implementation               =====
+# ============================== ==============================
 # ===== Arguments parsing / Help-text =====
 function print_help() {
     echo -e "dotfiles installer & maintenance utilities $HUSTLY_VERSION"
@@ -166,7 +291,7 @@ function mod_all() {
     local readonly funcs=("$@")
 
     for func in ${funcs[@]}; do
-        echo "func: $func operation: $operation"
+        $func $operation
     done
 }
 
