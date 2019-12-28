@@ -6,7 +6,6 @@ FLAG_i=false
 FLAG_y=false
 
 # ===== Global Settings / Variables =====
-PARSED_ARGS=false
 set -o errexit   # to cause script to exit if any line fails
 set -o nounset   # to cause an error if you use an empty variable
 set -o noclobber # the '>' symbol not allowed to overwrite "existing" files
@@ -88,10 +87,77 @@ function print_version() {
 
 # ===== Module Operations / Helpers =====
 function main() {
-    if [[ $PARSED_ARGS == false ]]; then
-        echo "Internal error! \$PARSED_ARGS was NOT set before calling main!"
-        exit 1
+    parse_option_args ${@}
+    parse_subcommand_args ${@}
+}
+
+function parse_subcommand_args() {
+    # Ignore -i, -y flags
+    [[ $FLAG_i == true ]] && shift;
+    [[ $FLAG_y == true ]] && shift;
+    [[ $# == 0 ]] && print_help "Please specify an operation: install, uninstall, .."
+
+    case "$1" in
+        "install")
+            echo "[INSTALL] module ACTIVE"
+            return 0
+            ;;
+        "uninstall")
+            echo "[UNINSTALL] module ACTIVE"
+            return 0
+            ;;
+        "update")
+            echo "[UPDATE] module ACTIVE"
+            return 0
+            ;;
+        "check")
+            echo "[CHECK] module ACTIVE"
+            return 0
+            ;;
+        *)
+            print_help "Unknown module \"$1\""
+            ;;
+    esac
+
+    #operation="$@"
+    #list=()
+    #while [[ $# > 0 ]] ; do
+    #    list+=(${MODULES[omz]})
+    #    list+=(${MODULES[fzf]})
+    #    list+=(${MODULES[tmux]})
+    #    mod_all "INSTALL" ${list[@]}
+    #done
+}
+
+function parse_option_args() {
+    if [[ $# -eq 0 ]];then
+        print_help
     fi
+
+    # parse option arguments
+    for i in "$@"; do
+        case "$i" in
+            "-h"|"--help")
+                print_help
+                ;;
+            "-V"|"--version")
+                print_version
+                ;;
+            "-y"|"--yes"|"--assume-yes")
+                FLAG_y=true
+                shift;
+                ;;
+            "-i"|"--interactive")
+                FLAG_i=true
+                shift;
+                ;;
+            "install"|"uninstall"|"update"|"check")
+                return 0
+                ;;
+            *)
+                print_help "Unknown option: \"$1\""
+        esac
+    done
 }
 
 function get_log() {
@@ -120,52 +186,5 @@ function mod_all() {
     done
 }
 
-# ===== Parse CommandLine arguments =====
-# Requires > 0 arguments
-if [[ $# -eq 0 ]];then
-    print_help
-fi
-
-# parse option arguments
-case "$1" in
-    "-h"|"--help")
-        print_help
-        ;;
-    "-V"|"--version")
-        print_version
-        ;;
-    "-y"|"--yes"|"--assume-yes")
-        FLAG_y=true
-        shift
-        ;;
-    "-i"|"--interactive")
-        FLAG_i=true
-        shift
-        ;;
-    "install"|"uninstall"|"update"|"check")
-        echo "NOT IMPLEMENTED!!!!"
-        echo "NOT IMPLEMENTED!!!!"
-        echo "NOT IMPLEMENTED!!!!"
-        echo "NOT IMPLEMENTED!!!!"
-        echo "NOT IMPLEMENTED!!!!"
-        exit 10
-        operation="$@"
-        list=()
-        while [[ $# > 0 ]] ; do
-            list+=(${MODULES[omz]})
-            list+=(${MODULES[fzf]})
-            list+=(${MODULES[tmux]})
-            mod_all "INSTALL" ${list[@]}
-        done
-        break;
-        ;;
-    *)
-        print_help "Unknown option: \"$1\""
-esac
-# parse subcommand argument
-
-# parse modules arguments
-
-# ===== Call main =====
-PARSED_ARGS=true
-main
+# =============== Call main ===============
+main ${@}
