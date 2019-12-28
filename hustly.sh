@@ -4,7 +4,6 @@
 readonly HUSTLY_VERSION="0.1.0"
 FLAG_i=false
 FLAG_y=false
-FLAG_o=false
 
 # ===== Global Settings / Variables =====
 PARSED_ARGS=false
@@ -56,7 +55,6 @@ function print_help() {
     echo -e "\t-h, --help\t\t\tShow a short usage summary"
     echo -e "\t-i, --interactive\t\tInteractive [yN] installation"
     echo -e "\t-y, --yes, --assume-yes\t\tAutomatic yes to prompts; assume \"yes\" as answer to all prompts and run non-interactively"
-    echo -e "\t-o, --output <file>\t\tWrite output to <file> instead of stdout & stderr"
     echo -e "\t-V, --version\t\t\tPrint version information and exit successfully"
     echo -e ""
     echo -e "SUBCOMMANDS:"
@@ -96,6 +94,22 @@ function main() {
     fi
 }
 
+function get_log() {
+    if [ -z ${LOGDIR+x} ]; then
+        LOGDIR=$(mktemp -d -t hustly-XXXXXXXXXX)
+    fi
+
+    # if $1 is not defined
+    if [ -z ${1+x} ]; then
+        # if $LOGFILE is defined => undefine
+        if ! [ -z ${LOGFILE+x} ]; then
+            unset LOGFILE
+        fi
+    else
+        LOGFILE="$LOGDIR/$1"
+    fi
+}
+
 function mod_all() {
     local readonly operation=$1
     shift # Shift remaining arguments (array of mod_func)
@@ -126,12 +140,6 @@ case "$1" in
         ;;
     "-i"|"--interactive")
         FLAG_i=true
-        shift
-        ;;
-    "-o"|"--output")
-        shift
-        exec >> $1
-        exec 2>&1
         shift
         ;;
     "install"|"uninstall"|"update"|"check")
