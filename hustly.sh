@@ -269,6 +269,20 @@ function parse_option_args() {
     done
 }
 
+# Ask a Y/N question
+function question {
+    echo "$1"
+    ret=1
+    select yn in "Yes" "No"; do
+        case $yn in
+            Yes ) ret=0; break;;
+            No  ) ret=1; break;;
+        esac
+    done
+
+    return $ret
+}
+
 function get_log() {
     if [ -z ${LOGDIR+x} ]; then
         LOGDIR=$(mktemp -d -t hustly-XXXXXXXXXX)
@@ -291,7 +305,12 @@ function mod_all() {
     local readonly funcs=("$@")
 
     for func in ${funcs[@]}; do
-        $func $operation
+        # if interactive and cancelled (NO) by user => continue
+        if [[ $FLAG_i == true ]] && ! question "Do you want to $operation module: $func"; then
+            continue
+        else
+            $func $operation
+        fi
     done
 }
 
