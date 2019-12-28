@@ -226,13 +226,13 @@ function parse_subcommand_args() {
     mods=()
     if [[ $# == 0 ]]; then
         # All mods
-        mods=${MODULES[@]}
+        mods=${!MODULES[@]}
     else
         # Check valid arguments
         for m in $@; do
             local mUpper=${m^^}
             if [ ${MODULES["$mUpper"]+x} ]; then
-                mods+=(${MODULES["$mUpper"]})
+                mods+=$mUpper
             else
                 print_help "Unknown module name: \"$mUpper\""
             fi
@@ -302,14 +302,14 @@ function get_log() {
 function mod_all() {
     local readonly operation=$1
     shift # Shift remaining arguments (array of mod_func)
-    local readonly funcs=("$@")
+    local readonly moduleKeys=("$@")
 
-    for func in ${funcs[@]}; do
+    for key in ${moduleKeys[@]}; do
         # if interactive and cancelled (NO) by user => continue
-        if [[ $FLAG_i == true ]] && ! question "Do you want to $operation module: $func"; then
+        if [[ $FLAG_i == true ]] && ! question "Do you want to $operation module: $key"; then
             continue
         else
-            $func $operation
+            ${MODULES["$key"]} $operation
         fi
     done
 }
