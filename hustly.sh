@@ -3,7 +3,6 @@
 # ===== Default / Options / Flags =====
 readonly HUSTLY_VERSION="0.1.0"
 FLAG_i=false
-FLAG_y=false
 
 # ===== Global Settings / Variables =====
 set -o errexit   # to cause script to exit if any line fails
@@ -53,7 +52,6 @@ function print_help() {
     echo -e "OPTIONS:"
     echo -e "\t-h, --help\t\t\tShow a short usage summary"
     echo -e "\t-i, --interactive\t\tInteractive [yN] installation"
-    echo -e "\t-y, --yes, --assume-yes\t\tAutomatic yes to prompts; assume \"yes\" as answer to all prompts and run non-interactively"
     echo -e "\t-V, --version\t\t\tPrint version information and exit successfully"
     echo -e ""
     echo -e "SUBCOMMANDS:"
@@ -92,9 +90,8 @@ function main() {
 }
 
 function parse_subcommand_args() {
-    # Ignore -i, -y flags
+    # Ignore -i, flag
     [[ $FLAG_i == true ]] && shift;
-    [[ $FLAG_y == true ]] && shift;
     [[ $# == 0 ]] && print_help "Please specify an operation: install, uninstall, .."
 
     case "$1" in
@@ -142,10 +139,6 @@ function parse_option_args() {
                 ;;
             "-V"|"--version")
                 print_version
-                ;;
-            "-y"|"--yes"|"--assume-yes")
-                FLAG_y=true
-                shift;
                 ;;
             "-i"|"--interactive")
                 FLAG_i=true
