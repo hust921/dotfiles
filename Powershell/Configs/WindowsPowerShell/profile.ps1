@@ -59,3 +59,11 @@ function Get-ScriptDirectory
         $Invocation.InvocationName.Substring(0,$Invocation.InvocationName.LastIndexOf("\"));
     }
 }
+
+Set-Alias -name 'nvim' -Value 'Start-Vi'
+Set-Alias -name 'vim' -Value 'Start-Vi'
+Set-Alias -name 'vi' -Value 'Start-Vi'
+function Start-Vi ($firstArg)
+{
+    wsl nvim (wsl wslpath "'$firstArg'")
+}
