@@ -26,6 +26,7 @@ function mod_omz() {
     case "$1" in
         "install")
             echo "Running (omz) install"
+            return 1
             ;;
         "uninstall")
             echo "Running (omz) uninstall"
@@ -46,6 +47,7 @@ function mod_fzf() {
     case "$1" in
         "install")
             echo "Running (fzf) install"
+            return 0
             ;;
         "uninstall")
             echo "Running (fzf) uninstall"
@@ -66,6 +68,7 @@ function mod_tmux() {
     case "$1" in
         "install")
             echo "Running (tmux) install"
+            return 0
             ;;
         "uninstall")
             echo "Running (tmux) uninstall"
@@ -295,7 +298,7 @@ function get_log() {
             unset LOGFILE
         fi
     else
-        LOGFILE="$LOGDIR/$1"
+        LOGFILE="$LOGDIR/$1.log"
     fi
 }
 
@@ -309,7 +312,16 @@ function mod_all() {
         if [[ $FLAG_i == true ]] && ! question "Do you want to $operation module: $key"; then
             continue
         else
-            ${MODULES["$key"]} $operation
+            get_log $key
+            ${MODULES["$key"]} $operation > $LOGFILE 2>&1
+
+            echo "BELLOW DOES NOT WORK!"
+            exit 10
+            if [[ $? == 0 ]]; then
+                echo -e "[SUCCESS] [$key] [${operation^^}] Log: $LOGFILE"
+            else
+                echo -e "[FAILED!] [$key] [${operation^^}] Log: $LOGFILE"
+            fi
         fi
     done
 }
