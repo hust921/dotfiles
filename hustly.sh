@@ -3,6 +3,30 @@
 # ===== Default / Options / Flags =====
 readonly HUSTLY_VERSION="0.1.0"
 FLAG_i=false
+FLAG_d=false
+
+# ===== Global stacktrace =====
+# https://gist.github.com/ahendrix/7030300
+function errexit() {
+  local err=$?
+  set +o xtrace
+  local code="${1:-1}"
+  echo "Error in ${BASH_SOURCE[1]}:${BASH_LINENO[0]}. '${BASH_COMMAND}' exited with status $err"
+  # Print out the stack trace described by $function_stack  
+  if [ ${#FUNCNAME[@]} -gt 2 ]
+  then
+    echo "Call tree:"
+    for ((i=1;i<${#FUNCNAME[@]}-1;i++))
+    do
+      echo " $i: ${BASH_SOURCE[$i+1]}:${BASH_LINENO[$i]} ${FUNCNAME[$i]}(...)"
+    done
+  fi
+  echo "Exiting with status ${code}"
+  exit "${code}"
+}
+
+trap 'errexit' ERR
+set -o errtrace
 
 # ===== Global Settings / Variables =====
 set -o errexit   # to cause script to exit if any line fails
@@ -180,6 +204,7 @@ function print_help() {
     echo -e "OPTIONS:"
     echo -e "\t-h, --help\t\t\tShow a short usage summary"
     echo -e "\t-i, --interactive\t\tInteractive [yN] installation"
+    echo -e "\t-d, --debug\t\t\tMore verbose debugging info"
     echo -e "\t-V, --version\t\t\tPrint version information and exit successfully"
     echo -e ""
     echo -e "SUBCOMMANDS:"
@@ -213,26 +238,33 @@ function print_version() {
 
 # ===== Module Operations / Helpers =====
 function main() {
-    parse_option_args ${@}
-    parse_subcommand_args ${@}
+    parse_option_args "${@}"
+    parse_subcommand_args "${@}"
 }
 
 function parse_subcommand_args() {
-    # Ignore -i, flag
+    # Ignore -i, -d, flags <-- fix this later
     [[ $FLAG_i == true ]] && shift;
+    [[ $FLAG_d == true ]] && shift;
     [[ $# == 0 ]] && print_help "Please specify an operation: install, uninstall, .."
+
+    dlog "Args: ${*}"
 
     # Cache operation
     local operation=$1
     shift;
 
+    dlog "operation: $operation"
+    dlog "modules (before): ${*}"
+
     mods=()
     if [[ $# == 0 ]]; then
         # All mods
-        mods=${!MODULES[@]}
+        mods=${!MODULES[*]}
+        dlog "mods=all ${mods[*]}"
     else
         # Check valid arguments
-        for m in $@; do
+        for m in "$@"; do
             local mUpper=${m^^}
             if [ ${MODULES["$mUpper"]+x} ]; then
                 mods+=$mUpper
@@ -242,7 +274,9 @@ function parse_subcommand_args() {
         done
     fi
 
-    mod_all $operation ${mods[@]}
+    dlog "mods = ${mods[*]}"
+
+    mod_all "$operation" "${mods[@]}"
 }
 
 function parse_option_args() {
@@ -261,6 +295,10 @@ function parse_option_args() {
                 ;;
             "-i"|"--interactive")
                 FLAG_i=true
+                shift;
+                ;;
+            "-d"|"--debug")
+                FLAG_d=true
                 shift;
                 ;;
             "install"|"uninstall"|"update"|"check")
@@ -299,21 +337,32 @@ function get_log() {
         fi
     else
         LOGFILE="$LOGDIR/$1.log"
+        echo -e "Set log File: $LOGFILE"
+    fi
+}
+
+function dlog() {
+    if [[ $FLAG_d == true ]]; then
+        echo -e "[${FUNCNAME[1]}]: $*"
     fi
 }
 
 function mod_all() {
+    dlog "args: $*"
     local readonly operation=$1
     shift # Shift remaining arguments (array of mod_func)
-    local readonly moduleKeys=("$@")
+    local readonly moduleKeys=("$*")
 
     for key in ${moduleKeys[@]}; do
         # if interactive and cancelled (NO) by user => continue
         if [[ $FLAG_i == true ]] && ! question "Do you want to $operation module: $key"; then
             continue
         else
-            get_log $key
-            ${MODULES["$key"]} $operation > $LOGFILE 2>&1
+            get_log "$key"
+            dlog "Key=$key"
+            dlog "MODULES[Key]=${MODULES[$key]}"
+            
+            ${MODULES[$key]} $operation > $LOGFILE 2>&1
 
             echo "BELLOW DOES NOT WORK!"
             exit 10
@@ -327,4 +376,4 @@ function mod_all() {
 }
 
 # =============== Call main ===============
-main ${@}
+main "${@}"
