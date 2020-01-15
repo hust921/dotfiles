@@ -1,8 +1,3 @@
-# Local config. Logins / Creds / Etc
-if [ -f ~/.zshlocal.zsh ]; then
-    source ~/.zshlocal.zsh
-fi
-
 # Path to your oh-my-zsh installation.
 export ZSH=~/.oh-my-zsh
 
@@ -99,3 +94,8 @@ setopt menu_complete
 
 # Start ssh-agent
 eval $(ssh-agent)
+
+# Local config. Logins / Creds / Etc
+if [ -f ~/.zshlocal.zsh ]; then
+    source ~/.zshlocal.zsh
+fi
