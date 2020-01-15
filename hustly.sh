@@ -9,7 +9,6 @@ set -o errexit   # to cause script to exit if any line fails
 set -o nounset   # to cause an error if you use an empty variable
 set -o noclobber # the '>' symbol not allowed to overwrite "existing" files
 set -o pipefail  # cmd_a | cmd_b . Fails if cmd_a doesn't cleanly exit (0) 
-set -o errtrace  # any trap on ERR is inherited by shell functions, command substitutions and commands executed in sub-shell.
 declare -rgA MODULES=(
     [OMZ]=mod_omz
     [FZF]=mod_fzf
@@ -214,8 +213,8 @@ function print_version() {
 
 # ===== Module Operations / Helpers =====
 function main() {
-    parse_option_args "${@}"
-    parse_subcommand_args "${@}"
+    parse_option_args ${@}
+    parse_subcommand_args ${@}
 }
 
 function parse_subcommand_args() {
@@ -233,17 +232,17 @@ function parse_subcommand_args() {
         mods=${!MODULES[@]}
     else
         # Check valid arguments
-        for m in "$@"; do
+        for m in $@; do
             local mUpper=${m^^}
-            if [ "${MODULES["$mUpper"]+x}" ]; then
-                mods+=("$mUpper")
+            if [ ${MODULES["$mUpper"]+x} ]; then
+                mods+=$mUpper
             else
                 print_help "Unknown module name: \"$mUpper\""
             fi
         done
     fi
 
-    mod_all "$operation" "${mods[@]}"
+    mod_all $operation ${mods[@]}
 }
 
 function parse_option_args() {
@@ -288,14 +287,14 @@ function question {
 }
 
 function get_log() {
-    if [ -z "${LOGDIR+x}" ]; then
+    if [ -z ${LOGDIR+x} ]; then
         LOGDIR=$(mktemp -d -t hustly-XXXXXXXXXX)
     fi
 
     # if $1 is not defined
-    if [ -z "${1+x}" ]; then
+    if [ -z ${1+x} ]; then
         # if $LOGFILE is defined => undefine
-        if ! [ -z "${LOGFILE+x}" ]; then
+        if ! [ -z ${LOGFILE+x} ]; then
             unset LOGFILE
         fi
     else
@@ -304,17 +303,17 @@ function get_log() {
 }
 
 function mod_all() {
-    local operation=$1
+    local readonly operation=$1
     shift # Shift remaining arguments (array of mod_func)
-    local moduleKeys=("$@")
+    local readonly moduleKeys=("$@")
 
-    for key in "${moduleKeys[@]}"; do
+    for key in ${moduleKeys[@]}; do
         # if interactive and cancelled (NO) by user => continue
         if [[ $FLAG_i == true ]] && ! question "Do you want to $operation module: $key"; then
             continue
         else
-            get_log "$key"
-            ${MODULES["$key"]} "$operation" | tee "$LOGFILE"
+            get_log $key
+            ${MODULES["$key"]} $operation > $LOGFILE 2>&1
 
             echo "BELLOW DOES NOT WORK!"
             exit 10
@@ -328,4 +327,4 @@ function mod_all() {
 }
 
 # =============== Call main ===============
-main "${@}"
+main ${@}
