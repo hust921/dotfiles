@@ -24,7 +24,7 @@ $LogPath     = "$(pwd)\Logs"
 $ScriptPath  = "$(pwd)\Scripts"
 $AssetsPath  = "$(pwd)\Assets"
 
-$Scriptnames = "Chocolatey_Install", "Chocolatey_Packages_Install", "Powershell_Profile_Install", "ConsoleFont_Install"
+$Scriptnames = "Chocolatey_Install", "Chocolatey_Packages_Install", "Powershell_Profile_Install", "ConsoleFont_Install", "Vim_Wsl_Install"
 # Add scriptname: "Wsl_Ubuntu_Install" with restart and rerun
 
 # ======== Main ========
@@ -33,7 +33,11 @@ function Main()
     # Source scripts
     foreach ($scriptName in $ScriptNames)
     {
-        SourceScript($scriptName)        
+        $question = Read-Host "Do you want to run the script: $scriptName.ps1?`n(y/[n]): "
+        if ($question -eq 'y')
+        {
+            SourceScript($scriptName)        
+        }
     }
 }
 
