@@ -13,3 +13,4 @@ zshconfig/jira_creds.zsh
 config/nvim/rustsetup
 custom/fzf.zsh
 custom/cargo.zsh
+tags
