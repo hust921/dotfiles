@@ -250,6 +250,8 @@ nnoremap <C-g> :GFiles<CR>
 nnoremap <C-l> :BLines<CR>
 nnoremap <C-f> :Buffers<CR>
 nnoremap <C-k> :Commands<CR>
+nnoremap <C-t> :Tags<CR>
+
 
 call plug#end()
 
