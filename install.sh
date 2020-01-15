@@ -124,16 +124,22 @@ if question "Do you want to install minttyrc (remember to set in wsl/min-tty opt
 fi
 
 # Replace gitconfig
-if question "Do you want to install gitconfig"; then
+if question "Do you want to install (newer) git from PPA & replace gitconfig?"; then
     # If gitconfig exist
     if [ -f ~/.gitconfig ]; then
         echo ".gitconfig already exist"
         if question "Do you want to delete it?"; then
             rm ~/.gitconfig
             cp "$DOTDIR/gitconfig" ~/.gitconfig
+            sudo apt-add-repository -y ppa:git-core/ppa
+            sudo apt update
+            sudo apt install -y git
         fi
     else
         cp "$DOTDIR/gitconfig" ~/.gitconfig
+        sudo apt-add-repository -y ppa:git-core/ppa
+        sudo apt update
+        sudo apt install -y git
     fi
 fi
 
