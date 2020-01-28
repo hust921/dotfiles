@@ -11,6 +11,7 @@ Powershell/Configs/WindowsPowerShell/*
 !Powershell/Configs/WindowsPowerShell/profile.ps1
 zshconfig/jira_creds.zsh
 config/nvim/rustsetup
+config/nvim/spell
 custom/fzf.zsh
 custom/cargo.zsh
 tags

@@ -26,3 +26,5 @@ alias Video-Download 'youtube-dl --format "best" --prefer-ffmpeg -o "%(title)s.%
 alias mysql='mycli'
 alias vim='nvim'
 alias vi='nvim'
+alias grep='grep --color=always'
+alias less='less -R'
