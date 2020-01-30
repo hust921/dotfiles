@@ -1,0 +1,41 @@
+#!/bin/bash
+
+# Check git status is clean and remove all unwanted files
+if [[ "$(git status --short)" != "" ]]; then
+    echo "==============================================================================="
+    echo -e "\e[30;41m ======= Please reset, commit or stash before continuing =======\e[0m"
+    echo -e "\e[30;41m ======= Tip: PULL before you rename                     =======\e[0m"
+    echo "==============================================================================="
+    exit 1
+fi
+
+git clean -xdf
+git clean -Xdf
+
+# Handle Arguments
+if [[ $# != 2 ]]; then
+    echo ""
+    echo -e "\e[30;41m Wrong number of arguments.\e[0m"
+    echo -e "\tUsage: $0 \"<wordToRename>\" \"<wordReplacement>\" \e[0m"
+    echo ""
+    exit 2
+fi
+
+# Find all "human files"
+
+# Rename inside files
+internalRenaming=$(find . \( -not -path '*/\.git/*' -iname '*.cs' -or -iname '*.csproj' -or -iname '*.sql' -or -iname '*.sqlproj' -or -iname '*.sln' -or -iname '*.config' \))
+intLog=$(mktemp "/tmp/mvsolution-XXXXXXX.txt")
+for filename in $internalRenaming; do
+    sed -i "s/$1/$2/g" "$filename" &> "$intLog"
+done
+echo "Internal rename log: $intLog"
+
+# Rename files (and directories) themselfs
+externalRenaming=$(find . -depth -type f,d |grep -viP "(^.git|^\./\.git|^\.$)" |grep "/[^/]*$1[^/]*$")
+extLog=$(mktemp "/tmp/mvsolution-XXXXXXX.txt")
+for filename in $externalRenaming; do
+    newfile="$(echo ${filename} | sed -e "s/\(.*\)${1}\(.*\)/\1${2}\2/g")"
+    mv "${filename}" "${newfile}" &> "$extLog"
+done
+echo "External rename log: $extLog"
