@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # Check git status is clean and remove all unwanted files
 if [[ "$(git status --short)" != "" ]]; then
     echo "==============================================================================="
@@ -24,6 +23,10 @@ fi
 # Find all "human files"
 
 # Rename inside files
+## Find all files ending in: .cs, .csproj, .sql, .sqlproj, .sln, .config
+## Which is NOT in the .git directory.
+## Iterate files, foreach: Replace all occurrences of $1 with $2 in all the files
+## Save stdout, stderr to $intLog
 internalRenaming=$(find . \( -not -path '*/\.git/*' -iname '*.cs' -or -iname '*.csproj' -or -iname '*.sql' -or -iname '*.sqlproj' -or -iname '*.sln' -or -iname '*.config' \))
 intLog=$(mktemp "/tmp/mvsolution-XXXXXXX.txt")
 for filename in $internalRenaming; do
@@ -31,7 +34,19 @@ for filename in $internalRenaming; do
 done
 echo "Internal rename log: $intLog"
 
-# Rename files (and directories) themselfs
+# Rename files (and directories)
+## Find all files and/or directories containing the word $1
+## in DFS-order, excluding the .git directory.
+## Iterate files, foreach: Replace (LAST) occurrence of the word $1 with $1
+##   in full path. As no not rename parent directory, before last.
+## Save stdout, stderr to $extLog
+##
+## eg, rename in the following order:
+##    /longpath/originalWord/originalWordRepo/originalWord.cs
+##    /longpath/originalWord/originalWordRepo
+##    /longpath/originalWord/originalWord.cs
+##    /longpath/originalWord
+##
 externalRenaming=$(find . -depth -type f,d |grep -viP "(^.git|^\./\.git|^\.$)" |grep "/[^/]*$1[^/]*$")
 extLog=$(mktemp "/tmp/mvsolution-XXXXXXX.txt")
 for filename in $externalRenaming; do
