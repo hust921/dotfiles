@@ -99,3 +99,8 @@ setopt menu_complete
 
 # Start ssh-agent
 eval $(ssh-agent)
+
+# Local config. Logins / Creds / Etc
+if [ -f ~/.zshlocal.zsh ]; then
+    source ~/.zshlocal.zsh
+fi

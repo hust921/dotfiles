@@ -250,12 +250,31 @@ nnoremap <C-g> :GFiles<CR>
 nnoremap <C-l> :BLines<CR>
 nnoremap <C-f> :Buffers<CR>
 nnoremap <C-k> :Commands<CR>
+nnoremap <C-t> :Tags<CR>
 
 call plug#end()
 
 "=== Local Overwrite {{{1          --
 " -----------------------------------
 " From old (Vim 7.4 vimrc config: "source ~/vimfiles/vimlocal.vim
+
+" Always use win32yank if available.
+" Forcing this, so not to load xclip.
+" Copied from: https://github.com/neovim/neovim/blob/master/runtime/autoload/provider/clipboard.vim
+if executable('win32yank.exe')
+    let g:clipboard = {
+    \ 'name': 'win32yank.exe',
+    \ 'copy': {
+    \    '+': 'win32yank.exe -i --crlf',
+    \    '*': 'win32yank.exe -i --crlf',
+    \  },
+    \ 'paste': {
+    \    '+': 'win32yank.exe -o --lf',
+    \    '*': 'win32yank.exe -o --lf',
+    \ },
+    \ 'cache_enabled': 1,
+    \ }
+endif
 
 "=== Colorscheme {{{1              --
 " -----------------------------------
