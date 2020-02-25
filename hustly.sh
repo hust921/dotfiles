@@ -337,7 +337,6 @@ function get_log() {
         fi
     else
         LOGFILE="$LOGDIR/$1.log"
-        echo -e "Set log File: $LOGFILE"
     fi
 }
 
@@ -362,15 +361,12 @@ function mod_all() {
             dlog "Key=$key"
             dlog "MODULES[Key]=${MODULES[$key]}"
             
-            ${MODULES[$key]} $operation > $LOGFILE 2>&1
+            # Run MODULE+Operation && print SUCCESS
+            # Or print FAILURE
+            (${MODULES[$key]} $operation > $LOGFILE 2>&1 \
+                && echo -e "[\e[32mSUCCESS\e[49m\e[39m] [$key] [${operation^^}] Log: $LOGFILE") \
+            || echo -e "[\e[31mFAILURE\e[49m\e[39m] [$key] [${operation^^}] Log: $LOGFILE"
 
-            echo "BELLOW DOES NOT WORK!"
-            exit 10
-            if [[ $? == 0 ]]; then
-                echo -e "[SUCCESS] [$key] [${operation^^}] Log: $LOGFILE"
-            else
-                echo -e "[FAILED!] [$key] [${operation^^}] Log: $LOGFILE"
-            fi
         fi
     done
 }
