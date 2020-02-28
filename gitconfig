@@ -4,9 +4,17 @@
     #email = Left for different logins
 [core]
     editor = nvim
-    autocrlf = input
-    safecrlf = false
+
+    # Windows!
     ignorecase = false
+
+    # Line-endings
+    autocrlf = true
+    safecrlf = false
+    whitespace = cr-at-eol
+
+    # File permissions
+    filemode = false
     
     # cat short output
     pager = less -F -X
