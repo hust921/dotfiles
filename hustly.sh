@@ -4,6 +4,7 @@
 readonly HUSTLY_VERSION="0.1.0"
 FLAG_i=false
 FLAG_d=false
+readonly DOTDIR="$HOME/dotfiles"
 
 # ===== Global stacktrace =====
 # https://gist.github.com/ahendrix/7030300
@@ -54,12 +55,15 @@ function mod_omz() {
             ;;
         "uninstall")
             echo "Running (omz) uninstall"
+            return 1
             ;;
         "update")
             echo "Running (omz) update"
+            return 1
             ;;
         "check")
             echo "Running (omz) check"
+            return 1
             ;;
         *)
             echo "$1 Didn't match anything operation for OMZ"
@@ -71,16 +75,19 @@ function mod_fzf() {
     case "$1" in
         "install")
             echo "Running (fzf) install"
-            return 0
+            return 1
             ;;
         "uninstall")
             echo "Running (fzf) uninstall"
+            return 1
             ;;
         "update")
             echo "Running (fzf) update"
+            return 1
             ;;
         "check")
             echo "Running (fzf) check"
+            return 1
             ;;
         *)
             echo "$1 Didn't match anything operation for fzf"
@@ -91,17 +98,33 @@ function mod_fzf() {
 function mod_tmux() {
     case "$1" in
         "install")
-            echo "Running (tmux) install"
+            echo "=== Running (tmux) install ==="
+            sudo apt install -y tmux
+            if [ -f ~/.tmux.conf ]; then
+                rm ~/.tmux.conf
+            fi
+            ln -s "$DOTDIR/tmux.conf" ~/.tmux.conf
+            echo "=== Finished (tmux) install ==="
             return 0
             ;;
         "uninstall")
-            echo "Running (tmux) uninstall"
+            echo "=== Running (tmux) uninstall ==="
+            if [ -f ~/.tmux.conf ]; then
+                rm ~/.tmux.conf
+            fi
+            sudo apt --purge remove -y tmux
+            echo "=== Finished (tmux) uninstall ==="
+            return 0
             ;;
         "update")
-            echo "Running (tmux) update"
+            echo "=== Running (tmux) update ==="
+            sudo apt update -y && sudo apt upgrade -y tmux
+            echo "=== Finished (tmux) update ==="
+            return 0
             ;;
         "check")
-            echo "Running (tmux) check"
+            echo "=== Running (tmux) check ==="
+            checklink "$HOME/.tmux.conf" "$DOTDIR/tmux.conf"
             ;;
         *)
             echo "$1 Didn't match anything operation for tmux"
@@ -113,15 +136,19 @@ function mod_mintty() {
     case "$1" in
         "install")
             echo "Running (mintty) install"
+            return 1
             ;;
         "uninstall")
             echo "Running (mintty) uninstall"
+            return 1
             ;;
         "update")
             echo "Running (mintty) update"
+            return 1
             ;;
         "check")
             echo "Running (mintty) check"
+            return 1
             ;;
         *)
             echo "$1 Didn't match anything operation for mintty"
@@ -133,15 +160,19 @@ function mod_git() {
     case "$1" in
         "install")
             echo "Running (git) install"
+            return 1
             ;;
         "uninstall")
             echo "Running (git) uninstall"
+            return 1
             ;;
         "update")
             echo "Running (git) update"
+            return 1
             ;;
         "check")
             echo "Running (git) check"
+            return 1
             ;;
         *)
             echo "$1 Didn't match anything operation for git"
@@ -153,15 +184,19 @@ function mod_rust() {
     case "$1" in
         "install")
             echo "Running (rust) install"
+            return 1
             ;;
         "uninstall")
             echo "Running (rust) uninstall"
+            return 1
             ;;
         "update")
             echo "Running (rust) update"
+            return 1
             ;;
         "check")
             echo "Running (rust) check"
+            return 1
             ;;
         *)
             echo "$1 Didn't match anything operation for rust"
@@ -173,15 +208,19 @@ function mod_nvim() {
     case "$1" in
         "install")
             echo "Running (nvim) install"
+            return 1
             ;;
         "uninstall")
             echo "Running (nvim) uninstall"
+            return 1
             ;;
         "update")
             echo "Running (nvim) update"
+            return 1
             ;;
         "check")
             echo "Running (nvim) check"
+            return 1
             ;;
         *)
             echo "$1 Didn't match anything operation for nvim"
@@ -324,6 +363,22 @@ function question {
     return $ret
 }
 
+# Check if link: exist, is link, points to correct file
+function checklink {
+    src=$(readlink -ef "$1")
+    target=$(readlink -ef "$2")
+
+    if [[ "$src" == "$target" ]]; then
+        dlog "File ($1) $src links to ($2) $target"
+        return 0;
+    else
+        echo "File ($1) $src did not link to ($2) $target"
+        return 1;
+    fi
+    #return [ -L "$1" ] && [ $(readlink -e "$1") == "$2"]
+}
+
+
 function get_log() {
     if [ -z ${LOGDIR+x} ]; then
         LOGDIR=$(mktemp -d -t hustly-XXXXXXXXXX)
@@ -337,7 +392,6 @@ function get_log() {
         fi
     else
         LOGFILE="$LOGDIR/$1.log"
-        echo -e "Set log File: $LOGFILE"
     fi
 }
 
@@ -362,15 +416,12 @@ function mod_all() {
             dlog "Key=$key"
             dlog "MODULES[Key]=${MODULES[$key]}"
             
-            ${MODULES[$key]} $operation > $LOGFILE 2>&1
+            # Run MODULE+Operation && print SUCCESS
+            # Or print FAILURE
+            (${MODULES[$key]} $operation > $LOGFILE 2>&1 \
+                && echo -e "[\e[32mSUCCESS\e[49m\e[39m] [$key] [${operation^^}] Log: $LOGFILE") \
+            || echo -e "[\e[31mFAILURE\e[49m\e[39m] [$key] [${operation^^}] Log: $LOGFILE"
 
-            echo "BELLOW DOES NOT WORK!"
-            exit 10
-            if [[ $? == 0 ]]; then
-                echo -e "[SUCCESS] [$key] [${operation^^}] Log: $LOGFILE"
-            else
-                echo -e "[FAILED!] [$key] [${operation^^}] Log: $LOGFILE"
-            fi
         fi
     done
 }
