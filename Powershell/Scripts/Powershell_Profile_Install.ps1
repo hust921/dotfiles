@@ -21,5 +21,8 @@ Install-PackageProvider -Name NuGet -Force
 Install-Module posh-git -Force
 Install-Module oh-my-posh -Force
 
+# Install Cargo (rust completion)
+Install-Module posh-cargo -Scope CurrentUser -AllowClobber -Force
+
 # Install PSFzf modules
 Install-Module PSFzf -Force
