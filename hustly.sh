@@ -50,20 +50,31 @@ declare -rgA MODULES=(
 function mod_omz() {
     case "$1" in
         "install")
-            echo "Running (omz) install"
-            return 1
+            echo "=== Running (omz) install ==="
+            sudo apt-get install -y zsh screenfetch
+            sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+            ln -s "$DOTDIR/zshrc" "$HOME/.zshrc"
+            ln -s "$DOTDIR/custom" "$HOME/.oh-my-zsh/custom"
+            echo "=== Finished (omz) install ==="
+            return 0
             ;;
         "uninstall")
-            echo "Running (omz) uninstall"
-            return 1
+            echo "=== Running (omz) uninstall ==="
+            rm -rf "$HOME/.oh-my-zsh/custom"
+            source "$HOME/.oh-my-zsh/tools/uninstall.sh"
+            echo "=== Finished (omz) uninstall ==="
+            return 0
             ;;
         "update")
-            echo "Running (omz) update"
-            return 1
+            echo "=== Running (omz) update ==="
+            sudo apt-get upgrade -y zsh screenfetch
+            "$DOTDIR/update_oh_my_zsh.sh"
+            echo "=== Finished (omz) update ==="
+            return 0
             ;;
         "check")
-            echo "Running (omz) check"
-            return 1
+            echo "=== Running (omz) check ==="
+            env | grep -i '.oh-my-zsh'
             ;;
         *)
             echo "$1 Didn't match anything operation for OMZ"
