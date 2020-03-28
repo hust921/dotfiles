@@ -186,20 +186,33 @@ function mod_mintty() {
 function mod_git() {
     case "$1" in
         "install")
-            echo "Running (git) install"
-            return 1
+            dlog "=== Running (git) install ==="
+            sudo apt-add-repository -y ppa:git-core/ppa
+            sudo apt-get update -y
+            sudo apt-get install -y git
+
+            if [ -f "$HOME/.gitconfig" ]; then
+                rm "$HOME/.gitconfig"
+            fi
+            cp "$DOTDIR/gitconfig" "$HOME/.gitconfig"
+            dlog "=== Finished (git) install ==="
+            return 0
             ;;
         "uninstall")
-            echo "Running (git) uninstall"
-            return 1
+            dlog "=== Running (git) uninstall ==="
+            rm -rf "$HOME/.gitconfig"
+            dlog "=== Finished (git) uninstall ==="
+            return 0
             ;;
         "update")
-            echo "Running (git) update"
-            return 1
+            dlog "=== Running (git) update ==="
+            sudo apt-get upgrade -y git
+            dlog "=== Finished (git) update ==="
+            return 0
             ;;
         "check")
-            echo "Running (git) check"
-            return 1
+            dlog "=== Running (git) check ==="
+            git --version >> /dev/null
             ;;
         *)
             echo "$1 Didn't match anything operation for git"
