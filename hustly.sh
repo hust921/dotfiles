@@ -162,20 +162,28 @@ function mod_tmux() {
 function mod_mintty() {
     case "$1" in
         "install")
-            echo "Running (mintty) install"
-            return 1
+            dlog "=== Running (mintty) install ==="
+            if [ -f ~/.minttyrc ]; then
+                rm ~/.minttyrc
+            fi
+            ln -s "$DOTDIR/minttyrc" "$HOME/.minttyrc"
+            dlog "=== Finished (mintty) install ==="
+            return 0
             ;;
         "uninstall")
-            echo "Running (mintty) uninstall"
-            return 1
+            dlog "=== Running (mintty) uninstall ==="
+            rm -rf "$HOME/.minttyrc"
+            dlog "=== Finished (mintty) uninstall ==="
+            return 0
             ;;
         "update")
-            echo "Running (mintty) update"
-            return 1
+            dlog "=== Running (mintty) update ==="
+            dlog "=== Finished (mintty) update ==="
+            return 0
             ;;
         "check")
-            echo "Running (mintty) check"
-            return 1
+            dlog "=== Running (mintty) check ==="
+            checklink "$HOME/.minttyrc" "$DOTDIR/minttyrc"
             ;;
         *)
             echo "$1 Didn't match anything operation for mintty"
