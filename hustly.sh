@@ -34,15 +34,28 @@ set -o errexit   # to cause script to exit if any line fails
 set -o nounset   # to cause an error if you use an empty variable
 set -o noclobber # the '>' symbol not allowed to overwrite "existing" files
 set -o pipefail  # cmd_a | cmd_b . Fails if cmd_a doesn't cleanly exit (0) 
-declare -rgA MODULES=(
-    [OMZ]=mod_omz
-    [FZF]=mod_fzf
-    [TMUX]=mod_tmux
-    [MINTTY]=mod_mintty
-    [GIT]=mod_git
-    [RUST]=mod_rust
-    [NVIM]=mod_nvim
-)
+
+# Check if running WSL
+if grep -i "microsoft" /proc/version >> /dev/null; then
+    declare -rgA MODULES=(
+        [OMZ]=mod_omz
+        [FZF]=mod_fzf
+        [TMUX]=mod_tmux
+        [MINTTY]=mod_mintty
+        [GIT]=mod_git
+        [RUST]=mod_rust
+        [NVIM]=mod_nvim
+    )
+else
+    declare -rgA MODULES=(
+        [OMZ]=mod_omz
+        [FZF]=mod_fzf
+        [TMUX]=mod_tmux
+        [GIT]=mod_git
+        [RUST]=mod_rust
+        [NVIM]=mod_nvim
+    )
+fi
 
 # ============================== ==============================
 # =====               Module Implementations              =====
@@ -318,7 +331,7 @@ function mod_nvim() {
             ;;
         "check")
             dlog "=== Running (nvim) check ==="
-            checklink "$HOME/.config/nvim" "$DOTDIR/.config/nvim"
+            checklink "$HOME/.config/nvim" "$DOTDIR/config/nvim"
             ;;
         *)
             echo "$1 Didn't match anything operation for nvim"
