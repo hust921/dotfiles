@@ -5,6 +5,7 @@
 # oh-my-posh & posh git 
 Import-Module posh-git
 Import-Module oh-my-posh
+Import-Module posh-cargo
 Set-Theme Agnoster
 
 # Chocolatey profile
@@ -60,9 +61,16 @@ function Get-ScriptDirectory
     }
 }
 
+# SSH setup
+Set-Alias -name 'ssh-agent' "$env:ProgramFiles\git\usr\bin\ssh-agent.exe"
+Set-Alias -name 'ssh-add' "$env:ProgramFiles\git\usr\bin\ssh-add.exe"
+ssh-agent
+
+# NeoVim setup
 Set-Alias -name 'nvim' -Value 'Start-Vi'
 Set-Alias -name 'vim' -Value 'Start-Vi'
 Set-Alias -name 'vi' -Value 'Start-Vi'
+
 function Start-Vi ($firstArg)
 {
     wsl nvim (wsl wslpath "'$firstArg'")
