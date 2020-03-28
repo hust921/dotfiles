@@ -491,7 +491,7 @@ function checklink {
 
 
 function get_log() {
-    if [ $FLAG_d ]; then
+    if [ $FLAG_d = true ]; then
         LOGFILE="/dev/stdout"
         return 0
     fi
