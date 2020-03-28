@@ -74,20 +74,36 @@ function mod_omz() {
 function mod_fzf() {
     case "$1" in
         "install")
-            echo "Running (fzf) install"
-            return 1
+            echo "=== Running (fzf) install ==="
+            if ! [ -d "$HOME/.fzf" ]; then
+                git clone --depth 1 https://github.com/junegunn/fzf.git "$HOME/.fzf"
+                "$HOME/.fzf/install"
+            fi
+
+            if ! [ -f "$DOTDIR/custom/fzf.zsh" ]; then
+                ln -s "$HOME/.fzf.zsh" "$DOTDIR/custom/fzf.zsh"
+            fi
+            echo "=== Finished (fzf) install ==="
+            return 0
             ;;
         "uninstall")
-            echo "Running (fzf) uninstall"
-            return 1
+            echo "=== Running (fzf) uninstall ==="
+            rm -rf "$DOTDIR/custom/fzf.zsh"
+            "$HOME/.fzf/uninstall"
+            echo "=== Finished (fzf) uninstall ==="
+            return 0
             ;;
         "update")
-            echo "Running (fzf) update"
-            return 1
+            echo "=== Running (fzf) update ==="
+            tempdirfzf="$(pwd)"
+            cd "$HOME/.fzf" && git pull && ./install
+            cd "$tempdirfzf"
+            echo "=== Finished (fzf) update ==="
+            return 0
             ;;
         "check")
-            echo "Running (fzf) check"
-            return 1
+            echo "=== Running (fzf) check ==="
+            checklink "$DOTDIR/custom/fzf.zsh" "$HOME/.fzf.zsh"
             ;;
         *)
             echo "$1 Didn't match anything operation for fzf"
@@ -271,8 +287,6 @@ function mod_nvim() {
         "check")
             echo "=== Running (nvim) check ==="
             checklink "$HOME/.config/nvim" "$DOTDIR/.config/nvim"
-            echo "=== Finished (nvim) check ==="
-            return 0
             ;;
         *)
             echo "$1 Didn't match anything operation for nvim"
@@ -432,6 +446,11 @@ function checklink {
 
 
 function get_log() {
+    if [ $FLAG_d ]; then
+        LOGFILE="/dev/stdout"
+        return 0
+    fi
+
     if [ -z ${LOGDIR+x} ]; then
         LOGDIR=$(mktemp -d -t hustly-XXXXXXXXXX)
     fi
