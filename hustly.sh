@@ -236,20 +236,43 @@ function mod_rust() {
 function mod_nvim() {
     case "$1" in
         "install")
-            echo "Running (nvim) install"
-            return 1
+            echo "=== Running (nvim) install ==="
+            sudo add-apt-repository -y ppa:neovim-ppa/stable && \
+            sudo apt-get update -y && \
+            sudo apt-get install -y neovim python-dev python-pip python3-dev python3-pip && \
+            pip3 install pynvim jedi flake8 && \
+            curl -fLo "$HOME/.local/share/nvim/site/autoload/plug.vim" --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim && \
+            mkdir -p "$HOME/.config" && \
+            if ! [ -d "$HOME/.config/nvim" ]; then
+                ln -s "$DOTDIR/config/nvim" "$HOME/.config/nvim"
+            fi && \
+            nvim +PlugInstall +qall
+            echo "=== Finished (nvim) install ==="
+            return 0
             ;;
         "uninstall")
-            echo "Running (nvim) uninstall"
-            return 1
+            echo "=== Running (nvim) uninstall ==="
+            sudo apt-get remove --purge neovim
+            pip3 uninstall pynvim
+            rm -rf "$HOME/.local/share/nvim"
+            rm -rf "$HOME/.config/nvim"
+            echo "=== Finished (nvim) uninstall ==="
+            return 0
             ;;
         "update")
-            echo "Running (nvim) update"
-            return 1
+            echo "=== Running (nvim) update ==="
+            sudo apt-get upgrade -y neovim python-dev python-pip python3-dev python3-pip
+            pip3 install --upgrade pynvim jedi flake8
+            nvim +PlugUpgrade +qall
+            nvim +PlugUpdate +qall
+            echo "=== Finished (nvim) update ==="
+            return 0
             ;;
         "check")
-            echo "Running (nvim) check"
-            return 1
+            echo "=== Running (nvim) check ==="
+            checklink "$HOME/.config/nvim" "$DOTDIR/.config/nvim"
+            echo "=== Finished (nvim) check ==="
+            return 0
             ;;
         *)
             echo "$1 Didn't match anything operation for nvim"
