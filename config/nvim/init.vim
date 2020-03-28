@@ -179,6 +179,9 @@ Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 let g:rustfmt_autosave = 0
 let g:racer_experimental_completer = 1
 
+" RON (Rust Objection Notation) support
+Plug 'ron-rs/ron.vim'
+
 "let g:deoplete#sources#rust#racer_binary='~/.config/nvim/rustsetup/target/release/racer'
 "let g:deoplete#sources#rust#rust_source='~/.config/nvim/rustsetup/src'
 "let g:deoplete#sources#rust#show_duplicates=1

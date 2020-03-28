@@ -183,20 +183,49 @@ function mod_git() {
 function mod_rust() {
     case "$1" in
         "install")
-            echo "Running (rust) install"
-            return 1
+            echo "=== Running (rust) install ==="
+            curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+            source "$HOME/.cargo/env"
+            rustup toolchain install nightly && \
+            rustup default nightly && \
+                rustup component add rls rust-analysis rust-src && \
+                cargo install racer && \
+            rustup default stable
+
+            if ! [ -f ~/.cargo/env ]; then
+                ln -s ~/.cargo/env "$DOTDIR/custom/cargo.zsh"
+            fi
+            echo "=== Finished (rust) install ==="
+            return 0
             ;;
         "uninstall")
-            echo "Running (rust) uninstall"
-            return 1
+            echo "=== Running (rust) uninstall ==="
+            rustup uninstall stable
+            rustup uninstall nightly
+            rustup self uninstall
+            echo "=== Finished (rust) uninstall ==="
+            return 0
             ;;
         "update")
-            echo "Running (rust) update"
-            return 1
+            echo "=== Running (rust) update ==="
+            rustup self update
+            rustup update stable
+            rustup update nightly
+            echo "=== Finished (rust) update ==="
+            return 0
             ;;
         "check")
-            echo "Running (rust) check"
-            return 1
+            echo "=== Running (rust) check ==="
+            if rustup --version && cargo --version; then
+                echo "=== Finished (rust) check ==="
+                return 0
+            else
+                echo "ERROR checking rustup & cargo version."
+                echo "rustup version: $(rustup --version)"
+                echo "cargo version: $(cargo --version)"
+                echo "=== Finished (rust) check ==="
+                return 1;
+            fi
             ;;
         *)
             echo "$1 Didn't match anything operation for rust"
