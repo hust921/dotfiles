@@ -50,31 +50,31 @@ declare -rgA MODULES=(
 function mod_omz() {
     case "$1" in
         "install")
-            echo "=== Running (omz) install ==="
+            dlog "=== Running (omz) install ==="
             sudo apt-get install -y zsh screenfetch
             sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
             ln -s "$DOTDIR/zshrc" "$HOME/.zshrc"
             ln -s "$DOTDIR/custom" "$HOME/.oh-my-zsh/custom"
-            echo "=== Finished (omz) install ==="
+            dlog "=== Finished (omz) install ==="
             return 0
             ;;
         "uninstall")
-            echo "=== Running (omz) uninstall ==="
+            dlog "=== Running (omz) uninstall ==="
             rm -rf "$HOME/.oh-my-zsh/custom"
             source "$HOME/.oh-my-zsh/tools/uninstall.sh"
-            echo "=== Finished (omz) uninstall ==="
+            dlog "=== Finished (omz) uninstall ==="
             return 0
             ;;
         "update")
-            echo "=== Running (omz) update ==="
+            dlog "=== Running (omz) update ==="
             sudo apt-get upgrade -y zsh screenfetch
             "$DOTDIR/update_oh_my_zsh.sh"
-            echo "=== Finished (omz) update ==="
+            dlog "=== Finished (omz) update ==="
             return 0
             ;;
         "check")
-            echo "=== Running (omz) check ==="
-            env | grep -i '.oh-my-zsh'
+            dlog "=== Running (omz) check ==="
+            env | grep -i '.oh-my-zsh' >> /dev/null
             ;;
         *)
             echo "$1 Didn't match anything operation for OMZ"
@@ -85,7 +85,7 @@ function mod_omz() {
 function mod_fzf() {
     case "$1" in
         "install")
-            echo "=== Running (fzf) install ==="
+            dlog "=== Running (fzf) install ==="
             if ! [ -d "$HOME/.fzf" ]; then
                 git clone --depth 1 https://github.com/junegunn/fzf.git "$HOME/.fzf"
                 "$HOME/.fzf/install"
@@ -94,26 +94,26 @@ function mod_fzf() {
             if ! [ -f "$DOTDIR/custom/fzf.zsh" ]; then
                 ln -s "$HOME/.fzf.zsh" "$DOTDIR/custom/fzf.zsh"
             fi
-            echo "=== Finished (fzf) install ==="
+            dlog "=== Finished (fzf) install ==="
             return 0
             ;;
         "uninstall")
-            echo "=== Running (fzf) uninstall ==="
+            dlog "=== Running (fzf) uninstall ==="
             rm -rf "$DOTDIR/custom/fzf.zsh"
             "$HOME/.fzf/uninstall"
-            echo "=== Finished (fzf) uninstall ==="
+            dlog "=== Finished (fzf) uninstall ==="
             return 0
             ;;
         "update")
-            echo "=== Running (fzf) update ==="
+            dlog "=== Running (fzf) update ==="
             tempdirfzf="$(pwd)"
             cd "$HOME/.fzf" && git pull && ./install
             cd "$tempdirfzf"
-            echo "=== Finished (fzf) update ==="
+            dlog "=== Finished (fzf) update ==="
             return 0
             ;;
         "check")
-            echo "=== Running (fzf) check ==="
+            dlog "=== Running (fzf) check ==="
             checklink "$DOTDIR/custom/fzf.zsh" "$HOME/.fzf.zsh"
             ;;
         *)
@@ -125,32 +125,32 @@ function mod_fzf() {
 function mod_tmux() {
     case "$1" in
         "install")
-            echo "=== Running (tmux) install ==="
+            dlog "=== Running (tmux) install ==="
             sudo apt install -y tmux
             if [ -f ~/.tmux.conf ]; then
                 rm ~/.tmux.conf
             fi
             ln -s "$DOTDIR/tmux.conf" ~/.tmux.conf
-            echo "=== Finished (tmux) install ==="
+            dlog "=== Finished (tmux) install ==="
             return 0
             ;;
         "uninstall")
-            echo "=== Running (tmux) uninstall ==="
+            dlog "=== Running (tmux) uninstall ==="
             if [ -f ~/.tmux.conf ]; then
                 rm ~/.tmux.conf
             fi
             sudo apt --purge remove -y tmux
-            echo "=== Finished (tmux) uninstall ==="
+            dlog "=== Finished (tmux) uninstall ==="
             return 0
             ;;
         "update")
-            echo "=== Running (tmux) update ==="
+            dlog "=== Running (tmux) update ==="
             sudo apt update -y && sudo apt upgrade -y tmux
-            echo "=== Finished (tmux) update ==="
+            dlog "=== Finished (tmux) update ==="
             return 0
             ;;
         "check")
-            echo "=== Running (tmux) check ==="
+            dlog "=== Running (tmux) check ==="
             checklink "$HOME/.tmux.conf" "$DOTDIR/tmux.conf"
             ;;
         *)
@@ -210,7 +210,7 @@ function mod_git() {
 function mod_rust() {
     case "$1" in
         "install")
-            echo "=== Running (rust) install ==="
+            dlog "=== Running (rust) install ==="
             curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
             source "$HOME/.cargo/env"
             rustup toolchain install nightly && \
@@ -222,35 +222,35 @@ function mod_rust() {
             if ! [ -f ~/.cargo/env ]; then
                 ln -s ~/.cargo/env "$DOTDIR/custom/cargo.zsh"
             fi
-            echo "=== Finished (rust) install ==="
+            dlog "=== Finished (rust) install ==="
             return 0
             ;;
         "uninstall")
-            echo "=== Running (rust) uninstall ==="
+            dlog "=== Running (rust) uninstall ==="
             rustup uninstall stable
             rustup uninstall nightly
             rustup self uninstall
-            echo "=== Finished (rust) uninstall ==="
+            dlog "=== Finished (rust) uninstall ==="
             return 0
             ;;
         "update")
-            echo "=== Running (rust) update ==="
+            dlog "=== Running (rust) update ==="
             rustup self update
             rustup update stable
             rustup update nightly
-            echo "=== Finished (rust) update ==="
+            dlog "=== Finished (rust) update ==="
             return 0
             ;;
         "check")
-            echo "=== Running (rust) check ==="
+            dlog "=== Running (rust) check ==="
             if rustup --version && cargo --version; then
-                echo "=== Finished (rust) check ==="
+                dlog "=== Finished (rust) check ==="
                 return 0
             else
                 echo "ERROR checking rustup & cargo version."
                 echo "rustup version: $(rustup --version)"
                 echo "cargo version: $(cargo --version)"
-                echo "=== Finished (rust) check ==="
+                dlog "=== Finished (rust) check ==="
                 return 1;
             fi
             ;;
@@ -263,7 +263,7 @@ function mod_rust() {
 function mod_nvim() {
     case "$1" in
         "install")
-            echo "=== Running (nvim) install ==="
+            dlog "=== Running (nvim) install ==="
             sudo add-apt-repository -y ppa:neovim-ppa/stable && \
             sudo apt-get update -y && \
             sudo apt-get install -y neovim python-dev python-pip python3-dev python3-pip && \
@@ -274,29 +274,29 @@ function mod_nvim() {
                 ln -s "$DOTDIR/config/nvim" "$HOME/.config/nvim"
             fi && \
             nvim +PlugInstall +qall
-            echo "=== Finished (nvim) install ==="
+            dlog "=== Finished (nvim) install ==="
             return 0
             ;;
         "uninstall")
-            echo "=== Running (nvim) uninstall ==="
+            dlog "=== Running (nvim) uninstall ==="
             sudo apt-get remove --purge neovim
             pip3 uninstall pynvim
             rm -rf "$HOME/.local/share/nvim"
             rm -rf "$HOME/.config/nvim"
-            echo "=== Finished (nvim) uninstall ==="
+            dlog "=== Finished (nvim) uninstall ==="
             return 0
             ;;
         "update")
-            echo "=== Running (nvim) update ==="
+            dlog "=== Running (nvim) update ==="
             sudo apt-get upgrade -y neovim python-dev python-pip python3-dev python3-pip
             pip3 install --upgrade pynvim jedi flake8
             nvim +PlugUpgrade +qall
             nvim +PlugUpdate +qall
-            echo "=== Finished (nvim) update ==="
+            dlog "=== Finished (nvim) update ==="
             return 0
             ;;
         "check")
-            echo "=== Running (nvim) check ==="
+            dlog "=== Running (nvim) check ==="
             checklink "$HOME/.config/nvim" "$DOTDIR/.config/nvim"
             ;;
         *)
@@ -383,7 +383,7 @@ function parse_subcommand_args() {
         for m in "$@"; do
             local mUpper=${m^^}
             if [ ${MODULES["$mUpper"]+x} ]; then
-                mods+=$mUpper
+                mods+=("$mUpper")
             else
                 print_help "Unknown module name: \"$mUpper\""
             fi
