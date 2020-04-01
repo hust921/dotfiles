@@ -65,6 +65,8 @@ function mod_omz() {
         "install")
             dlog "=== Running (omz) install ==="
             sudo apt-get install -y zsh screenfetch
+            rm -rf "$HOME/.zshrc"
+            rm -rf "$HOME/.oh-my-zsh"
             sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
             ln -s "$DOTDIR/zshrc" "$HOME/.zshrc"
             ln -s "$DOTDIR/custom" "$HOME/.oh-my-zsh/custom"
