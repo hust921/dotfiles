@@ -54,7 +54,7 @@ plugins=(git dirhistory)
 
 # User configuration
 
-export PATH=".:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:/home/hust921/.local/bin"
+export PATH=".:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:$HOME/.local/bin"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
