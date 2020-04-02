@@ -5,10 +5,7 @@ MAINTAINER Morten Lund
 
 # OS Updates & Install
 RUN apt-get -y update
-RUN apt-get -y install sudo curl git apt-utils
-
-# Misc docker, Environment stuff
-ENV PATH="/sbin:/usr/sbin:/usr/local/sbin:${PATH}"
+RUN apt-get -y install sudo curl git
 
 # Create test user & add to suduers
 RUN useradd -m -s /bin/bash tester

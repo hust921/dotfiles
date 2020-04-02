@@ -86,7 +86,6 @@ function mod_omz() {
             ;;
         "update")
             dlog "=== Running (omz) update ==="
-            sudo apt-get upgrade -y zsh screenfetch || return 1
             "$DOTDIR/update_oh_my_zsh.sh" || return 1
             dlog "=== Finished (omz) update ==="
             ;;
