@@ -32,7 +32,7 @@ alias grep='grep --color=always'
 alias less='less -R'
 
 # DockerClean all containers & delete images
-if docker --version >> /dev/null; then
+if [ -x "$(command -v docker)" ]; then
     dockerclean()
     {
         docker stop $(docker ps -a -q);
