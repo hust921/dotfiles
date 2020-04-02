@@ -22,9 +22,11 @@ ENV HOME /home/tester
 
 # Change working directory
 WORKDIR /home/tester/dotfiles
+RUN git clean -Xdf
+RUN git clean -xdf
 
 # Run Setup
-RUN ./hustly.sh -d install omz
-RUN ./hustly.sh -d check omz
+RUN ./hustly.sh -d install omz fzf
+RUN ./hustly.sh -d check omz fzf
 
 CMD ["zsh"]

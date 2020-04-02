@@ -106,33 +106,30 @@ function mod_fzf() {
         "install")
             dlog "=== Running (fzf) install ==="
             if ! [ -d "$HOME/.fzf" ]; then
-                git clone --depth 1 https://github.com/junegunn/fzf.git "$HOME/.fzf"
-                "$HOME/.fzf/install"
+                git clone --depth 1 https://github.com/junegunn/fzf.git "$HOME/.fzf" || return 1
+                "$HOME/.fzf/install" || return 1
             fi
 
             if ! [ -f "$DOTDIR/custom/fzf.zsh" ]; then
-                ln -s "$HOME/.fzf.zsh" "$DOTDIR/custom/fzf.zsh"
+                ln -s "$HOME/.fzf.zsh" "$DOTDIR/custom/fzf.zsh" || return 1
             fi
             dlog "=== Finished (fzf) install ==="
-            return 0
             ;;
         "uninstall")
             dlog "=== Running (fzf) uninstall ==="
-            rm -rf "$DOTDIR/custom/fzf.zsh"
-            "$HOME/.fzf/uninstall"
+            rm -rf "$DOTDIR/custom/fzf.zsh" || return 1
+            "$HOME/.fzf/uninstall" || return 1
             dlog "=== Finished (fzf) uninstall ==="
-            return 0
             ;;
         "update")
             dlog "=== Running (fzf) update ==="
             tempdirfzf="$(pwd)"
-            cd "$HOME/.fzf" && git pull && ./install
-            cd "$tempdirfzf"
+            cd "$HOME/.fzf" && git pull && ./install || return 1
+            cd "$tempdirfzf" || return 1
             dlog "=== Finished (fzf) update ==="
-            return 0
             ;;
         "check")
-            dlog "=== Running (fzf) check ==="
+            dlog "=== Running (fzf) check ===" && \
             checklink "$DOTDIR/custom/fzf.zsh" "$HOME/.fzf.zsh"
             ;;
         *)
