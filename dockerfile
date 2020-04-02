@@ -26,7 +26,10 @@ RUN git clean -Xdf
 RUN git clean -xdf
 
 # Run Setup
-RUN ./hustly.sh -d install omz fzf
-RUN ./hustly.sh -d check omz fzf
+RUN ./hustly.sh install tmux
+RUN ./hustly.sh check tmux
+RUN ./hustly.sh update tmux
+RUN ./hustly.sh uninstall tmux
+RUN ./hustly.sh check tmux
 
-CMD ["zsh"]
+CMD ["bash"]

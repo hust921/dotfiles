@@ -142,31 +142,28 @@ function mod_tmux() {
     case "$1" in
         "install")
             dlog "=== Running (tmux) install ==="
-            sudo apt install -y tmux
+            sudo apt install -y tmux || return 1
             if [ -f ~/.tmux.conf ]; then
-                rm ~/.tmux.conf
+                rm ~/.tmux.conf || return 1
             fi
-            ln -s "$DOTDIR/tmux.conf" ~/.tmux.conf
+            ln -s "$DOTDIR/tmux.conf" ~/.tmux.conf || return 1
             dlog "=== Finished (tmux) install ==="
-            return 0
             ;;
         "uninstall")
             dlog "=== Running (tmux) uninstall ==="
             if [ -f ~/.tmux.conf ]; then
-                rm ~/.tmux.conf
+                rm ~/.tmux.conf || return 1
             fi
-            sudo apt --purge remove -y tmux
+            sudo apt --purge remove -y tmux || return 1
             dlog "=== Finished (tmux) uninstall ==="
-            return 0
             ;;
         "update")
             dlog "=== Running (tmux) update ==="
-            sudo apt update -y && sudo apt upgrade -y tmux
+            sudo apt update -y && sudo apt upgrade -y tmux || return 1
             dlog "=== Finished (tmux) update ==="
-            return 0
             ;;
         "check")
-            dlog "=== Running (tmux) check ==="
+            dlog "=== Running (tmux) check ===" && \
             checklink "$HOME/.tmux.conf" "$DOTDIR/tmux.conf"
             ;;
         *)
