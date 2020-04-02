@@ -64,32 +64,37 @@ function mod_omz() {
     case "$1" in
         "install")
             dlog "=== Running (omz) install ==="
-            sudo apt-get install -y zsh screenfetch
-            rm -rf "$HOME/.zshrc"
+            sudo apt-get install -y zsh screenfetch || return 1
             rm -rf "$HOME/.oh-my-zsh"
-            sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-            ln -s "$DOTDIR/zshrc" "$HOME/.zshrc"
-            ln -s "$DOTDIR/custom" "$HOME/.oh-my-zsh/custom"
+            sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" || return 1
+            sudo usermod -s /bin/zsh "$(whoami)" || return 1
+
+            rm -rf "$HOME/.zshrc"
+            ln -s "$DOTDIR/zshrc" "$HOME/.zshrc" || return 1
+
+            rm -rf "$HOME/.oh-my-zsh/custom"
+            ln -s "$DOTDIR/custom" "$HOME/.oh-my-zsh/custom" || return 1
+
             dlog "=== Finished (omz) install ==="
-            return 0
             ;;
         "uninstall")
             dlog "=== Running (omz) uninstall ==="
             rm -rf "$HOME/.oh-my-zsh/custom"
-            source "$HOME/.oh-my-zsh/tools/uninstall.sh"
+            source "$HOME/.oh-my-zsh/tools/uninstall.sh" || return 1
+            rm -rf "$HOME/.zshrc"
             dlog "=== Finished (omz) uninstall ==="
-            return 0
             ;;
         "update")
             dlog "=== Running (omz) update ==="
-            sudo apt-get upgrade -y zsh screenfetch
-            "$DOTDIR/update_oh_my_zsh.sh"
+            sudo apt-get upgrade -y zsh screenfetch || return 1
+            "$DOTDIR/update_oh_my_zsh.sh" || return 1
             dlog "=== Finished (omz) update ==="
-            return 0
             ;;
         "check")
             dlog "=== Running (omz) check ==="
-            env | grep -i '.oh-my-zsh' >> /dev/null
+            checklink "$DOTDIR/zshrc" "$HOME/.zshrc" && \
+            checklink "$DOTDIR/custom" "$HOME/.oh-my-zsh/custom" && \
+            echo $SHELL | grep -i 'zsh' >> /dev/null
             ;;
         *)
             echo "$1 Didn't match anything operation for OMZ"

@@ -4,8 +4,11 @@ MAINTAINER Morten Lund
 # From: https://www.jamesridgway.co.uk/dotfiles-with-github-travis-ci-and-docker/
 
 # OS Updates & Install
-RUN apt -y update
-RUN apt -y install sudo curl
+RUN apt-get -y update
+RUN apt-get -y install sudo curl git apt-utils
+
+# Misc docker, Environment stuff
+ENV PATH="/sbin:/usr/sbin:/usr/local/sbin:${PATH}"
 
 # Create test user & add to suduers
 RUN useradd -m -s /bin/bash tester
@@ -27,4 +30,4 @@ WORKDIR /home/tester/dotfiles
 RUN ./hustly.sh -d install omz
 RUN ./hustly.sh -d check omz
 
-CMD ["/bin/bash"]
+CMD ["zsh"]
