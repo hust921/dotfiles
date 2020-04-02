@@ -26,10 +26,10 @@ RUN git clean -Xdf
 RUN git clean -xdf
 
 # Run Setup
-RUN ./hustly.sh install tmux
-RUN ./hustly.sh check tmux
-RUN ./hustly.sh update tmux
-RUN ./hustly.sh uninstall tmux
-RUN ./hustly.sh check tmux
+RUN ./hustly.sh install git
+RUN ./hustly.sh check git
+RUN ./hustly.sh update git
+RUN ./hustly.sh uninstall git
+RUN ./hustly.sh check git
 
 CMD ["bash"]

@@ -208,31 +208,31 @@ function mod_git() {
     case "$1" in
         "install")
             dlog "=== Running (git) install ==="
-            sudo apt-add-repository -y ppa:git-core/ppa
-            sudo apt-get update -y
-            sudo apt-get install -y git
+            if ! [ -x "$(command -v add-apt-repository -h)" ]; then
+                sudo apt-get install -y software-properties-common || return 1
+            fi
+            sudo apt-add-repository -y ppa:git-core/ppa && \
+            sudo apt-get update -y && \
+            sudo apt-get install -y git || return 1
 
             if [ -f "$HOME/.gitconfig" ]; then
-                rm "$HOME/.gitconfig"
+                rm "$HOME/.gitconfig" || return 1
             fi
-            cp "$DOTDIR/gitconfig" "$HOME/.gitconfig"
+            cp "$DOTDIR/gitconfig" "$HOME/.gitconfig" || return 1
             dlog "=== Finished (git) install ==="
-            return 0
             ;;
         "uninstall")
             dlog "=== Running (git) uninstall ==="
-            rm -rf "$HOME/.gitconfig"
+            rm -rf "$HOME/.gitconfig" || return 1
             dlog "=== Finished (git) uninstall ==="
-            return 0
             ;;
         "update")
             dlog "=== Running (git) update ==="
-            sudo apt-get upgrade -y git
+            sudo apt-get upgrade -y git || return 1
             dlog "=== Finished (git) update ==="
-            return 0
             ;;
         "check")
-            dlog "=== Running (git) check ==="
+            dlog "=== Running (git) check ===" && \
             git --version >> /dev/null
             ;;
         *)
@@ -298,6 +298,9 @@ function mod_nvim() {
     case "$1" in
         "install")
             dlog "=== Running (nvim) install ==="
+            if ! [ -x "$(command -v add-apt-repository -h)" ]; then
+                sudo apt-get install -y software-properties-common || return 1
+            fi
             sudo add-apt-repository -y ppa:neovim-ppa/stable && \
             sudo apt-get update -y && \
             sudo apt-get install -y neovim python-dev python-pip python3-dev python3-pip && \
