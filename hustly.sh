@@ -245,33 +245,36 @@ function mod_rust() {
     case "$1" in
         "install")
             dlog "=== Running (rust) install ==="
-            curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-            source "$HOME/.cargo/env"
+            (curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y) && \
+            source "$HOME/.cargo/env" && \
+            dlog "[Rust] sourced $HOME/.cargo/env" && \
             rustup toolchain install nightly && \
+            dlog "[Rust] installed nightly toolchain" && \
             rustup default nightly && \
+                dlog "[Rust] set default to nightly" && \
                 rustup component add rls rust-analysis rust-src && \
                 cargo install racer && \
-            rustup default stable
+                dlog "[Rust] installed racer" && \
+            rustup default stable || return 1
+                dlog "[Rust] set default back to stable" && \
 
             if ! [ -f ~/.cargo/env ]; then
-                ln -s ~/.cargo/env "$DOTDIR/custom/cargo.zsh"
+                ln -s ~/.cargo/env "$DOTDIR/custom/cargo.zsh" || return 1
             fi
             dlog "=== Finished (rust) install ==="
-            return 0
             ;;
         "uninstall")
             dlog "=== Running (rust) uninstall ==="
-            rustup uninstall stable
-            rustup uninstall nightly
-            rustup self uninstall
+            rustup uninstall stable && \
+            rustup uninstall nightly && \
+            rustup self uninstall && \
             dlog "=== Finished (rust) uninstall ==="
-            return 0
             ;;
         "update")
             dlog "=== Running (rust) update ==="
-            rustup self update
-            rustup update stable
-            rustup update nightly
+            rustup self update && \
+            rustup update stable && \
+            rustup update nightly && \
             dlog "=== Finished (rust) update ==="
             return 0
             ;;

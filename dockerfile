@@ -5,7 +5,7 @@ MAINTAINER Morten Lund
 
 # OS Updates & Install
 RUN apt-get -y update
-RUN apt-get -y install sudo curl git
+RUN apt-get -y install sudo curl git vim
 
 # Create test user & add to suduers
 RUN useradd -m -s /bin/bash tester
@@ -26,10 +26,10 @@ RUN git clean -Xdf
 RUN git clean -xdf
 
 # Run Setup
-RUN ./hustly.sh install git
-RUN ./hustly.sh check git
-RUN ./hustly.sh update git
-RUN ./hustly.sh uninstall git
-RUN ./hustly.sh check git
+RUN ./hustly.sh -d install rust
+#RUN ./hustly.sh check rust
+#RUN ./hustly.sh update rust
+#RUN ./hustly.sh uninstall rust
+#RUN ./hustly.sh check rust
 
 CMD ["bash"]
