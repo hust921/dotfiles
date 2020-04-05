@@ -245,18 +245,19 @@ function mod_rust() {
     case "$1" in
         "install")
             dlog "=== Running (rust) install ==="
-            (curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y) && \
-            source "$HOME/.cargo/env" && \
-            dlog "[Rust] sourced $HOME/.cargo/env" && \
-            rustup toolchain install nightly && \
-            dlog "[Rust] installed nightly toolchain" && \
-            rustup default nightly && \
-                dlog "[Rust] set default to nightly" && \
-                rustup component add rls rust-analysis rust-src && \
-                cargo install racer && \
-                dlog "[Rust] installed racer" && \
-            rustup default stable || return 1
-                dlog "[Rust] set default back to stable" && \
+            dlog "installing rustup"
+            (curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y) || return 1
+            dlog "setting rust env in path (install only)"
+            source "$HOME/.cargo/env" || return 1
+            dlog "installing rustfmt (for formatting)"
+            rustup component add rustfmt || return 1
+            dlog "installing clippy (for semantic linting)"
+            rustup component add clippy || return 1
+            dlog "installing rls (Rust Language Server) & rust-src"
+            rustup component add rls rust-analysis rust-src || return 1
+            dlog "installing rust-analyzer"
+            sudo curl -L https://github.com/rust-analyzer/rust-analyzer/releases/download/nightly/rust-analyzer-linux -o /usr/local/bin/rust-analyzer && \
+            sudo chmod 755 /usr/local/bin/rust-analyzer
 
             if ! [ -f ~/.cargo/env ]; then
                 ln -s ~/.cargo/env "$DOTDIR/custom/cargo.zsh" || return 1
@@ -265,13 +266,13 @@ function mod_rust() {
             ;;
         "uninstall")
             dlog "=== Running (rust) uninstall ==="
-            rustup uninstall stable && \
-            rustup uninstall nightly && \
-            rustup self uninstall && \
+            source "$HOME/.cargo/env" || return 1
+            echo 'y' | rustup self uninstall || return 1
             dlog "=== Finished (rust) uninstall ==="
             ;;
         "update")
             dlog "=== Running (rust) update ==="
+            source "$HOME/.cargo/env" || return 1
             rustup self update && \
             rustup update stable && \
             rustup update nightly && \
@@ -280,13 +281,16 @@ function mod_rust() {
             ;;
         "check")
             dlog "=== Running (rust) check ==="
+            source "$HOME/.cargo/env" || return 1
             if rustup --version && cargo --version; then
-                dlog "=== Finished (rust) check ==="
-                return 0
+                if rust-analyzer --version; then
+                    dlog "=== Finished (rust) check ==="
+                    return 0
+                fi
+                echo "ERROR checking rust-analyzer (usr/local/bin/rust-analyzer)"
+                return 1
             else
                 echo "ERROR checking rustup & cargo version."
-                echo "rustup version: $(rustup --version)"
-                echo "cargo version: $(cargo --version)"
                 dlog "=== Finished (rust) check ==="
                 return 1;
             fi
@@ -301,25 +305,20 @@ function mod_nvim() {
     case "$1" in
         "install")
             dlog "=== Running (nvim) install ==="
-            if ! [ -x "$(command -v add-apt-repository -h)" ]; then
-                sudo apt-get install -y software-properties-common || return 1
-            fi
-            sudo add-apt-repository -y ppa:neovim-ppa/stable && \
-            sudo apt-get update -y && \
-            sudo apt-get install -y neovim python-dev python-pip python3-dev python3-pip && \
+            sudo apt-get install -y python-dev python-pip python3-dev python3-pip && \
             pip3 install pynvim jedi flake8 && \
-            curl -fLo "$HOME/.local/share/nvim/site/autoload/plug.vim" --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim && \
-            mkdir -p "$HOME/.config" && \
+            sudo curl -L https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage -o /usr/local/bin/nvim && \
+            sudo chmod 755 /usr/local/bin/nvim && \
+            mkdir -p "$HOME/.config" || return 1
             if ! [ -d "$HOME/.config/nvim" ]; then
                 ln -s "$DOTDIR/config/nvim" "$HOME/.config/nvim"
             fi && \
             nvim +PlugInstall +qall
             dlog "=== Finished (nvim) install ==="
-            return 0
             ;;
         "uninstall")
             dlog "=== Running (nvim) uninstall ==="
-            sudo apt-get remove --purge neovim
+            sudo rm -rf /usr/local/bin/nvim
             pip3 uninstall pynvim
             rm -rf "$HOME/.local/share/nvim"
             rm -rf "$HOME/.config/nvim"
@@ -328,16 +327,20 @@ function mod_nvim() {
             ;;
         "update")
             dlog "=== Running (nvim) update ==="
-            sudo apt-get upgrade -y neovim python-dev python-pip python3-dev python3-pip
-            pip3 install --upgrade pynvim jedi flake8
-            nvim +PlugUpgrade +qall
-            nvim +PlugUpdate +qall
+	    rm -rf /usr/local/bin/nvim && \
+            sudo apt-get upgrade -y python-dev python-pip python3-dev python3-pip && \
+            pip3 install --upgrade pynvim jedi flake8 && \
+            sudo curl -L https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage -o /usr/local/bin/nvim && \
+            sudo chmod 755 /usr/local/bin/nvim && \
+            nvim +PlugUpgrade +qall && \
+            nvim +PlugUpdate +qall || return 1
             dlog "=== Finished (nvim) update ==="
             return 0
             ;;
         "check")
             dlog "=== Running (nvim) check ==="
-            checklink "$HOME/.config/nvim" "$DOTDIR/config/nvim"
+            checklink "$HOME/.config/nvim" "$DOTDIR/config/nvim" && \
+            nvim --version
             ;;
         *)
             echo "$1 Didn't match anything operation for nvim"
