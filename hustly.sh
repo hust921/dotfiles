@@ -64,30 +64,36 @@ function mod_omz() {
     case "$1" in
         "install")
             dlog "=== Running (omz) install ==="
-            sudo apt-get install -y zsh screenfetch
-            sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-            ln -s "$DOTDIR/zshrc" "$HOME/.zshrc"
-            ln -s "$DOTDIR/custom" "$HOME/.oh-my-zsh/custom"
+            sudo apt-get install -y zsh screenfetch || return 1
+            rm -rf "$HOME/.oh-my-zsh"
+            sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" || return 1
+            sudo usermod -s /bin/zsh "$(whoami)" || return 1
+
+            rm -rf "$HOME/.zshrc"
+            ln -s "$DOTDIR/zshrc" "$HOME/.zshrc" || return 1
+
+            rm -rf "$HOME/.oh-my-zsh/custom"
+            ln -s "$DOTDIR/custom" "$HOME/.oh-my-zsh/custom" || return 1
+
             dlog "=== Finished (omz) install ==="
-            return 0
             ;;
         "uninstall")
             dlog "=== Running (omz) uninstall ==="
             rm -rf "$HOME/.oh-my-zsh/custom"
-            source "$HOME/.oh-my-zsh/tools/uninstall.sh"
+            source "$HOME/.oh-my-zsh/tools/uninstall.sh" || return 1
+            rm -rf "$HOME/.zshrc"
             dlog "=== Finished (omz) uninstall ==="
-            return 0
             ;;
         "update")
             dlog "=== Running (omz) update ==="
-            sudo apt-get upgrade -y zsh screenfetch
-            "$DOTDIR/update_oh_my_zsh.sh"
+            "$DOTDIR/update_oh_my_zsh.sh" || return 1
             dlog "=== Finished (omz) update ==="
-            return 0
             ;;
         "check")
             dlog "=== Running (omz) check ==="
-            env | grep -i '.oh-my-zsh' >> /dev/null
+            checklink "$DOTDIR/zshrc" "$HOME/.zshrc" && \
+            checklink "$DOTDIR/custom" "$HOME/.oh-my-zsh/custom" && \
+            echo $SHELL | grep -i 'zsh' >> /dev/null
             ;;
         *)
             echo "$1 Didn't match anything operation for OMZ"
@@ -100,33 +106,30 @@ function mod_fzf() {
         "install")
             dlog "=== Running (fzf) install ==="
             if ! [ -d "$HOME/.fzf" ]; then
-                git clone --depth 1 https://github.com/junegunn/fzf.git "$HOME/.fzf"
-                "$HOME/.fzf/install"
+                git clone --depth 1 https://github.com/junegunn/fzf.git "$HOME/.fzf" || return 1
+                "$HOME/.fzf/install" || return 1
             fi
 
             if ! [ -f "$DOTDIR/custom/fzf.zsh" ]; then
-                ln -s "$HOME/.fzf.zsh" "$DOTDIR/custom/fzf.zsh"
+                ln -s "$HOME/.fzf.zsh" "$DOTDIR/custom/fzf.zsh" || return 1
             fi
             dlog "=== Finished (fzf) install ==="
-            return 0
             ;;
         "uninstall")
             dlog "=== Running (fzf) uninstall ==="
-            rm -rf "$DOTDIR/custom/fzf.zsh"
-            "$HOME/.fzf/uninstall"
+            rm -rf "$DOTDIR/custom/fzf.zsh" || return 1
+            "$HOME/.fzf/uninstall" || return 1
             dlog "=== Finished (fzf) uninstall ==="
-            return 0
             ;;
         "update")
             dlog "=== Running (fzf) update ==="
             tempdirfzf="$(pwd)"
-            cd "$HOME/.fzf" && git pull && ./install
-            cd "$tempdirfzf"
+            cd "$HOME/.fzf" && git pull && ./install || return 1
+            cd "$tempdirfzf" || return 1
             dlog "=== Finished (fzf) update ==="
-            return 0
             ;;
         "check")
-            dlog "=== Running (fzf) check ==="
+            dlog "=== Running (fzf) check ===" && \
             checklink "$DOTDIR/custom/fzf.zsh" "$HOME/.fzf.zsh"
             ;;
         *)
@@ -139,31 +142,28 @@ function mod_tmux() {
     case "$1" in
         "install")
             dlog "=== Running (tmux) install ==="
-            sudo apt install -y tmux
+            sudo apt install -y tmux || return 1
             if [ -f ~/.tmux.conf ]; then
-                rm ~/.tmux.conf
+                rm ~/.tmux.conf || return 1
             fi
-            ln -s "$DOTDIR/tmux.conf" ~/.tmux.conf
+            ln -s "$DOTDIR/tmux.conf" ~/.tmux.conf || return 1
             dlog "=== Finished (tmux) install ==="
-            return 0
             ;;
         "uninstall")
             dlog "=== Running (tmux) uninstall ==="
             if [ -f ~/.tmux.conf ]; then
-                rm ~/.tmux.conf
+                rm ~/.tmux.conf || return 1
             fi
-            sudo apt --purge remove -y tmux
+            sudo apt --purge remove -y tmux || return 1
             dlog "=== Finished (tmux) uninstall ==="
-            return 0
             ;;
         "update")
             dlog "=== Running (tmux) update ==="
-            sudo apt update -y && sudo apt upgrade -y tmux
+            sudo apt update -y && sudo apt upgrade -y tmux || return 1
             dlog "=== Finished (tmux) update ==="
-            return 0
             ;;
         "check")
-            dlog "=== Running (tmux) check ==="
+            dlog "=== Running (tmux) check ===" && \
             checklink "$HOME/.tmux.conf" "$DOTDIR/tmux.conf"
             ;;
         *)
@@ -208,31 +208,31 @@ function mod_git() {
     case "$1" in
         "install")
             dlog "=== Running (git) install ==="
-            sudo apt-add-repository -y ppa:git-core/ppa
-            sudo apt-get update -y
-            sudo apt-get install -y git
+            if ! [ -x "$(command -v add-apt-repository -h)" ]; then
+                sudo apt-get install -y software-properties-common || return 1
+            fi
+            sudo apt-add-repository -y ppa:git-core/ppa && \
+            sudo apt-get update -y && \
+            sudo apt-get install -y git || return 1
 
             if [ -f "$HOME/.gitconfig" ]; then
-                rm "$HOME/.gitconfig"
+                rm "$HOME/.gitconfig" || return 1
             fi
-            cp "$DOTDIR/gitconfig" "$HOME/.gitconfig"
+            cp "$DOTDIR/gitconfig" "$HOME/.gitconfig" || return 1
             dlog "=== Finished (git) install ==="
-            return 0
             ;;
         "uninstall")
             dlog "=== Running (git) uninstall ==="
-            rm -rf "$HOME/.gitconfig"
+            rm -rf "$HOME/.gitconfig" || return 1
             dlog "=== Finished (git) uninstall ==="
-            return 0
             ;;
         "update")
             dlog "=== Running (git) update ==="
-            sudo apt-get upgrade -y git
+            sudo apt-get upgrade -y git || return 1
             dlog "=== Finished (git) update ==="
-            return 0
             ;;
         "check")
-            dlog "=== Running (git) check ==="
+            dlog "=== Running (git) check ===" && \
             git --version >> /dev/null
             ;;
         *)
@@ -298,6 +298,9 @@ function mod_nvim() {
     case "$1" in
         "install")
             dlog "=== Running (nvim) install ==="
+            if ! [ -x "$(command -v add-apt-repository -h)" ]; then
+                sudo apt-get install -y software-properties-common || return 1
+            fi
             sudo add-apt-repository -y ppa:neovim-ppa/stable && \
             sudo apt-get update -y && \
             sudo apt-get install -y neovim python-dev python-pip python3-dev python3-pip && \
