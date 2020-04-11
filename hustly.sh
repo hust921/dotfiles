@@ -181,18 +181,15 @@ function mod_mintty() {
             fi
             ln -s "$DOTDIR/minttyrc" "$HOME/.minttyrc"
             dlog "=== Finished (mintty) install ==="
-            return 0
             ;;
         "uninstall")
             dlog "=== Running (mintty) uninstall ==="
             rm -rf "$HOME/.minttyrc"
             dlog "=== Finished (mintty) uninstall ==="
-            return 0
             ;;
         "update")
             dlog "=== Running (mintty) update ==="
             dlog "=== Finished (mintty) update ==="
-            return 0
             ;;
         "check")
             dlog "=== Running (mintty) check ==="
@@ -277,7 +274,6 @@ function mod_rust() {
             rustup update stable && \
             rustup update nightly && \
             dlog "=== Finished (rust) update ==="
-            return 0
             ;;
         "check")
             dlog "=== Running (rust) check ==="
@@ -305,42 +301,58 @@ function mod_nvim() {
     case "$1" in
         "install")
             dlog "=== Running (nvim) install ==="
+            dlog "Installing apt-get deps"
             sudo apt-get install -y python-dev python-pip python3-dev python3-pip && \
+            dlog "Installing pip3 deps" && \
             pip3 install pynvim jedi flake8 && \
+            dlog "Downloading nvim appimage" && \
             sudo curl -L https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage -o /usr/local/bin/nvim && \
+            dlog "chmod'ing appimage" && \
             sudo chmod 755 /usr/local/bin/nvim && \
+            dlog "Downloading and installing vim-plug" && \
+            curl -fLo "$HOME/.local/share/nvim/site/autoload/plug.vim" --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim && \
+            dlog "Making $HOME/.config directory" && \
             mkdir -p "$HOME/.config" || return 1
+
             if ! [ -d "$HOME/.config/nvim" ]; then
-                ln -s "$DOTDIR/config/nvim" "$HOME/.config/nvim"
-            fi && \
-            nvim +PlugInstall +qall
+                ln -s "$DOTDIR/config/nvim" "$HOME/.config/nvim" || return 1
+            fi
+
+            dlog "Installing Neovim Plugins. Using (legacy) unpack for installation"
+            /usr/local/bin/nvim --appimage-extract-and-run +PlugInstall +UpdateRemotePlugins +qall || return 1
             dlog "=== Finished (nvim) install ==="
             ;;
         "uninstall")
             dlog "=== Running (nvim) uninstall ==="
-            sudo rm -rf /usr/local/bin/nvim
-            pip3 uninstall pynvim
-            rm -rf "$HOME/.local/share/nvim"
-            rm -rf "$HOME/.config/nvim"
+            dlog "Deleting nvim appimage" && \
+            sudo rm -rf /usr/local/bin/nvim && \
+            dlog "Uninstalling pynvim (pip3)" && \
+            pip3 uninstall -y pynvim && \
+            dlog "Deleting nvim config directories" && \
+            rm -rf "$HOME/.local/share/nvim" && \
+            rm -rf "$HOME/.config/nvim" && \
             dlog "=== Finished (nvim) uninstall ==="
-            return 0
             ;;
         "update")
             dlog "=== Running (nvim) update ==="
-	    rm -rf /usr/local/bin/nvim && \
+            dlog "Deleting nvim appimage" && \
+            sudo rm -rf /usr/local/bin/nvim && \
+            dlog "Upgrading apt-get deps" && \
             sudo apt-get upgrade -y python-dev python-pip python3-dev python3-pip && \
+            dlog "Installing pynvim, jedi & flake8 (pip3)" && \
             pip3 install --upgrade pynvim jedi flake8 && \
+            dlog "Downloading nvim appimage" && \
             sudo curl -L https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage -o /usr/local/bin/nvim && \
+            dlog "chmod'ing appimage" && \
             sudo chmod 755 /usr/local/bin/nvim && \
-            nvim +PlugUpgrade +qall && \
-            nvim +PlugUpdate +qall || return 1
+            dlog "Installing nvim plugins" && \
+            nvim --appimage-extract-and-run +PlugUpgrade +PlugUpdate +UpdateRemotePlugins +qall && \
             dlog "=== Finished (nvim) update ==="
-            return 0
             ;;
         "check")
             dlog "=== Running (nvim) check ==="
             checklink "$HOME/.config/nvim" "$DOTDIR/config/nvim" && \
-            nvim --version
+            nvim --appimage-extract-and-run --version
             ;;
         *)
             echo "$1 Didn't match anything operation for nvim"

@@ -248,8 +248,10 @@ call plug#end()
 
 " Rust completion
 " Use LSP omni-complete in Rust files
-lua require'nvim_lsp'.rust_analyzer.setup{}
-autocmd Filetype rust setlocal omnifunc=v:lua.vim.lsp.omnifunc
+if luaeval('not vim.tbl_isempty(vim.lsp.buf_get_clients())')
+    lua require'nvim_lsp'.rust_analyzer.setup{}
+    autocmd Filetype rust setlocal omnifunc=v:lua.vim.lsp.omnifunc
+endif
 
 
 "=== Local Overwrite {{{1          --

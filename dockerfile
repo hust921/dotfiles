@@ -5,7 +5,7 @@ MAINTAINER Morten Lund
 
 # OS Updates & Install
 RUN apt-get -y update
-RUN apt-get -y install sudo curl git vim gcc
+RUN apt-get -y install sudo curl git gcc
 
 # Create test user & add to suduers
 RUN useradd -m -s /bin/bash tester
@@ -26,10 +26,10 @@ RUN git clean -Xdf
 RUN git clean -xdf
 
 # Run Setup
-RUN ./hustly.sh install rust
-RUN ./hustly.sh check rust
-RUN ./hustly.sh update rust
-RUN ./hustly.sh uninstall rust
-RUN ./hustly.sh check rust
+RUN ./hustly.sh -d install nvim
+RUN ./hustly.sh -d check nvim
+RUN ./hustly.sh -d update nvim
+RUN ./hustly.sh -d uninstall nvim
+RUN ./hustly.sh -d check nvim
 
 CMD ["bash"]
