@@ -66,7 +66,13 @@ function mod_omz() {
             dlog "=== Running (omz) install ==="
             sudo apt-get install -y zsh screenfetch || return 1
             rm -rf "$HOME/.oh-my-zsh"
-            sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" || return 1
+            local omzscript=$(mktemp /tmp/omz-XXXXXXXX)
+            if [[ -f "$omzscript" ]]; then
+                rm -rf "$omzscript"
+            fi
+            curl -fsSL 'https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh' > "$omzscript"
+            chmod u+x "$omzscript"
+            sh -c "yes | $omzscript" || return 1
             sudo usermod -s /bin/zsh "$(whoami)" || return 1
 
             rm -rf "$HOME/.zshrc"
@@ -86,7 +92,25 @@ function mod_omz() {
             ;;
         "update")
             dlog "=== Running (omz) update ==="
-            "$DOTDIR/update_oh_my_zsh.sh" || return 1
+            # Reset and update OMZ git repo
+            cd "$HOME/.oh-my-zsh/"
+            git reset --hard HEAD
+            local gitreset=$?
+            cd $DOTDIR
+            if [[ "$gitreset" != 0 ]]; then
+                return 1
+            fi
+
+            # Update OMZ
+            env ZSH="$HOME/.oh-my-zsh" /bin/sh -c '
+                chmod u+x "$ZSH/tools/upgrade.sh"
+                yes | "$ZSH/tools/upgrade.sh"' || return 1
+
+            # Delete custom folder and link to dotfiles version
+            if [ -d ~/.oh-my-zsh/custom ]; then
+                rm -rf ~/.oh-my-zsh/custom || return 1
+            fi
+            ln -s $DOTDIR/custom ~/.oh-my-zsh/custom || return 1
             dlog "=== Finished (omz) update ==="
             ;;
         "check")
