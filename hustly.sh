@@ -6,31 +6,7 @@ FLAG_i=false
 FLAG_d=false
 readonly DOTDIR="$HOME/dotfiles"
 
-# ===== Global stacktrace =====
-# https://gist.github.com/ahendrix/7030300
-function errexit() {
-  local err=$?
-  set +o xtrace
-  local code="${1:-1}"
-  echo "Error in ${BASH_SOURCE[1]}:${BASH_LINENO[0]}. '${BASH_COMMAND}' exited with status $err"
-  # Print out the stack trace described by $function_stack  
-  if [ ${#FUNCNAME[@]} -gt 2 ]
-  then
-    echo "Call tree:"
-    for ((i=1;i<${#FUNCNAME[@]}-1;i++))
-    do
-      echo " $i: ${BASH_SOURCE[$i+1]}:${BASH_LINENO[$i]} ${FUNCNAME[$i]}(...)"
-    done
-  fi
-  echo "Exiting with status ${code}"
-  exit "${code}"
-}
-
-trap 'errexit' ERR
-set -o errtrace
-
 # ===== Global Settings / Variables =====
-set -o errexit   # to cause script to exit if any line fails
 set -o nounset   # to cause an error if you use an empty variable
 set -o noclobber # the '>' symbol not allowed to overwrite "existing" files
 set -o pipefail  # cmd_a | cmd_b . Fails if cmd_a doesn't cleanly exit (0) 
@@ -581,13 +557,17 @@ function mod_all() {
             
             # Run MODULE+Operation && print SUCCESS
             # Or print FAILURE
-            (${MODULES[$key]} $operation > $LOGFILE 2>&1 && echo -e "[\e[32mSUCCESS\e[49m\e[39m] [$key] [${operation^^}] Log: $LOGFILE") \
-            || (exitcode=99 &&  echo -e "[\e[31mFAILURE\e[49m\e[39m] [$key] [${operation^^}] Log: $LOGFILE")
+            if ${MODULES[$key]} $operation > $LOGFILE 2>&1; then
+                echo -e "[\e[32mSUCCESS\e[49m\e[39m] [$key] [${operation^^}] Log: $LOGFILE"
+            else
+                exitcode=99
+                echo -e "[\e[31mFAILURE\e[49m\e[39m] [$key] [${operation^^}] Log: $LOGFILE"
+            fi
         fi
     done
 
     if [[ $exitcode != 0 ]]; then
-        errexit 99
+        exit 99
     fi
 }
 
