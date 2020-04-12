@@ -57,6 +57,8 @@ function mod_omz() {
             rm -rf "$HOME/.oh-my-zsh/custom"
             ln -s "$DOTDIR/custom" "$HOME/.oh-my-zsh/custom" || return 1
 
+            rm -rf "$HOME/.zcompdump*" # Remove cache
+
             dlog "=== Finished (omz) install ==="
             ;;
         "uninstall")
@@ -64,6 +66,7 @@ function mod_omz() {
             rm -rf "$HOME/.oh-my-zsh/custom"
             source "$HOME/.oh-my-zsh/tools/uninstall.sh" || return 1
             rm -rf "$HOME/.zshrc"
+            rm -rf "$HOME/.zcompdump*" # Remove cache
             dlog "=== Finished (omz) uninstall ==="
             ;;
         "update")
@@ -87,6 +90,7 @@ function mod_omz() {
                 rm -rf ~/.oh-my-zsh/custom || return 1
             fi
             ln -s $DOTDIR/custom ~/.oh-my-zsh/custom || return 1
+            rm -rf "$HOME/.zcompdump*" # Remove cache
             dlog "=== Finished (omz) update ==="
             ;;
         "check")
