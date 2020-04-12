@@ -131,10 +131,11 @@ function mod_fzf() {
             dlog "=== Running (fzf) install ==="
             if ! [ -d "$HOME/.fzf" ]; then
                 git clone --depth 1 https://github.com/junegunn/fzf.git "$HOME/.fzf" || return 1
-                "$HOME/.fzf/install" || return 1
+                "$HOME/.fzf/install" --key-bindings --completion --no-update-rc || return 1
             fi
 
             if ! [ -f "$DOTDIR/custom/fzf.zsh" ]; then
+                dlog "Creating custom/fzf.zsh link"
                 ln -s "$HOME/.fzf.zsh" "$DOTDIR/custom/fzf.zsh" || return 1
             fi
             dlog "=== Finished (fzf) install ==="
@@ -148,7 +149,7 @@ function mod_fzf() {
         "update")
             dlog "=== Running (fzf) update ==="
             tempdirfzf="$(pwd)"
-            cd "$HOME/.fzf" && git pull && ./install || return 1
+            cd "$HOME/.fzf" && git pull && ./install --key-bindings --completion --no-update-rc || return 1
             cd "$tempdirfzf" || return 1
             dlog "=== Finished (fzf) update ==="
             ;;
@@ -565,6 +566,7 @@ function dlog() {
 function mod_all() {
     dlog "args: $*"
     local readonly operation=$1
+    exitcode=0
     shift # Shift remaining arguments (array of mod_func)
     local readonly moduleKeys=("$*")
 
@@ -579,12 +581,14 @@ function mod_all() {
             
             # Run MODULE+Operation && print SUCCESS
             # Or print FAILURE
-            (${MODULES[$key]} $operation > $LOGFILE 2>&1 \
-                && echo -e "[\e[32mSUCCESS\e[49m\e[39m] [$key] [${operation^^}] Log: $LOGFILE") \
-            || echo -e "[\e[31mFAILURE\e[49m\e[39m] [$key] [${operation^^}] Log: $LOGFILE"
-
+            (${MODULES[$key]} $operation > $LOGFILE 2>&1 && echo -e "[\e[32mSUCCESS\e[49m\e[39m] [$key] [${operation^^}] Log: $LOGFILE") \
+            || (exitcode=99 &&  echo -e "[\e[31mFAILURE\e[49m\e[39m] [$key] [${operation^^}] Log: $LOGFILE")
         fi
     done
+
+    if [[ $exitcode != 0 ]]; then
+        errexit 99
+    fi
 }
 
 # =============== Call main ===============
