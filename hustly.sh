@@ -433,6 +433,10 @@ function mod_rust() {
 }
 
 function mod_nvim() {
+    if ! [ -x "$(command -v add-apt-repository -h)" ]; then
+        sudo apt-get install -y software-properties-common || return 1
+    fi
+
     case "$1" in
         "install")
             dlog "=== Running (nvim) install ==="
@@ -440,10 +444,13 @@ function mod_nvim() {
             sudo apt-get install -y python-dev python-pip python3-dev python3-pip && \
             dlog "Installing pip3 deps" && \
             pip3 install pynvim jedi flake8 && \
-            dlog "Downloading nvim appimage" && \
-            sudo curl -L https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage -o /usr/local/bin/nvim && \
-            dlog "chmod'ing appimage" && \
-            sudo chmod 751 /usr/local/bin/nvim && \
+
+            dlog "Installing Nightly NeoVim"
+            sudo apt-get install -y software-properties-common && \
+            sudo add-apt-repository -y ppa:neovim-ppa/unstable && \
+            sudo apt-get update -y && \
+            sudo apt-get install -y neovim || return 1
+
             dlog "Downloading and installing vim-plug" && \
             curl -fLo "$HOME/.local/share/nvim/site/autoload/plug.vim" --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim && \
             dlog "Making $HOME/.config directory" && \
@@ -453,14 +460,13 @@ function mod_nvim() {
                 ln -s "$DOTDIR/config/nvim" "$HOME/.config/nvim" || return 1
             fi
 
-            dlog "Installing Neovim Plugins. Using (legacy) unpack for installation"
-            /usr/local/bin/nvim --appimage-extract-and-run +PlugInstall +UpdateRemotePlugins +qall || return 1
+            dlog "Installing Neovim Plugins"
+            /usr/bin/nvim +PlugInstall +UpdateRemotePlugins +qall || return 1
             dlog "=== Finished (nvim) install ==="
             ;;
         "uninstall")
             dlog "=== Running (nvim) uninstall ==="
-            dlog "Deleting nvim appimage" && \
-            sudo rm -rf /usr/local/bin/nvim && \
+            sudo apt-get --purge remove -y neovim && \
             dlog "Uninstalling pynvim (pip3)" && \
             pip3 uninstall -y pynvim && \
             dlog "Deleting nvim config directories" && \
@@ -470,24 +476,18 @@ function mod_nvim() {
             ;;
         "update")
             dlog "=== Running (nvim) update ==="
-            dlog "Deleting nvim appimage" && \
-            sudo rm -rf /usr/local/bin/nvim && \
             dlog "Upgrading apt-get deps" && \
-            sudo apt-get upgrade -y python-dev python-pip python3-dev python3-pip && \
+            sudo apt-get upgrade -y python-dev python-pip python3-dev python3-pip neovim && \
             dlog "Installing pynvim, jedi & flake8 (pip3)" && \
             pip3 install --upgrade pynvim jedi flake8 && \
-            dlog "Downloading nvim appimage" && \
-            sudo curl -L https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage -o /usr/local/bin/nvim && \
-            dlog "chmod'ing appimage" && \
-            sudo chmod 751 /usr/local/bin/nvim && \
             dlog "Installing nvim plugins" && \
-            nvim --appimage-extract-and-run +PlugUpgrade +PlugUpdate +UpdateRemotePlugins +qall && \
+            /usr/bin/nvim +PlugUpgrade +PlugUpdate +UpdateRemotePlugins +qall && \
             dlog "=== Finished (nvim) update ==="
             ;;
         "check")
             dlog "=== Running (nvim) check ==="
             checklink "$HOME/.config/nvim" "$DOTDIR/config/nvim" && \
-            nvim --appimage-extract-and-run --version
+            /usr/bin/nvim --version
             ;;
         *)
             echo "$1 Didn't match anything operation for nvim"
