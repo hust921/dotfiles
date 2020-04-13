@@ -37,7 +37,7 @@ fi
 # =====               Module Implementations              =====
 # ============================== ==============================
 function mod_omz() {
-    local plugins=$(find $DOTDIR/plugins/* -maxdepth 1 -type d -exec basename {} \;) || return 1
+    local plugins=$(find $DOTDIR/plugins/ -maxdepth 1 -type d -not -name plugins -exec basename {} \;) || return 1
     case "$1" in
         "install")
             dlog "=== Running (omz) install ==="
@@ -59,6 +59,8 @@ function mod_omz() {
             rm -rf "$HOME/.oh-my-zsh/custom"
             ln -s "$DOTDIR/custom" "$HOME/.oh-my-zsh/custom" || return 1
 
+            dlog "installing plugins"
+            "$DOTDIR/plugins/install.sh"
             dlog "linking .oh-my-zsh/plugins: "
             for plugname in $plugins; do
                 echo -e "$plugname, "
@@ -87,6 +89,8 @@ function mod_omz() {
             dlog "=== Running (omz) update ==="
             # Reset and update OMZ git repo
             cd "$HOME/.oh-my-zsh/"
+            rm -rf custom
+            rm -rf plugins
             git reset --hard HEAD
             local gitreset=$?
             cd $DOTDIR
@@ -106,6 +110,8 @@ function mod_omz() {
             ln -s $DOTDIR/custom ~/.oh-my-zsh/custom || return 1
 
             # Re-Linking plugins
+            dlog "updating plugins"
+            "$DOTDIR/plugins/install.sh"
             dlog "linking .oh-my-zsh/plugins: "
             for plugname in $plugins; do
                 echo -e "$plugname, "
