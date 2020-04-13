@@ -11,29 +11,16 @@ set -o nounset   # to cause an error if you use an empty variable
 set -o noclobber # the '>' symbol not allowed to overwrite "existing" files
 set -o pipefail  # cmd_a | cmd_b . Fails if cmd_a doesn't cleanly exit (0) 
 
-# Check if running WSL
-if grep -i "microsoft" /proc/version >> /dev/null; then
-    declare -rgA MODULES=(
-        [SYS]=mod_sys
-        [OMZ]=mod_omz
-        [FZF]=mod_fzf
-        [TMUX]=mod_tmux
-        [MINTTY]=mod_mintty
-        [GIT]=mod_git
-        [RUST]=mod_rust
-        [NVIM]=mod_nvim
-    )
-else
-    declare -rgA MODULES=(
-        [SYS]=mod_sys
-        [OMZ]=mod_omz
-        [FZF]=mod_fzf
-        [TMUX]=mod_tmux
-        [GIT]=mod_git
-        [RUST]=mod_rust
-        [NVIM]=mod_nvim
-    )
-fi
+declare -rgA MODULES=(
+    [SYS]=mod_sys
+    [OMZ]=mod_omz
+    [FZF]=mod_fzf
+    [TMUX]=mod_tmux
+    [MINTTY]=mod_mintty
+    [GIT]=mod_git
+    [RUST]=mod_rust
+    [NVIM]=mod_nvim
+)
 
 # ============================== ==============================
 # =====               Module Implementations              =====
@@ -308,6 +295,11 @@ function mod_tmux() {
 }
 
 function mod_mintty() {
+    # Skip if not running WSL
+    if grep -iv "microsoft" /proc/version >> /dev/null; then
+        return 0
+    fi
+
     case "$1" in
         "install")
             dlog "=== Running (mintty) install ==="
