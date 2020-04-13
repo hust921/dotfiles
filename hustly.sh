@@ -14,6 +14,7 @@ set -o pipefail  # cmd_a | cmd_b . Fails if cmd_a doesn't cleanly exit (0)
 # Check if running WSL
 if grep -i "microsoft" /proc/version >> /dev/null; then
     declare -rgA MODULES=(
+        [SYS]=mod_sys
         [OMZ]=mod_omz
         [FZF]=mod_fzf
         [TMUX]=mod_tmux
@@ -24,6 +25,7 @@ if grep -i "microsoft" /proc/version >> /dev/null; then
     )
 else
     declare -rgA MODULES=(
+        [SYS]=mod_sys
         [OMZ]=mod_omz
         [FZF]=mod_fzf
         [TMUX]=mod_tmux
@@ -134,6 +136,101 @@ function mod_omz() {
             ;;
         *)
             echo "$1 Didn't match anything operation for OMZ"
+            exit 2
+    esac
+}
+
+function mod_sys() {
+    case "$1" in
+        "install")
+            dlog "=== Running (sys) install ==="
+            echo -e "[\e[40m\e[31mWARNING\e[49m\e[39m] Installing fd-find. WARNING! using static .deb url. deprecated"
+            install_deb 'https://github.com/sharkdp/fd/releases/download/v7.5.0/fd-musl_7.5.0_amd64.deb' || return 1
+
+            echo -e "[\e[40m\e[31mWARNING\e[49m\e[39m] Installing ripgrep. WARNING! using static .deb url. deprecated"
+            install_deb 'https://github.com/BurntSushi/ripgrep/releases/download/11.0.2/ripgrep_11.0.2_amd64.deb' || return 1
+
+            dlog "Installing ag, the silver searcher"
+            sudo apt-get install -y silversearcher-ag || return 1
+
+            echo -e "[\e[40m\e[31mWARNING\e[49m\e[39m] Installing bat (cat alternative). WARNING! using static .deb url. deprecated"
+            install_deb 'https://github.com/sharkdp/bat/releases/download/v0.13.0/bat-musl_0.13.0_amd64.deb' || return 1
+
+            dlog "Installing jq (json processor)"
+            sudo apt-get install -y jq || return 1
+
+            dlog "Installing xq (xml processor)"
+            sudo curl -o /usr/local/bin/xq 'https://github.com/maiha/xq.cr/releases' && \
+            sudo chmod 751 /usr/local/bin/xq || return 1
+
+            dlog "Installing xmllint"
+            sudo apt install -y libxml2-utils
+
+            dlog "=== Finished (sys) install ==="
+            ;;
+        "uninstall")
+            dlog "=== Running (sys) uninstall ==="
+
+            dlog "Uninstalling fd-find"
+            sudo apt-get --purge remove -y fd-find  || return 1
+
+            dlog "Uninstalling ripgrep"
+            sudo dpkg --purge --force-all ripgrep || return 1
+
+            dlog "Uninstalling ag, the silver searcher"
+            sudo apt-get --purge remove -y silversearcher-ag || return 1
+
+            dlog "Uninstalling bat (cat alternative)"
+            sudo dpkg --purge --force-all bat || return 1
+
+            dlog "Uninstalling jq (json processor)"
+            sudo apt-get --purge remove -y jq || return 1
+
+            dlog "Uninstalling xq (xml processor)"
+            sudo rm -rf /usr/local/bin/xq
+
+            dlog "Uninstalling xmllint"
+            sudo apt-get --purge remove -y libxml2-utils || return 1
+
+            dlog "=== Finished (sys) uninstall ==="
+            ;;
+        "update")
+            dlog "=== Running (sys) update ==="
+
+            dlog "Updating fd-find"
+            sudo apt-get upgrade -y fd-find || return 1
+
+            dlog "Updating ripgrep"
+            echo -e "[\e[40m\e[31mWARNING\e[49m\e[39m] ripgrep is installed using a staic link to a .deb package. Can't do update."
+
+            dlog "Updating ag, the silver searcher"
+            sudo apt-get upgrade -y silversearcher-ag || return 1
+
+            dlog "Updating bat (cat alternative)"
+            echo -e "[\e[40m\e[31mWARNING\e[49m\e[39m] fd-find is installed using a staic link to a .deb package. Can't do update."
+
+            dlog "Updating jq (json processor)"
+            sudo apt-get upgrade -y jq || return 1
+
+            dlog "Updating xq (xml processor)"
+            echo -e "[\e[40m\e[31mWARNING\e[49m\e[39m] xq is installed using a staic link to a .deb package. Can't do update"
+
+            dlog "Updating xmllint"
+            sudo apt-get upgrade -y libxml2-utils || return 1
+
+            dlog "=== Finished (sys) update ==="
+            ;;
+        "check")
+            which fd && \
+            which rg && \
+            which ag && \
+            which bat && \
+            which jq && \
+            which xq && \
+            which xmllint || return 1
+            ;;
+        *)
+            echo "$1 Didn't match anything operation for SYS"
             exit 2
     esac
 }
@@ -292,7 +389,7 @@ function mod_rust() {
             rustup component add rls rust-analysis rust-src || return 1
             dlog "installing rust-analyzer"
             sudo curl -L https://github.com/rust-analyzer/rust-analyzer/releases/download/nightly/rust-analyzer-linux -o /usr/local/bin/rust-analyzer && \
-            sudo chmod 755 /usr/local/bin/rust-analyzer
+            sudo chmod 751 /usr/local/bin/rust-analyzer
 
             if ! [ -f ~/.cargo/env ]; then
                 ln -s ~/.cargo/env "$DOTDIR/custom/cargo.zsh" || return 1
@@ -346,7 +443,7 @@ function mod_nvim() {
             dlog "Downloading nvim appimage" && \
             sudo curl -L https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage -o /usr/local/bin/nvim && \
             dlog "chmod'ing appimage" && \
-            sudo chmod 755 /usr/local/bin/nvim && \
+            sudo chmod 751 /usr/local/bin/nvim && \
             dlog "Downloading and installing vim-plug" && \
             curl -fLo "$HOME/.local/share/nvim/site/autoload/plug.vim" --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim && \
             dlog "Making $HOME/.config directory" && \
@@ -382,7 +479,7 @@ function mod_nvim() {
             dlog "Downloading nvim appimage" && \
             sudo curl -L https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage -o /usr/local/bin/nvim && \
             dlog "chmod'ing appimage" && \
-            sudo chmod 755 /usr/local/bin/nvim && \
+            sudo chmod 751 /usr/local/bin/nvim && \
             dlog "Installing nvim plugins" && \
             nvim --appimage-extract-and-run +PlugUpgrade +PlugUpdate +UpdateRemotePlugins +qall && \
             dlog "=== Finished (nvim) update ==="
@@ -546,6 +643,13 @@ function checklink {
         return 1;
     fi
     #return [ -L "$1" ] && [ $(readlink -e "$1") == "$2"]
+}
+
+function install_deb() {
+    TEMP_DEB="$(mktemp).deb" && \
+    curl -fsSL -o "$TEMP_DEB" "$1" && \
+    sudo dpkg -i "$TEMP_DEB" && \
+    rm -f "$TEMP_DEB" || return 1
 }
 
 function get_log() {
