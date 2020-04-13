@@ -37,6 +37,7 @@ fi
 # =====               Module Implementations              =====
 # ============================== ==============================
 function mod_omz() {
+    local plugins=$(find $DOTDIR/plugins/* -maxdepth 1 -type d -exec basename {} \;) || return 1
     case "$1" in
         "install")
             dlog "=== Running (omz) install ==="
@@ -54,8 +55,16 @@ function mod_omz() {
             rm -rf "$HOME/.zshrc"
             ln -s "$DOTDIR/zshrc" "$HOME/.zshrc" || return 1
 
+            dlog "linking .oh-my-zsh/custom"
             rm -rf "$HOME/.oh-my-zsh/custom"
             ln -s "$DOTDIR/custom" "$HOME/.oh-my-zsh/custom" || return 1
+
+            dlog "linking .oh-my-zsh/plugins: "
+            for plugname in $plugins; do
+                echo -e "$plugname, "
+                ln -s "$DOTDIR/plugins/$plugname" "$HOME/.oh-my-zsh/plugins/$plugname" || return 1
+            done
+            echo ""
 
             rm -rf "$HOME/.zcompdump*" # Remove cache
 
@@ -63,8 +72,13 @@ function mod_omz() {
             ;;
         "uninstall")
             dlog "=== Running (omz) uninstall ==="
-            rm -rf "$HOME/.oh-my-zsh/custom"
-            source "$HOME/.oh-my-zsh/tools/uninstall.sh" || return 1
+            local currdir=$(pwd)
+            cd "$HOME/.oh-my-zsh"
+            rm -rf custom
+            rm -rf plugins
+            git reset --hard HEAD
+            yes | source "tools/uninstall.sh"
+            cd "$currdir"
             rm -rf "$HOME/.zshrc"
             rm -rf "$HOME/.zcompdump*" # Remove cache
             dlog "=== Finished (omz) uninstall ==="
@@ -90,6 +104,15 @@ function mod_omz() {
                 rm -rf ~/.oh-my-zsh/custom || return 1
             fi
             ln -s $DOTDIR/custom ~/.oh-my-zsh/custom || return 1
+
+            # Re-Linking plugins
+            dlog "linking .oh-my-zsh/plugins: "
+            for plugname in $plugins; do
+                echo -e "$plugname, "
+                ln -s "$DOTDIR/plugins/$plugname" "$HOME/.oh-my-zsh/plugins/$plugname" || return 1
+            done
+            echo ""
+
             rm -rf "$HOME/.zcompdump*" # Remove cache
             dlog "=== Finished (omz) update ==="
             ;;
@@ -97,7 +120,11 @@ function mod_omz() {
             dlog "=== Running (omz) check ==="
             checklink "$DOTDIR/zshrc" "$HOME/.zshrc" && \
             checklink "$DOTDIR/custom" "$HOME/.oh-my-zsh/custom" && \
-            echo $SHELL | grep -i 'zsh' >> /dev/null
+            echo $SHELL | grep -i 'zsh' >> /dev/null || return 1
+
+            for plugname in $plugins; do
+                checklink "$DOTDIR/plugins/$plugname" "$HOME/.oh-my-zsh/plugins/$plugname" || return 1
+            done
             ;;
         *)
             echo "$1 Didn't match anything operation for OMZ"
@@ -514,7 +541,6 @@ function checklink {
     fi
     #return [ -L "$1" ] && [ $(readlink -e "$1") == "$2"]
 }
-
 
 function get_log() {
     if [ $FLAG_d = true ]; then
