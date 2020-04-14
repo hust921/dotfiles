@@ -1,14 +1,17 @@
-#screenfetch -c 4,3
-#echo $fg_bold[red] "            *             )  "
-#echo $fg_bold[red]"    *   ) (  \`         ( /(  "
-#echo $fg_bold[orange]"  \` )  /( )\))(     (  )\()) "
-#echo $fg_bold[yellow]"   ( )(_)|(_)()\    )\((_)\  "
-#echo $fg_bold[green]"  (_(_())(_()((_)_ ((_)_((_) "
-#echo $fg_bold[cyan]"  |_   _||  \/  | | | \ \/ / "
-#echo $fg_bold[blue]"    | |  | |\/| | |_| |>  <  "
-#echo $fg_bold[brown]"    |_|  |_|  |_|\___//_/\_\ "
-#echo $fg_bold[black]"  "
-echo $fg_bold[black]"  ==== (tmux attach) ===="
-echo -n $fg_bold[yellow]
+# Ignore DISPLAY, xprop error
+DISPLAY_BACKUP=$DISPLAY; unset DISPLAY
+screenfetch -c 8,3
+DISPLAY=$DISPLAY_BACKUP; unset DISPLAY_BACKUP
+
+echo $fg_bold[green]"# Tmux Sessions: "
+echo -n $fg_bold[green]
 tmux list-sessions
 echo
+echo $fg_bold[blue]"# Alias of the day: "
+echo -n $fg_bold[blue]
+alias | sed -n $[${RANDOM}%$(alias|wc -l)]p
+echo -n $fg_bold[blue]
+alias | sed -n $[${RANDOM}%$(alias|wc -l)]p
+
+echo
+echo $fg_bold[magenta]"# SSH-Agent: "
