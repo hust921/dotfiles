@@ -12,7 +12,7 @@ set hidden " Allow unsaved files to be in buffer
 
 set spelllang=en,da
 syntax on
-set foldmethod=syntax
+set foldmethod=manual
 autocmd BufWinEnter * silent! :%foldopen!
 autocmd BufEnter * silent! lcd %:p:h
 
@@ -140,7 +140,9 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 " -- Specific language support:
 " -- https://github.com/Shougo/deoplete.nvim/wiki/Completion-Sources
 " -----
+Plug 'neovim/nvim-lsp'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'Shougo/deoplete-lsp'
 let g:deoplete#enable_at_startup = 1
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | silent! pclose | endif " Auto close doc_string window when complete
 
@@ -170,20 +172,6 @@ Plug 'Shougo/neco-vim'
 " -- Deoplete Plugin: autocomplete-flow {{{3
 " -- Javascript support for deoplete
 Plug 'wokalski/autocomplete-flow'
-
-" -- Deoplete Plugin: deoplete-rust
-" -- Rust completion using racer (cargo craite)
-Plug 'sebastianmarkow/deoplete-rust'
-Plug 'racer-rust/vim-racer'
-Plug 'rust-lang/rust.vim', { 'for': 'rust' }
-let g:rustfmt_autosave = 0
-let g:racer_experimental_completer = 1
-
-"let g:deoplete#sources#rust#racer_binary='~/.config/nvim/rustsetup/target/release/racer'
-"let g:deoplete#sources#rust#rust_source='~/.config/nvim/rustsetup/src'
-"let g:deoplete#sources#rust#show_duplicates=1
-""let g:deoplete#sources#rust#disable_keymap=1 " Disable gd & K
-"let g:deoplete#sources#rust#documentation_max_height=30
 
 " -- Deoplete Plugin: Shougo/deoplete-clangx {{{3
 " -- Clang C/C++ Completion support for deoplete
@@ -252,8 +240,19 @@ nnoremap <C-f> :Buffers<CR>
 nnoremap <C-k> :Commands<CR>
 nnoremap <C-t> :Tags<CR>
 
+" RON (Rust Objection Notation) support
+Plug 'ron-rs/ron.vim'
 
 call plug#end()
+
+
+" Rust completion
+" Use LSP omni-complete in Rust files
+if luaeval('not vim.tbl_isempty(vim.lsp.buf_get_clients())')
+    lua require'nvim_lsp'.rust_analyzer.setup{}
+    autocmd Filetype rust setlocal omnifunc=v:lua.vim.lsp.omnifunc
+endif
+
 
 "=== Local Overwrite {{{1          --
 " -----------------------------------

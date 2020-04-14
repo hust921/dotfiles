@@ -30,3 +30,13 @@ alias vim='nvim'
 alias vi='nvim'
 alias grep='grep --color=always'
 alias less='less -R'
+
+# DockerClean all containers & delete images
+if [ -x "$(command -v docker)" ]; then
+    dockerclean()
+    {
+        docker stop $(docker ps -a -q);
+        docker rm $(docker ps -a -q);
+        docker rmi $(docker images -q)
+    }
+fi

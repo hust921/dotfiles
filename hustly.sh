@@ -34,15 +34,28 @@ set -o errexit   # to cause script to exit if any line fails
 set -o nounset   # to cause an error if you use an empty variable
 set -o noclobber # the '>' symbol not allowed to overwrite "existing" files
 set -o pipefail  # cmd_a | cmd_b . Fails if cmd_a doesn't cleanly exit (0) 
-declare -rgA MODULES=(
-    [OMZ]=mod_omz
-    [FZF]=mod_fzf
-    [TMUX]=mod_tmux
-    [MINTTY]=mod_mintty
-    [GIT]=mod_git
-    [RUST]=mod_rust
-    [NVIM]=mod_nvim
-)
+
+# Check if running WSL
+if grep -i "microsoft" /proc/version >> /dev/null; then
+    declare -rgA MODULES=(
+        [OMZ]=mod_omz
+        [FZF]=mod_fzf
+        [TMUX]=mod_tmux
+        [MINTTY]=mod_mintty
+        [GIT]=mod_git
+        [RUST]=mod_rust
+        [NVIM]=mod_nvim
+    )
+else
+    declare -rgA MODULES=(
+        [OMZ]=mod_omz
+        [FZF]=mod_fzf
+        [TMUX]=mod_tmux
+        [GIT]=mod_git
+        [RUST]=mod_rust
+        [NVIM]=mod_nvim
+    )
+fi
 
 # ============================== ==============================
 # =====               Module Implementations              =====
@@ -50,20 +63,61 @@ declare -rgA MODULES=(
 function mod_omz() {
     case "$1" in
         "install")
-            echo "Running (omz) install"
-            return 1
+            dlog "=== Running (omz) install ==="
+            sudo apt-get install -y zsh screenfetch || return 1
+            rm -rf "$HOME/.oh-my-zsh"
+            local omzscript=$(mktemp /tmp/omz-XXXXXXXX)
+            if [[ -f "$omzscript" ]]; then
+                rm -rf "$omzscript"
+            fi
+            curl -fsSL 'https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh' > "$omzscript"
+            chmod u+x "$omzscript"
+            sh -c "yes | $omzscript" || return 1
+            sudo usermod -s /bin/zsh "$(whoami)" || return 1
+
+            rm -rf "$HOME/.zshrc"
+            ln -s "$DOTDIR/zshrc" "$HOME/.zshrc" || return 1
+
+            rm -rf "$HOME/.oh-my-zsh/custom"
+            ln -s "$DOTDIR/custom" "$HOME/.oh-my-zsh/custom" || return 1
+
+            dlog "=== Finished (omz) install ==="
             ;;
         "uninstall")
-            echo "Running (omz) uninstall"
-            return 1
+            dlog "=== Running (omz) uninstall ==="
+            rm -rf "$HOME/.oh-my-zsh/custom"
+            source "$HOME/.oh-my-zsh/tools/uninstall.sh" || return 1
+            rm -rf "$HOME/.zshrc"
+            dlog "=== Finished (omz) uninstall ==="
             ;;
         "update")
-            echo "Running (omz) update"
-            return 1
+            dlog "=== Running (omz) update ==="
+            # Reset and update OMZ git repo
+            cd "$HOME/.oh-my-zsh/"
+            git reset --hard HEAD
+            local gitreset=$?
+            cd $DOTDIR
+            if [[ "$gitreset" != 0 ]]; then
+                return 1
+            fi
+
+            # Update OMZ
+            env ZSH="$HOME/.oh-my-zsh" /bin/sh -c '
+                chmod u+x "$ZSH/tools/upgrade.sh"
+                yes | "$ZSH/tools/upgrade.sh"' || return 1
+
+            # Delete custom folder and link to dotfiles version
+            if [ -d ~/.oh-my-zsh/custom ]; then
+                rm -rf ~/.oh-my-zsh/custom || return 1
+            fi
+            ln -s $DOTDIR/custom ~/.oh-my-zsh/custom || return 1
+            dlog "=== Finished (omz) update ==="
             ;;
         "check")
-            echo "Running (omz) check"
-            return 1
+            dlog "=== Running (omz) check ==="
+            checklink "$DOTDIR/zshrc" "$HOME/.zshrc" && \
+            checklink "$DOTDIR/custom" "$HOME/.oh-my-zsh/custom" && \
+            echo $SHELL | grep -i 'zsh' >> /dev/null
             ;;
         *)
             echo "$1 Didn't match anything operation for OMZ"
@@ -74,20 +128,33 @@ function mod_omz() {
 function mod_fzf() {
     case "$1" in
         "install")
-            echo "Running (fzf) install"
-            return 1
+            dlog "=== Running (fzf) install ==="
+            if ! [ -d "$HOME/.fzf" ]; then
+                git clone --depth 1 https://github.com/junegunn/fzf.git "$HOME/.fzf" || return 1
+                "$HOME/.fzf/install" || return 1
+            fi
+
+            if ! [ -f "$DOTDIR/custom/fzf.zsh" ]; then
+                ln -s "$HOME/.fzf.zsh" "$DOTDIR/custom/fzf.zsh" || return 1
+            fi
+            dlog "=== Finished (fzf) install ==="
             ;;
         "uninstall")
-            echo "Running (fzf) uninstall"
-            return 1
+            dlog "=== Running (fzf) uninstall ==="
+            rm -rf "$DOTDIR/custom/fzf.zsh" || return 1
+            "$HOME/.fzf/uninstall" || return 1
+            dlog "=== Finished (fzf) uninstall ==="
             ;;
         "update")
-            echo "Running (fzf) update"
-            return 1
+            dlog "=== Running (fzf) update ==="
+            tempdirfzf="$(pwd)"
+            cd "$HOME/.fzf" && git pull && ./install || return 1
+            cd "$tempdirfzf" || return 1
+            dlog "=== Finished (fzf) update ==="
             ;;
         "check")
-            echo "Running (fzf) check"
-            return 1
+            dlog "=== Running (fzf) check ===" && \
+            checklink "$DOTDIR/custom/fzf.zsh" "$HOME/.fzf.zsh"
             ;;
         *)
             echo "$1 Didn't match anything operation for fzf"
@@ -98,32 +165,29 @@ function mod_fzf() {
 function mod_tmux() {
     case "$1" in
         "install")
-            echo "=== Running (tmux) install ==="
-            sudo apt install -y tmux
+            dlog "=== Running (tmux) install ==="
+            sudo apt install -y tmux || return 1
             if [ -f ~/.tmux.conf ]; then
-                rm ~/.tmux.conf
+                rm ~/.tmux.conf || return 1
             fi
-            ln -s "$DOTDIR/tmux.conf" ~/.tmux.conf
-            echo "=== Finished (tmux) install ==="
-            return 0
+            ln -s "$DOTDIR/tmux.conf" ~/.tmux.conf || return 1
+            dlog "=== Finished (tmux) install ==="
             ;;
         "uninstall")
-            echo "=== Running (tmux) uninstall ==="
+            dlog "=== Running (tmux) uninstall ==="
             if [ -f ~/.tmux.conf ]; then
-                rm ~/.tmux.conf
+                rm ~/.tmux.conf || return 1
             fi
-            sudo apt --purge remove -y tmux
-            echo "=== Finished (tmux) uninstall ==="
-            return 0
+            sudo apt --purge remove -y tmux || return 1
+            dlog "=== Finished (tmux) uninstall ==="
             ;;
         "update")
-            echo "=== Running (tmux) update ==="
-            sudo apt update -y && sudo apt upgrade -y tmux
-            echo "=== Finished (tmux) update ==="
-            return 0
+            dlog "=== Running (tmux) update ==="
+            sudo apt update -y && sudo apt upgrade -y tmux || return 1
+            dlog "=== Finished (tmux) update ==="
             ;;
         "check")
-            echo "=== Running (tmux) check ==="
+            dlog "=== Running (tmux) check ===" && \
             checklink "$HOME/.tmux.conf" "$DOTDIR/tmux.conf"
             ;;
         *)
@@ -135,20 +199,25 @@ function mod_tmux() {
 function mod_mintty() {
     case "$1" in
         "install")
-            echo "Running (mintty) install"
-            return 1
+            dlog "=== Running (mintty) install ==="
+            if [ -f ~/.minttyrc ]; then
+                rm ~/.minttyrc
+            fi
+            ln -s "$DOTDIR/minttyrc" "$HOME/.minttyrc"
+            dlog "=== Finished (mintty) install ==="
             ;;
         "uninstall")
-            echo "Running (mintty) uninstall"
-            return 1
+            dlog "=== Running (mintty) uninstall ==="
+            rm -rf "$HOME/.minttyrc"
+            dlog "=== Finished (mintty) uninstall ==="
             ;;
         "update")
-            echo "Running (mintty) update"
-            return 1
+            dlog "=== Running (mintty) update ==="
+            dlog "=== Finished (mintty) update ==="
             ;;
         "check")
-            echo "Running (mintty) check"
-            return 1
+            dlog "=== Running (mintty) check ==="
+            checklink "$HOME/.minttyrc" "$DOTDIR/minttyrc"
             ;;
         *)
             echo "$1 Didn't match anything operation for mintty"
@@ -159,20 +228,33 @@ function mod_mintty() {
 function mod_git() {
     case "$1" in
         "install")
-            echo "Running (git) install"
-            return 1
+            dlog "=== Running (git) install ==="
+            if ! [ -x "$(command -v add-apt-repository -h)" ]; then
+                sudo apt-get install -y software-properties-common || return 1
+            fi
+            sudo apt-add-repository -y ppa:git-core/ppa && \
+            sudo apt-get update -y && \
+            sudo apt-get install -y git || return 1
+
+            if [ -f "$HOME/.gitconfig" ]; then
+                rm "$HOME/.gitconfig" || return 1
+            fi
+            cp "$DOTDIR/gitconfig" "$HOME/.gitconfig" || return 1
+            dlog "=== Finished (git) install ==="
             ;;
         "uninstall")
-            echo "Running (git) uninstall"
-            return 1
+            dlog "=== Running (git) uninstall ==="
+            rm -rf "$HOME/.gitconfig" || return 1
+            dlog "=== Finished (git) uninstall ==="
             ;;
         "update")
-            echo "Running (git) update"
-            return 1
+            dlog "=== Running (git) update ==="
+            sudo apt-get upgrade -y git || return 1
+            dlog "=== Finished (git) update ==="
             ;;
         "check")
-            echo "Running (git) check"
-            return 1
+            dlog "=== Running (git) check ===" && \
+            git --version >> /dev/null
             ;;
         *)
             echo "$1 Didn't match anything operation for git"
@@ -183,20 +265,55 @@ function mod_git() {
 function mod_rust() {
     case "$1" in
         "install")
-            echo "Running (rust) install"
-            return 1
+            dlog "=== Running (rust) install ==="
+            dlog "installing rustup"
+            (curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y) || return 1
+            dlog "setting rust env in path (install only)"
+            source "$HOME/.cargo/env" || return 1
+            dlog "installing rustfmt (for formatting)"
+            rustup component add rustfmt || return 1
+            dlog "installing clippy (for semantic linting)"
+            rustup component add clippy || return 1
+            dlog "installing rls (Rust Language Server) & rust-src"
+            rustup component add rls rust-analysis rust-src || return 1
+            dlog "installing rust-analyzer"
+            sudo curl -L https://github.com/rust-analyzer/rust-analyzer/releases/download/nightly/rust-analyzer-linux -o /usr/local/bin/rust-analyzer && \
+            sudo chmod 755 /usr/local/bin/rust-analyzer
+
+            if ! [ -f ~/.cargo/env ]; then
+                ln -s ~/.cargo/env "$DOTDIR/custom/cargo.zsh" || return 1
+            fi
+            dlog "=== Finished (rust) install ==="
             ;;
         "uninstall")
-            echo "Running (rust) uninstall"
-            return 1
+            dlog "=== Running (rust) uninstall ==="
+            source "$HOME/.cargo/env" || return 1
+            echo 'y' | rustup self uninstall || return 1
+            dlog "=== Finished (rust) uninstall ==="
             ;;
         "update")
-            echo "Running (rust) update"
-            return 1
+            dlog "=== Running (rust) update ==="
+            source "$HOME/.cargo/env" || return 1
+            rustup self update && \
+            rustup update stable && \
+            rustup update nightly && \
+            dlog "=== Finished (rust) update ==="
             ;;
         "check")
-            echo "Running (rust) check"
-            return 1
+            dlog "=== Running (rust) check ==="
+            source "$HOME/.cargo/env" || return 1
+            if rustup --version && cargo --version; then
+                if rust-analyzer --version; then
+                    dlog "=== Finished (rust) check ==="
+                    return 0
+                fi
+                echo "ERROR checking rust-analyzer (usr/local/bin/rust-analyzer)"
+                return 1
+            else
+                echo "ERROR checking rustup & cargo version."
+                dlog "=== Finished (rust) check ==="
+                return 1;
+            fi
             ;;
         *)
             echo "$1 Didn't match anything operation for rust"
@@ -207,20 +324,59 @@ function mod_rust() {
 function mod_nvim() {
     case "$1" in
         "install")
-            echo "Running (nvim) install"
-            return 1
+            dlog "=== Running (nvim) install ==="
+            dlog "Installing apt-get deps"
+            sudo apt-get install -y python-dev python-pip python3-dev python3-pip && \
+            dlog "Installing pip3 deps" && \
+            pip3 install pynvim jedi flake8 && \
+            dlog "Downloading nvim appimage" && \
+            sudo curl -L https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage -o /usr/local/bin/nvim && \
+            dlog "chmod'ing appimage" && \
+            sudo chmod 755 /usr/local/bin/nvim && \
+            dlog "Downloading and installing vim-plug" && \
+            curl -fLo "$HOME/.local/share/nvim/site/autoload/plug.vim" --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim && \
+            dlog "Making $HOME/.config directory" && \
+            mkdir -p "$HOME/.config" || return 1
+
+            if ! [ -d "$HOME/.config/nvim" ]; then
+                ln -s "$DOTDIR/config/nvim" "$HOME/.config/nvim" || return 1
+            fi
+
+            dlog "Installing Neovim Plugins. Using (legacy) unpack for installation"
+            /usr/local/bin/nvim --appimage-extract-and-run +PlugInstall +UpdateRemotePlugins +qall || return 1
+            dlog "=== Finished (nvim) install ==="
             ;;
         "uninstall")
-            echo "Running (nvim) uninstall"
-            return 1
+            dlog "=== Running (nvim) uninstall ==="
+            dlog "Deleting nvim appimage" && \
+            sudo rm -rf /usr/local/bin/nvim && \
+            dlog "Uninstalling pynvim (pip3)" && \
+            pip3 uninstall -y pynvim && \
+            dlog "Deleting nvim config directories" && \
+            rm -rf "$HOME/.local/share/nvim" && \
+            rm -rf "$HOME/.config/nvim" && \
+            dlog "=== Finished (nvim) uninstall ==="
             ;;
         "update")
-            echo "Running (nvim) update"
-            return 1
+            dlog "=== Running (nvim) update ==="
+            dlog "Deleting nvim appimage" && \
+            sudo rm -rf /usr/local/bin/nvim && \
+            dlog "Upgrading apt-get deps" && \
+            sudo apt-get upgrade -y python-dev python-pip python3-dev python3-pip && \
+            dlog "Installing pynvim, jedi & flake8 (pip3)" && \
+            pip3 install --upgrade pynvim jedi flake8 && \
+            dlog "Downloading nvim appimage" && \
+            sudo curl -L https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage -o /usr/local/bin/nvim && \
+            dlog "chmod'ing appimage" && \
+            sudo chmod 755 /usr/local/bin/nvim && \
+            dlog "Installing nvim plugins" && \
+            nvim --appimage-extract-and-run +PlugUpgrade +PlugUpdate +UpdateRemotePlugins +qall && \
+            dlog "=== Finished (nvim) update ==="
             ;;
         "check")
-            echo "Running (nvim) check"
-            return 1
+            dlog "=== Running (nvim) check ==="
+            checklink "$HOME/.config/nvim" "$DOTDIR/config/nvim" && \
+            nvim --appimage-extract-and-run --version
             ;;
         *)
             echo "$1 Didn't match anything operation for nvim"
@@ -306,7 +462,7 @@ function parse_subcommand_args() {
         for m in "$@"; do
             local mUpper=${m^^}
             if [ ${MODULES["$mUpper"]+x} ]; then
-                mods+=$mUpper
+                mods+=("$mUpper")
             else
                 print_help "Unknown module name: \"$mUpper\""
             fi
@@ -380,6 +536,11 @@ function checklink {
 
 
 function get_log() {
+    if [ $FLAG_d = true ]; then
+        LOGFILE="/dev/stdout"
+        return 0
+    fi
+
     if [ -z ${LOGDIR+x} ]; then
         LOGDIR=$(mktemp -d -t hustly-XXXXXXXXXX)
     fi

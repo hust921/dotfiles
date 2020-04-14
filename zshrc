@@ -50,11 +50,11 @@ HIST_STAMPS="dd/mm/yyyy"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git dirhistory)
+plugins=(git git-flow dirhistory command-not-found colored-man-pages cargo fd ripgrep rust)
 
 # User configuration
 
-export PATH=".:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:/home/hust921/.local/bin"
+export PATH=".:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:$HOME/.local/bin"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
