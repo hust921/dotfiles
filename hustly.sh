@@ -53,7 +53,8 @@ function mod_omz() {
             dlog "linking .oh-my-zsh/plugins: "
             for plugname in $plugins; do
                 echo -e "$plugname, "
-                ln -s "$DOTDIR/plugins/$plugname" "$HOME/.oh-my-zsh/plugins/$plugname" || return 1
+                ln -s "$DOTDIR/plugins/$plugname" "$HOME/.oh-my-zsh/plugins/$plugname" && \
+                chmod -R go-w "$HOME/.oh-my-zsh/plugins/$plugname" || return 1
             done
             echo ""
 
