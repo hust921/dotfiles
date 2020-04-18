@@ -6,61 +6,27 @@ FLAG_i=false
 FLAG_d=false
 readonly DOTDIR="$HOME/dotfiles"
 
-# ===== Global stacktrace =====
-# https://gist.github.com/ahendrix/7030300
-function errexit() {
-  local err=$?
-  set +o xtrace
-  local code="${1:-1}"
-  echo "Error in ${BASH_SOURCE[1]}:${BASH_LINENO[0]}. '${BASH_COMMAND}' exited with status $err"
-  # Print out the stack trace described by $function_stack  
-  if [ ${#FUNCNAME[@]} -gt 2 ]
-  then
-    echo "Call tree:"
-    for ((i=1;i<${#FUNCNAME[@]}-1;i++))
-    do
-      echo " $i: ${BASH_SOURCE[$i+1]}:${BASH_LINENO[$i]} ${FUNCNAME[$i]}(...)"
-    done
-  fi
-  echo "Exiting with status ${code}"
-  exit "${code}"
-}
-
-trap 'errexit' ERR
-set -o errtrace
-
 # ===== Global Settings / Variables =====
-set -o errexit   # to cause script to exit if any line fails
 set -o nounset   # to cause an error if you use an empty variable
 set -o noclobber # the '>' symbol not allowed to overwrite "existing" files
 set -o pipefail  # cmd_a | cmd_b . Fails if cmd_a doesn't cleanly exit (0) 
 
-# Check if running WSL
-if grep -i "microsoft" /proc/version >> /dev/null; then
-    declare -rgA MODULES=(
-        [OMZ]=mod_omz
-        [FZF]=mod_fzf
-        [TMUX]=mod_tmux
-        [MINTTY]=mod_mintty
-        [GIT]=mod_git
-        [RUST]=mod_rust
-        [NVIM]=mod_nvim
-    )
-else
-    declare -rgA MODULES=(
-        [OMZ]=mod_omz
-        [FZF]=mod_fzf
-        [TMUX]=mod_tmux
-        [GIT]=mod_git
-        [RUST]=mod_rust
-        [NVIM]=mod_nvim
-    )
-fi
+declare -rgA MODULES=(
+    [SYS]=mod_sys
+    [OMZ]=mod_omz
+    [FZF]=mod_fzf
+    [TMUX]=mod_tmux
+    [MINTTY]=mod_mintty
+    [GIT]=mod_git
+    [RUST]=mod_rust
+    [NVIM]=mod_nvim
+)
 
 # ============================== ==============================
 # =====               Module Implementations              =====
 # ============================== ==============================
 function mod_omz() {
+    local plugins=$(find $DOTDIR/plugins/ -maxdepth 1 -type d -not -name plugins -exec basename {} \;) || return 1
     case "$1" in
         "install")
             dlog "=== Running (omz) install ==="
@@ -78,22 +44,42 @@ function mod_omz() {
             rm -rf "$HOME/.zshrc"
             ln -s "$DOTDIR/zshrc" "$HOME/.zshrc" || return 1
 
+            dlog "linking .oh-my-zsh/custom"
             rm -rf "$HOME/.oh-my-zsh/custom"
             ln -s "$DOTDIR/custom" "$HOME/.oh-my-zsh/custom" || return 1
+
+            dlog "installing plugins"
+            "$DOTDIR/plugins/install.sh"
+            dlog "linking .oh-my-zsh/plugins: "
+            for plugname in $plugins; do
+                echo -e "$plugname, "
+                ln -s "$DOTDIR/plugins/$plugname" "$HOME/.oh-my-zsh/plugins/$plugname" || return 1
+            done
+            echo ""
+
+            rm -rf "$HOME/.zcompdump*" # Remove cache
 
             dlog "=== Finished (omz) install ==="
             ;;
         "uninstall")
             dlog "=== Running (omz) uninstall ==="
-            rm -rf "$HOME/.oh-my-zsh/custom"
-            source "$HOME/.oh-my-zsh/tools/uninstall.sh" || return 1
+            local currdir=$(pwd)
+            cd "$HOME/.oh-my-zsh"
+            rm -rf custom
+            rm -rf plugins
+            git reset --hard HEAD
+            yes | source "tools/uninstall.sh"
+            cd "$currdir"
             rm -rf "$HOME/.zshrc"
+            rm -rf "$HOME/.zcompdump*" # Remove cache
             dlog "=== Finished (omz) uninstall ==="
             ;;
         "update")
             dlog "=== Running (omz) update ==="
             # Reset and update OMZ git repo
             cd "$HOME/.oh-my-zsh/"
+            rm -rf custom
+            rm -rf plugins
             git reset --hard HEAD
             local gitreset=$?
             cd $DOTDIR
@@ -111,16 +97,127 @@ function mod_omz() {
                 rm -rf ~/.oh-my-zsh/custom || return 1
             fi
             ln -s $DOTDIR/custom ~/.oh-my-zsh/custom || return 1
+
+            # Re-Linking plugins
+            dlog "updating plugins"
+            "$DOTDIR/plugins/install.sh"
+            dlog "linking .oh-my-zsh/plugins: "
+            for plugname in $plugins; do
+                echo -e "$plugname, "
+                ln -s "$DOTDIR/plugins/$plugname" "$HOME/.oh-my-zsh/plugins/$plugname" || return 1
+            done
+            echo ""
+
+            rm -rf "$HOME/.zcompdump*" # Remove cache
             dlog "=== Finished (omz) update ==="
             ;;
         "check")
             dlog "=== Running (omz) check ==="
             checklink "$DOTDIR/zshrc" "$HOME/.zshrc" && \
             checklink "$DOTDIR/custom" "$HOME/.oh-my-zsh/custom" && \
-            echo $SHELL | grep -i 'zsh' >> /dev/null
+            echo $SHELL | grep -i 'zsh' >> /dev/null || return 1
+
+            for plugname in $plugins; do
+                checklink "$DOTDIR/plugins/$plugname" "$HOME/.oh-my-zsh/plugins/$plugname" || return 1
+            done
             ;;
         *)
             echo "$1 Didn't match anything operation for OMZ"
+            exit 2
+    esac
+}
+
+function mod_sys() {
+    case "$1" in
+        "install")
+            dlog "=== Running (sys) install ==="
+            echo -e "[\e[40m\e[31mWARNING\e[49m\e[39m] Installing fd-find. WARNING! using static .deb url. deprecated"
+            install_deb 'https://github.com/sharkdp/fd/releases/download/v7.5.0/fd-musl_7.5.0_amd64.deb' || return 1
+
+            echo -e "[\e[40m\e[31mWARNING\e[49m\e[39m] Installing ripgrep. WARNING! using static .deb url. deprecated"
+            install_deb 'https://github.com/BurntSushi/ripgrep/releases/download/11.0.2/ripgrep_11.0.2_amd64.deb' || return 1
+
+            dlog "Installing ag, the silver searcher"
+            sudo apt-get install -y silversearcher-ag || return 1
+
+            echo -e "[\e[40m\e[31mWARNING\e[49m\e[39m] Installing bat (cat alternative). WARNING! using static .deb url. deprecated"
+            install_deb 'https://github.com/sharkdp/bat/releases/download/v0.13.0/bat-musl_0.13.0_amd64.deb' || return 1
+
+            dlog "Installing jq (json processor)"
+            sudo apt-get install -y jq || return 1
+
+            dlog "Installing xq (xml processor)"
+            sudo curl -o /usr/local/bin/xq 'https://github.com/maiha/xq.cr/releases' && \
+            sudo chmod 751 /usr/local/bin/xq || return 1
+
+            dlog "Installing xmllint"
+            sudo apt install -y libxml2-utils
+
+            dlog "=== Finished (sys) install ==="
+            ;;
+        "uninstall")
+            dlog "=== Running (sys) uninstall ==="
+
+            dlog "Uninstalling fd-find"
+            sudo apt-get --purge remove -y fd-find  || return 1
+
+            dlog "Uninstalling ripgrep"
+            sudo dpkg --purge --force-all ripgrep || return 1
+
+            dlog "Uninstalling ag, the silver searcher"
+            sudo apt-get --purge remove -y silversearcher-ag || return 1
+
+            dlog "Uninstalling bat (cat alternative)"
+            sudo dpkg --purge --force-all bat || return 1
+
+            dlog "Uninstalling jq (json processor)"
+            sudo apt-get --purge remove -y jq || return 1
+
+            dlog "Uninstalling xq (xml processor)"
+            sudo rm -rf /usr/local/bin/xq
+
+            dlog "Uninstalling xmllint"
+            sudo apt-get --purge remove -y libxml2-utils || return 1
+
+            dlog "=== Finished (sys) uninstall ==="
+            ;;
+        "update")
+            dlog "=== Running (sys) update ==="
+
+            dlog "Updating fd-find"
+            sudo apt-get upgrade -y fd-find || return 1
+
+            dlog "Updating ripgrep"
+            echo -e "[\e[40m\e[31mWARNING\e[49m\e[39m] ripgrep is installed using a staic link to a .deb package. Can't do update."
+
+            dlog "Updating ag, the silver searcher"
+            sudo apt-get upgrade -y silversearcher-ag || return 1
+
+            dlog "Updating bat (cat alternative)"
+            echo -e "[\e[40m\e[31mWARNING\e[49m\e[39m] fd-find is installed using a staic link to a .deb package. Can't do update."
+
+            dlog "Updating jq (json processor)"
+            sudo apt-get upgrade -y jq || return 1
+
+            dlog "Updating xq (xml processor)"
+            echo -e "[\e[40m\e[31mWARNING\e[49m\e[39m] xq is installed using a staic link to a .deb package. Can't do update"
+
+            dlog "Updating xmllint"
+            sudo apt-get upgrade -y libxml2-utils || return 1
+
+            dlog "=== Finished (sys) update ==="
+            ;;
+        "check")
+            which fd && \
+            which rg && \
+            which ag && \
+            which bat && \
+            which jq && \
+            which xq && \
+            which xmllint || return 1
+            ;;
+        *)
+            echo "$1 Didn't match anything operation for SYS"
             exit 2
     esac
 }
@@ -131,10 +228,11 @@ function mod_fzf() {
             dlog "=== Running (fzf) install ==="
             if ! [ -d "$HOME/.fzf" ]; then
                 git clone --depth 1 https://github.com/junegunn/fzf.git "$HOME/.fzf" || return 1
-                "$HOME/.fzf/install" || return 1
+                "$HOME/.fzf/install" --key-bindings --completion --no-update-rc || return 1
             fi
 
             if ! [ -f "$DOTDIR/custom/fzf.zsh" ]; then
+                dlog "Creating custom/fzf.zsh link"
                 ln -s "$HOME/.fzf.zsh" "$DOTDIR/custom/fzf.zsh" || return 1
             fi
             dlog "=== Finished (fzf) install ==="
@@ -148,7 +246,7 @@ function mod_fzf() {
         "update")
             dlog "=== Running (fzf) update ==="
             tempdirfzf="$(pwd)"
-            cd "$HOME/.fzf" && git pull && ./install || return 1
+            cd "$HOME/.fzf" && git pull && ./install --key-bindings --completion --no-update-rc || return 1
             cd "$tempdirfzf" || return 1
             dlog "=== Finished (fzf) update ==="
             ;;
@@ -197,6 +295,11 @@ function mod_tmux() {
 }
 
 function mod_mintty() {
+    # Skip if not running WSL
+    if grep -iv "microsoft" /proc/version >> /dev/null; then
+        return 0
+    fi
+
     case "$1" in
         "install")
             dlog "=== Running (mintty) install ==="
@@ -278,7 +381,7 @@ function mod_rust() {
             rustup component add rls rust-analysis rust-src || return 1
             dlog "installing rust-analyzer"
             sudo curl -L https://github.com/rust-analyzer/rust-analyzer/releases/download/nightly/rust-analyzer-linux -o /usr/local/bin/rust-analyzer && \
-            sudo chmod 755 /usr/local/bin/rust-analyzer
+            sudo chmod 751 /usr/local/bin/rust-analyzer
 
             if ! [ -f ~/.cargo/env ]; then
                 ln -s ~/.cargo/env "$DOTDIR/custom/cargo.zsh" || return 1
@@ -322,6 +425,10 @@ function mod_rust() {
 }
 
 function mod_nvim() {
+    if ! [ -x "$(command -v add-apt-repository -h)" ]; then
+        sudo apt-get install -y software-properties-common || return 1
+    fi
+
     case "$1" in
         "install")
             dlog "=== Running (nvim) install ==="
@@ -329,10 +436,13 @@ function mod_nvim() {
             sudo apt-get install -y python-dev python-pip python3-dev python3-pip && \
             dlog "Installing pip3 deps" && \
             pip3 install pynvim jedi flake8 && \
-            dlog "Downloading nvim appimage" && \
-            sudo curl -L https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage -o /usr/local/bin/nvim && \
-            dlog "chmod'ing appimage" && \
-            sudo chmod 755 /usr/local/bin/nvim && \
+
+            dlog "Installing Nightly NeoVim"
+            sudo apt-get install -y software-properties-common && \
+            sudo add-apt-repository -y ppa:neovim-ppa/unstable && \
+            sudo apt-get update -y && \
+            sudo apt-get install -y neovim || return 1
+
             dlog "Downloading and installing vim-plug" && \
             curl -fLo "$HOME/.local/share/nvim/site/autoload/plug.vim" --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim && \
             dlog "Making $HOME/.config directory" && \
@@ -342,14 +452,13 @@ function mod_nvim() {
                 ln -s "$DOTDIR/config/nvim" "$HOME/.config/nvim" || return 1
             fi
 
-            dlog "Installing Neovim Plugins. Using (legacy) unpack for installation"
-            /usr/local/bin/nvim --appimage-extract-and-run +PlugInstall +UpdateRemotePlugins +qall || return 1
+            dlog "Installing Neovim Plugins"
+            /usr/bin/nvim +PlugInstall +UpdateRemotePlugins +qall || return 1
             dlog "=== Finished (nvim) install ==="
             ;;
         "uninstall")
             dlog "=== Running (nvim) uninstall ==="
-            dlog "Deleting nvim appimage" && \
-            sudo rm -rf /usr/local/bin/nvim && \
+            sudo apt-get --purge remove -y neovim && \
             dlog "Uninstalling pynvim (pip3)" && \
             pip3 uninstall -y pynvim && \
             dlog "Deleting nvim config directories" && \
@@ -359,24 +468,18 @@ function mod_nvim() {
             ;;
         "update")
             dlog "=== Running (nvim) update ==="
-            dlog "Deleting nvim appimage" && \
-            sudo rm -rf /usr/local/bin/nvim && \
             dlog "Upgrading apt-get deps" && \
-            sudo apt-get upgrade -y python-dev python-pip python3-dev python3-pip && \
+            sudo apt-get upgrade -y python-dev python-pip python3-dev python3-pip neovim && \
             dlog "Installing pynvim, jedi & flake8 (pip3)" && \
             pip3 install --upgrade pynvim jedi flake8 && \
-            dlog "Downloading nvim appimage" && \
-            sudo curl -L https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage -o /usr/local/bin/nvim && \
-            dlog "chmod'ing appimage" && \
-            sudo chmod 755 /usr/local/bin/nvim && \
             dlog "Installing nvim plugins" && \
-            nvim --appimage-extract-and-run +PlugUpgrade +PlugUpdate +UpdateRemotePlugins +qall && \
+            /usr/bin/nvim +PlugUpgrade +PlugUpdate +UpdateRemotePlugins +qall && \
             dlog "=== Finished (nvim) update ==="
             ;;
         "check")
             dlog "=== Running (nvim) check ==="
             checklink "$HOME/.config/nvim" "$DOTDIR/config/nvim" && \
-            nvim --appimage-extract-and-run --version
+            /usr/bin/nvim --version
             ;;
         *)
             echo "$1 Didn't match anything operation for nvim"
@@ -534,6 +637,12 @@ function checklink {
     #return [ -L "$1" ] && [ $(readlink -e "$1") == "$2"]
 }
 
+function install_deb() {
+    TEMP_DEB="$(mktemp).deb" && \
+    curl -fsSL -o "$TEMP_DEB" "$1" && \
+    sudo dpkg -i "$TEMP_DEB" && \
+    rm -f "$TEMP_DEB" || return 1
+}
 
 function get_log() {
     if [ $FLAG_d = true ]; then
@@ -565,6 +674,7 @@ function dlog() {
 function mod_all() {
     dlog "args: $*"
     local readonly operation=$1
+    exitcode=0
     shift # Shift remaining arguments (array of mod_func)
     local readonly moduleKeys=("$*")
 
@@ -579,12 +689,18 @@ function mod_all() {
             
             # Run MODULE+Operation && print SUCCESS
             # Or print FAILURE
-            (${MODULES[$key]} $operation > $LOGFILE 2>&1 \
-                && echo -e "[\e[32mSUCCESS\e[49m\e[39m] [$key] [${operation^^}] Log: $LOGFILE") \
-            || echo -e "[\e[31mFAILURE\e[49m\e[39m] [$key] [${operation^^}] Log: $LOGFILE"
-
+            if ${MODULES[$key]} $operation > $LOGFILE 2>&1; then
+                echo -e "[\e[32mSUCCESS\e[49m\e[39m] [$key] [${operation^^}] Log: $LOGFILE"
+            else
+                exitcode=99
+                echo -e "[\e[31mFAILURE\e[49m\e[39m] [$key] [${operation^^}] Log: $LOGFILE"
+            fi
         fi
     done
+
+    if [[ $exitcode != 0 ]]; then
+        exit 99
+    fi
 }
 
 # =============== Call main ===============
