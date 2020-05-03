@@ -5,7 +5,7 @@ DOTDIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 cd "$HOME/.oh-my-zsh/"
 git reset --hard HEAD
-local gitreset=$?
+gitreset=$?
 cd $DOTDIR
 if [[ "$gitreset" != 0 ]]; then
     exit 1
