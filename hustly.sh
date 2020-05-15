@@ -132,16 +132,16 @@ function mod_sys() {
     case "$1" in
         "install")
             dlog "=== Running (sys) install ==="
-            echo -e "[\e[40m\e[31mWARNING\e[49m\e[39m] Installing fd-find. WARNING! using static .deb url. deprecated"
+            echo -e "[\e[40m\e[33mWARNING\e[49m\e[39m] Installing fd-find. WARNING! using static .deb url. deprecated"
             install_deb 'https://github.com/sharkdp/fd/releases/download/v7.5.0/fd-musl_7.5.0_amd64.deb' || return 1
 
-            echo -e "[\e[40m\e[31mWARNING\e[49m\e[39m] Installing ripgrep. WARNING! using static .deb url. deprecated"
+            echo -e "[\e[40m\e[33mWARNING\e[49m\e[39m] Installing ripgrep. WARNING! using static .deb url. deprecated"
             install_deb 'https://github.com/BurntSushi/ripgrep/releases/download/11.0.2/ripgrep_11.0.2_amd64.deb' || return 1
 
             dlog "Installing ag, the silver searcher"
             sudo apt-get install -y silversearcher-ag || return 1
 
-            echo -e "[\e[40m\e[31mWARNING\e[49m\e[39m] Installing bat (cat alternative). WARNING! using static .deb url. deprecated"
+            echo -e "[\e[40m\e[33mWARNING\e[49m\e[39m] Installing bat (cat alternative). WARNING! using static .deb url. deprecated"
             install_deb 'https://github.com/sharkdp/bat/releases/download/v0.13.0/bat-musl_0.13.0_amd64.deb' || return 1
 
             dlog "Installing jq (json processor)"
@@ -186,22 +186,22 @@ function mod_sys() {
             dlog "=== Running (sys) update ==="
 
             dlog "Updating fd-find"
-            sudo apt-get upgrade -y fd-find || return 1
+            echo -e "[\e[40m\e[33mWARNING\e[49m\e[39m] fd-find is installed using a staic link to a .deb package. Can't do update."
 
             dlog "Updating ripgrep"
-            echo -e "[\e[40m\e[31mWARNING\e[49m\e[39m] ripgrep is installed using a staic link to a .deb package. Can't do update."
+            echo -e "[\e[40m\e[33mWARNING\e[49m\e[39m] ripgrep is installed using a staic link to a .deb package. Can't do update."
 
             dlog "Updating ag, the silver searcher"
             sudo apt-get upgrade -y silversearcher-ag || return 1
 
             dlog "Updating bat (cat alternative)"
-            echo -e "[\e[40m\e[31mWARNING\e[49m\e[39m] fd-find is installed using a staic link to a .deb package. Can't do update."
+            echo -e "[\e[40m\e[33mWARNING\e[49m\e[39m] fd-find is installed using a staic link to a .deb package. Can't do update."
 
             dlog "Updating jq (json processor)"
             sudo apt-get upgrade -y jq || return 1
 
             dlog "Updating xq (xml processor)"
-            echo -e "[\e[40m\e[31mWARNING\e[49m\e[39m] xq is installed using a staic link to a .deb package. Can't do update"
+            echo -e "[\e[40m\e[33mWARNING\e[49m\e[39m] xq is installed using a staic link to a .deb package. Can't do update"
 
             dlog "Updating xmllint"
             sudo apt-get upgrade -y libxml2-utils || return 1
