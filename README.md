@@ -1,8 +1,8 @@
 # hust921 dotfiles
-![Travis (.com) branch](https://img.shields.io/travis/com/hust921/dotfiles/master?style=flat&logo=linux&label=master%20%7C%20linux)
+![Travis (.com) branch](https://img.shields.io/badge/master%20|%20windows-unknown-lightgrey?style=flat&logo=windows) |
+![Travis (.com) branch](https://img.shields.io/badge/develop%20|%20windows-unknown-lightgrey?style=flat&logo=windows) |
+![Travis (.com) branch](https://img.shields.io/travis/com/hust921/dotfiles/master?style=flat&logo=linux&label=master%20%7C%20linux) |
 ![Travis (.com) branch](https://img.shields.io/travis/com/hust921/dotfiles/develop?style=flat&logo=linux&label=develop%20%7C%20linux)
-![Travis (.com) branch](https://img.shields.io/badge/master%20|%20windows-unknown-lightgrey?style=flat&logo=windows)
-![Travis (.com) branch](https://img.shields.io/badge/develop%20|%20windows-unknown-lightgrey?style=flat&logo=windows)
 
 
 My personal dotfiles for omz, vim, tmux, conky, etc..
