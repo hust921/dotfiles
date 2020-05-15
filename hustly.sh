@@ -114,8 +114,8 @@ function mod_omz() {
             ;;
         "check")
             dlog "=== Running (omz) check ==="
-            checklink "$DOTDIR/zshrc" "$HOME/.zshrc" && \
-            checklink "$DOTDIR/custom" "$HOME/.oh-my-zsh/custom" && \
+            checklink "$HOME/.zshrc" "$DOTDIR/zshrc" && \
+            checklink "$HOME/.oh-my-zsh/custom" "$DOTDIR/custom" && \
             echo $SHELL | grep -i 'zsh' >> /dev/null || return 1
 
             for plugname in $plugins; do
@@ -627,17 +627,11 @@ function question {
 
 # Check if link: exist, is link, points to correct file
 function checklink {
-    src=$(readlink -ef "$1")
-    target=$(readlink -ef "$2")
+    original=$(readlink -ef "$1")
+    newlink=$(readlink -ef "$2")
 
-    if [[ "$src" == "$target" ]]; then
-        dlog "File ($1) $src links to ($2) $target"
-        return 0;
-    else
-        echo "File ($1) $src did not link to ($2) $target"
-        return 1;
-    fi
-    #return [ -L "$1" ] && [ $(readlink -e "$1") == "$2"]
+    echo "Expected: ($2) -> ($1)    |    Actual: $newlink -> $original"
+    [[ "$1" != "$2" ]] && [[ "$original" == "$newlink" ]]
 }
 
 function install_deb() {
