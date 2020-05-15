@@ -29,4 +29,4 @@ RUN git clean -xdf
 RUN ./hustly.sh -d install && \
     ./hustly.sh -d check && \
     ./hustly.sh -d update && \
-    ./hustly.sh -d uninstall && \
+    ./hustly.sh -d uninstall
