@@ -1,6 +1,9 @@
 # hust921 dotfiles
 My personal dotfiles for omz, vim, tmux, conky, etc..
 
+# Build Status
+![master](https://travis-ci.org/hust921/dotfiles.svg?branch=master) ![develop](https://travis-ci.org/hust921/dotfiles.svg?branch=develop)
+
 # Installation
 
 ### Overall Dependencies
