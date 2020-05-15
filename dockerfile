@@ -26,10 +26,7 @@ RUN git clean -Xdf
 RUN git clean -xdf
 
 # Run Setup
-#RUN ./hustly.sh install
-#RUN ./hustly.sh check
-#RUN ./hustly.sh update
-#RUN ./hustly.sh uninstall
-#RUN ./hustly.sh check
-
-CMD ["bash"]
+RUN ./hustly.sh install
+RUN ./hustly.sh check
+RUN ./hustly.sh update
+RUN ./hustly.sh uninstall
