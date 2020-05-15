@@ -119,7 +119,7 @@ function mod_omz() {
             echo $SHELL | grep -i 'zsh' >> /dev/null || return 1
 
             for plugname in $plugins; do
-                checklink "$DOTDIR/plugins/$plugname" "$HOME/.oh-my-zsh/plugins/$plugname" || return 1
+                checklink "$HOME/.oh-my-zsh/plugins/$plugname" "$DOTDIR/plugins/$plugname" || return 1
             done
             ;;
         *)
@@ -334,7 +334,7 @@ function mod_git() {
         "install")
             dlog "=== Running (git) install ==="
             if ! [ -x "$(command -v add-apt-repository -h)" ]; then
-                sudo apt-get install -y software-properties-common || return 1
+                sudo apt-get update -y && sudo apt-get install -y software-properties-common || return 1
             fi
             sudo apt-add-repository -y ppa:git-core/ppa && \
             sudo apt-get update -y && \
@@ -426,13 +426,15 @@ function mod_rust() {
 }
 
 function mod_nvim() {
-    if ! [ -x "$(command -v add-apt-repository -h)" ]; then
-        sudo apt-get install -y software-properties-common || return 1
-    fi
-
     case "$1" in
         "install")
             dlog "=== Running (nvim) install ==="
+
+            if ! [ -x "$(command -v add-apt-repository -h)" ]; then
+                dlog "Installing software-properties-common (add-apt-repository command)"
+                sudo apt-get install -y software-properties-common || return 1
+            fi
+            
             dlog "Installing apt-get deps"
             sudo apt-get install -y python-dev python-pip python3-dev python3-pip && \
             dlog "Installing pip3 deps" && \
