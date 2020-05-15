@@ -49,9 +49,10 @@ function mod_omz() {
             ln -s "$DOTDIR/custom" "$HOME/.oh-my-zsh/custom" || return 1
 
             dlog "installing plugins"
-            "$DOTDIR/plugins/install.sh"
+            "$DOTDIR/plugins/install.sh" || return 1
+            local newPlugins=$(find $DOTDIR/plugins/ -maxdepth 1 -type d -not -name plugins -exec basename {} \;) || return 1
             dlog "linking .oh-my-zsh/plugins: "
-            for plugname in $plugins; do
+            for plugname in $newPlugins; do
                 echo -e "$plugname, "
                 ln -s "$DOTDIR/plugins/$plugname" "$HOME/.oh-my-zsh/plugins/$plugname" && \
                 chmod -R go-w "$HOME/.oh-my-zsh/plugins/$plugname" || return 1
@@ -627,11 +628,11 @@ function question {
 
 # Check if link: exist, is link, points to correct file
 function checklink {
-    original=$(readlink -ef "$1")
-    newlink=$(readlink -ef "$2")
+    from=$(readlink -ef "$1")
+    to=$(readlink -ef "$2")
 
-    echo "Expected: ($2) -> ($1)    |    Actual: $newlink -> $original"
-    [[ "$1" != "$2" ]] && [[ "$original" == "$newlink" ]]
+    echo "Expected: ($1) -> ($2)    |    Actual: $from -> $to"
+    [[ "$1" != "$2" ]] && [[ "$from" == "$to" ]]
 }
 
 function install_deb() {
