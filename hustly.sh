@@ -160,7 +160,7 @@ function mod_sys() {
             dlog "=== Running (sys) uninstall ==="
 
             dlog "Uninstalling fd-find"
-            sudo apt-get --purge remove -y fd-find  || return 1
+            sudo dpkg --purge --force-all fd-find || return 1
 
             dlog "Uninstalling ripgrep"
             sudo dpkg --purge --force-all ripgrep || return 1
