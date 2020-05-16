@@ -7,5 +7,6 @@ services:
     - docker
 
 script:
-    - docker build -t dockerfile --build-arg RELEASE=ubuntu18.04 .
-    - docker build -t dockerfile --build-arg RELEASE=debian:9 .
+    - docker build -t dockerfile .
+#   - docker build -t dockerfile --build-arg RELEASE=ubuntu18.04 .
+#   - docker build -t dockerfile --build-arg RELEASE=debian:9 .
