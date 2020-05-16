@@ -177,6 +177,9 @@ Plug 'wokalski/autocomplete-flow'
 " -- Clang C/C++ Completion support for deoplete
 Plug 'Shougo/deoplete-clangx'
 
+" -- Dockerfile syntax highlighting {{{2
+Plug 'ekalinin/Dockerfile.vim'
+
 " -- Neosnippet + neosnippet-snippets {{{2
 " -----
 Plug 'Shougo/neosnippet'

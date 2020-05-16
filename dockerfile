@@ -1,7 +1,6 @@
-FROM ubuntu:18.04
+ARG RELEASE=ubuntu:18.04
+FROM ${RELEASE}
 MAINTAINER Morten Lund
-
-# From: https://www.jamesridgway.co.uk/dotfiles-with-github-travis-ci-and-docker/
 
 # OS Updates & Install
 RUN apt-get -y update
