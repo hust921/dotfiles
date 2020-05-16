@@ -10,6 +10,18 @@ My personal dotfiles for omz, vim, tmux, conky, etc..
 
 # Installation
 
+**wget:**
+```bash
+sh -c "$(wget -O- https://raw.githubusercontent.com/hust921/dotfiles/master/install.sh)"
+```
+
+**curl:**
+```bash
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/hust921/dotfiles/master/install.sh)"
+```
+
+# Installation (Deprecated)
+
 ### Overall Dependencies
 * git
 * curl

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ===== Default / Options / Flags =====
-readonly HUSTLY_VERSION="0.1.0"
+readonly HUSTLY_VERSION="1.0.0"
 FLAG_i=false
 FLAG_d=false
 readonly DOTDIR="$HOME/dotfiles"
@@ -496,18 +496,31 @@ function mod_nvim() {
 # ============================== ==============================
 # ===== Arguments parsing / Help-text =====
 function print_help() {
-    echo -e "dotfiles installer & maintenance utilities $HUSTLY_VERSION"
-    echo -e "Morten Lund <https://github.com/hust921/dotfiles>"
+
+cat << "EOF"
+   .       .    *  .   .   .   .       .     .  _  .    ,   _   _ .  ,  .    .
+ *   ,  .                          *      .    | |_ _ _ ___| |_| |_ _
+   .       .   ,   *     .   *  .    .      .  |   | | |_ -|  _| | | |.    .  .
+.      .          ___  .           .     *   . |_|_|___|___|_| |_|_  |         
+    *          __/_  `.  .-"""-.                                 |___|  .    . 
+.       *    . \_,` | \-'  /   )`-')    *    .        *    .                  
+     .   ,      "") `"`    \  ((`"`  .    .              .       .  .    .    *
+  .         .  ___Y  ,    .'7 /|               .  *   ,       .                
+     *   .    (_,___/...-` (_/_/  hustly.sh               .      *         *  .
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+EOF
+
+    echo -e ""
     echo -e ""
     echo -e "USAGE:"
     echo -e "\thustly [OPTIONS] [SUBCOMMAND] [MODULE..]"
-    echo -e "\t\tNo module(s) implies operation on ALL available modules"
+    echo -e "\tNo module(s) implies operation on ALL available modules"
     echo -e ""
     echo -e "OPTIONS:"
-    echo -e "\t-h, --help\t\t\tShow a short usage summary"
-    echo -e "\t-i, --interactive\t\tInteractive [yN] installation"
-    echo -e "\t-d, --debug\t\t\tMore verbose debugging info"
-    echo -e "\t-V, --version\t\t\tPrint version information and exit successfully"
+    echo -e "\t-h, --help\t\tShow a short usage summary"
+    echo -e "\t-i, --interactive\tInteractive [yN] installation"
+    echo -e "\t-d, --debug\t\tMore verbose debugging info"
+    echo -e "\t-V, --version\t\tPrint version information"
     echo -e ""
     echo -e "SUBCOMMANDS:"
     echo -e "\tinstall\t\tinstall module(s)"
@@ -521,8 +534,13 @@ function print_help() {
     echo -e "\tTMUX\t\tTerminal Multiplexer, setup and plugin manager (tpm)"
     echo -e "\tMINTTY\t\tWSLTTY / MINTTY Setup. Mainly color corrections"
     echo -e "\tGIT\t\tGit config and setup"
-    echo -e "\tRUST\t\tRust Stable,Nightly environment for build, tests and vim plugins"
+    echo -e "\tRUST\t\tRust Stable & Nightly environment"
     echo -e "\tNVIM\t\tNeoVim setup with vim-plug"
+    echo -e ""
+    echo -e "DOCS"
+    echo -e "\tVersion\t\t$HUSTLY_VERSION stable"
+    echo -e "\tAurthor\t\tMorten Lund"
+    echo -e "\tRepository\thttps://github.com/hust921/dotfiles"
     echo -e ""
 
     # Print error message if provided
@@ -702,4 +720,5 @@ function mod_all() {
 }
 
 # =============== Call main ===============
+cd "$DOTDIR"
 main "${@}"
