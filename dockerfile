@@ -4,7 +4,7 @@ MAINTAINER Morten Lund
 
 # OS Updates & Install
 RUN apt-get -y update
-RUN apt-get -y install sudo curl git gcc
+RUN apt-get -y install sudo
 
 # Create test user & add to suduers
 RUN useradd -m -s /bin/bash tester
@@ -12,20 +12,19 @@ RUN usermod -aG sudo tester
 RUN echo "tester    ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers
 
 # Add dotfiles & chown
-ADD . /home/tester/dotfiles
+ADD ./install.sh /home/tester/install.sh
 RUN chown -R tester:tester /home/tester
 
 # Switch user
 USER tester
 ENV HOME /home/tester
 
-# Change working directory
-WORKDIR /home/tester/dotfiles
-RUN git clean -Xdf
-RUN git clean -xdf
-
 # Run Setup
-RUN ./hustly.sh -d install
-RUN ./hustly.sh -d check
-RUN ./hustly.sh -d update
-RUN ./hustly.sh -d uninstall
+#RUN wget -O- https://raw.githubusercontent.com/hust921/dotfiles/master/install.sh | sh
+#RUN curl -fsSL https://raw.githubusercontent.com/hust921/dotfiles/master/install.sh | sh
+RUN cat /home/tester/install.sh | sh
+RUN hustly -d install
+RUN hustly -d check
+RUN hustly -d update
+RUN hustly -d check
+RUN hustly -d uninstall

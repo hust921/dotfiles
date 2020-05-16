@@ -1,20 +1,14 @@
 #!/bin/bash
-
-# ===== Default / Options / Flags =====
-readonly INSTALL_VERSION="0.1.0"
-FLAG_i=false
-FLAG_d=false
-readonly DOTDIR="$HOME/dotfiles"
-
-# ===== Global Settings / Variables =====
-set -o nounset   # to cause an error if you use an empty variable
-set -o noclobber # the '>' symbol not allowed to overwrite "existing" files
-set -o pipefail  # cmd_a | cmd_b . Fails if cmd_a doesn't cleanly exit (0) 
+if ! command -v sudo; then
+    echo "sudo not available.."
+    return 88
+fi
 
 # ===== Installing System Dependencies =====
+readonly DOTDIR="$HOME/dotfiles"
 sudo apt-get update -y && \
     sudo apt-get upgrade -y && \
-    sudo apt-get install -y sudo curl git gcc
+    sudo apt-get install -y sudo wget curl git gcc
 
 # ===== Cloning Repository & Installing hustly.sh =====
 git clone -b develop https://github.com/hust921/dotfiles.git "$DOTDIR"
