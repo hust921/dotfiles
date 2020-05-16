@@ -437,7 +437,7 @@ function mod_nvim() {
             fi
             
             dlog "Installing apt-get deps"
-            sudo apt-get install -y python-dev python-pip python3-dev python3-pip && \
+            sudo apt-get install -y python-dev python-pip python3-dev python3-pip shellcheck && \
             dlog "Installing pip3 deps" && \
             pip3 install pynvim jedi flake8 && \
 
@@ -473,7 +473,7 @@ function mod_nvim() {
         "update")
             dlog "=== Running (nvim) update ==="
             dlog "Upgrading apt-get deps" && \
-            sudo apt-get upgrade -y python-dev python-pip python3-dev python3-pip neovim && \
+            sudo apt-get upgrade -y python-dev python-pip python3-dev python3-pip neovim shellcheck && \
             dlog "Installing pynvim, jedi & flake8 (pip3)" && \
             pip3 install --upgrade pynvim jedi flake8 && \
             dlog "Installing nvim plugins" && \
