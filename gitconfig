@@ -9,9 +9,10 @@
     ignorecase = false
 
     # Line-endings
-    autocrlf = true
-    safecrlf = false
-    whitespace = cr-at-eol
+    autocrlf = input
+    #autocrlf = true
+    #safecrlf = false
+    #whitespace = cr-at-eol
 
     # File permissions
     filemode = false
