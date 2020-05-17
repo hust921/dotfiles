@@ -6,6 +6,14 @@ FLAG_i=false
 FLAG_d=false
 readonly DOTDIR="$HOME/dotfiles"
 
+# ===== Specify distribution =====
+let local OS_DISTRO="$(temp_lowercase="$(sed -rn 's/^ID=([a-Z]+)/\1/p' /etc/os-release)" && echo "${temp_lowercase^^}")"
+let local OS_VERSION="$(sed -rn 's/VERSION_ID=\"([0-9\.]+)\"/\1/p' /etc/os-release)"
+
+if [[ "$OS_DISTRO" != "UBUNTU" ]] || [[ "$OS_DISTRO" != "DEBIAN" ]]; then
+    print_help "Unknown linux distro: \"$OS_DISTRO\". Only Ubuntu & Debian Supported."
+fi
+
 # ===== Global Settings / Variables =====
 set -o nounset   # to cause an error if you use an empty variable
 set -o noclobber # the '>' symbol not allowed to overwrite "existing" files
@@ -546,6 +554,7 @@ EOF
     # Print error message if provided
     if [[ $# -eq 1 ]]; then
         echo -e "\e[30m\e[101m[ERROR] $1\e[49m\e[39m"
+        exit 3
     fi
 
     exit 0
