@@ -7,7 +7,7 @@ FLAG_d=false
 readonly DOTDIR="$HOME/dotfiles"
 
 # ===== Specify distribution =====
-let local OS_DISTRO="$(temp_lowercase="$(sed -rn 's/^ID=([a-Z]+)/\1/p' /etc/os-release)" && echo "${temp_lowercase^^}")"
+let local OS_DISTRO="$(temp_lowercase="$(sed -rn 's/^ID=([a-zA-Z]+)/\1/p' /etc/os-release)" && echo ${temp_lowercase^^})"
 let local OS_VERSION="$(sed -rn 's/VERSION_ID=\"([0-9\.]+)\"/\1/p' /etc/os-release)"
 
 if [[ "$OS_DISTRO" != "UBUNTU" ]] || [[ "$OS_DISTRO" != "DEBIAN" ]]; then
