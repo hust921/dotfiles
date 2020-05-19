@@ -230,31 +230,25 @@ function mod_fzf() {
             dlog "=== Running (fzf) install ==="
             if ! [ -d "$HOME/.fzf" ]; then
                 git clone --depth 1 https://github.com/junegunn/fzf.git "$HOME/.fzf" || return 1
-                "$HOME/.fzf/install" --key-bindings --completion --no-update-rc || return 1
-            fi
-
-            if ! [ -f "$DOTDIR/custom/fzf.zsh" ]; then
-                dlog "Creating custom/fzf.zsh link"
-                ln -s "$HOME/.fzf.zsh" "$DOTDIR/custom/fzf.zsh" || return 1
+                "$HOME/.fzf/install" --key-bindings --completion || return 1
             fi
             dlog "=== Finished (fzf) install ==="
             ;;
         "uninstall")
             dlog "=== Running (fzf) uninstall ==="
-            rm -rf "$DOTDIR/custom/fzf.zsh" || return 1
             "$HOME/.fzf/uninstall" || return 1
             dlog "=== Finished (fzf) uninstall ==="
             ;;
         "update")
             dlog "=== Running (fzf) update ==="
             tempdirfzf="$(pwd)"
-            cd "$HOME/.fzf" && git pull && ./install --key-bindings --completion --no-update-rc || return 1
+            cd "$HOME/.fzf" && git pull && ./install --key-bindings --completion || return 1
             cd "$tempdirfzf" || return 1
             dlog "=== Finished (fzf) update ==="
             ;;
         "check")
             dlog "=== Running (fzf) check ===" && \
-            checklink "$DOTDIR/custom/fzf.zsh" "$HOME/.fzf.zsh"
+            command -v fzf
             ;;
         *)
             echo "$1 Didn't match anything operation for fzf"
@@ -384,10 +378,6 @@ function mod_rust() {
             dlog "installing rust-analyzer"
             sudo curl -L https://github.com/rust-analyzer/rust-analyzer/releases/download/nightly/rust-analyzer-linux -o /usr/local/bin/rust-analyzer && \
             sudo chmod 751 /usr/local/bin/rust-analyzer
-
-            if ! [ -f ~/.cargo/env ]; then
-                ln -s ~/.cargo/env "$DOTDIR/custom/cargo.zsh" || return 1
-            fi
             dlog "=== Finished (rust) install ==="
             ;;
         "uninstall")

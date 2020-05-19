@@ -96,8 +96,8 @@ setopt menu_complete
 eval $(ssh-agent)
 
 # Local config. Logins / Creds / Etc
-if [ -f ~/.zshlocal.zsh ]; then
-    source ~/.zshlocal.zsh
-fi
+[ -f ~/.zshlocal.zsh ] && source ~/.zshlocal.zsh
+[ -f ~/.cargo/env ] && source ~/.cargo/env
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 autoload -U compinit && compinit
