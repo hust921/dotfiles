@@ -247,8 +247,8 @@ function mod_fzf() {
             dlog "=== Finished (fzf) update ==="
             ;;
         "check")
-            dlog "=== Running (fzf) check ===" && \
-            command -v fzf
+            dlog "=== Running (fzf) check ==="
+            command -v "$HOME/.fzf/bin/fzf"
             ;;
         *)
             echo "$1 Didn't match anything operation for fzf"
