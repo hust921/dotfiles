@@ -98,6 +98,7 @@ eval $(ssh-agent)
 # Local config. Logins / Creds / Etc
 [ -f ~/.zshlocal.zsh ] && source ~/.zshlocal.zsh
 [ -f ~/.cargo/env ] && source ~/.cargo/env
-[ -f ~/.fzf/bin/fzf ] && source ~/.fzf/bin/fzf
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 autoload -U compinit && compinit
+
