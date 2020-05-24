@@ -248,13 +248,25 @@ Plug 'ron-rs/ron.vim'
 
 call plug#end()
 
+function! PlugLoaded(name)
+    return (
+        \ has_key(g:plugs, a:name) &&
+        \ isdirectory(g:plugs[a:name].dir))
+    "Not woking:
+    "   :echo &rtp => /path/plugdir/fzf,/path/plugdir/nvim-lsp
+    "   :echo g:plugs['fzf'].dir => /path/plugdir/fzf/
+    "Notice the trailing "/". Makes "stridx" fail
+    "
+    "\ stridx(&rtp, g:plugs[a:name].dir) >= 0)
+endfunction 
 
-" Rust completion
-" Use LSP omni-complete in Rust files
-if luaeval('not vim.tbl_isempty(vim.lsp.buf_get_clients())')
+if PlugLoaded('nvim-lsp')
+    " Rust completion
+    " Use LSP omni-complete in Rust files
     lua require'nvim_lsp'.rust_analyzer.setup{}
     autocmd Filetype rust setlocal omnifunc=v:lua.vim.lsp.omnifunc
 endif
+
 
 
 "=== Local Overwrite {{{1          --
