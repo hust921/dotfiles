@@ -185,6 +185,7 @@ Plug 'ekalinin/Dockerfile.vim'
 Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
 let g:neosnippet#enable_completed_snippet = 1
+autocmd CompleteDone * call neosnippet#complete_done()
 imap <C-j> <Plug>(neosnippet_expand_or_jump)
 smap <C-j> <Plug>(neosnippet_expand_or_jump)
 xmap <C-j> <Plug>(neosnippet_expand_target)
@@ -196,6 +197,11 @@ imap <expr><TAB>
     \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
     \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"<Paste>
+
+" For conceal markers.
+if has('conceal')
+  set conceallevel=2 concealcursor=niv
+endif
 
 " -- Colorscheme: tender {{{2
 " -----
