@@ -142,7 +142,7 @@ nmap <silent> <leader>E :ALEPrevious<CR>
 Plug 'scrooloose/nerdtree'
 Plug 'ryanoasis/vim-devicons'
 map <F5> :NERDTreeToggle<CR>
-let g:NERDTreeWinSize=40
+let g:NERDTreeWinSize=30
 let g:NERDTreeRespectWildIgnore = 1
 let g:NERDTreeDirArrows = 1
 let g:NERDTreeDirArrowExpandable = '▸'
@@ -297,16 +297,17 @@ endif
 " Always use win32yank if available.
 " Forcing this, so not to load xclip.
 " Copied from: https://github.com/neovim/neovim/blob/master/runtime/autoload/provider/clipboard.vim
-if executable('win32yank.exe')
+if executable('/mnt/c/Windows/System32/win32yank.exe')
+
     let g:clipboard = {
-    \ 'name': 'win32yank.exe',
+    \ 'name': '/mnt/c/Windows/System32/win32yank.exe',
     \ 'copy': {
-    \    '+': 'win32yank.exe -i --crlf',
-    \    '*': 'win32yank.exe -i --crlf',
+    \    '+': '/mnt/c/Windows/System32/win32yank.exe -i --crlf',
+    \    '*': '/mnt/c/Windows/System32/win32yank.exe -i --crlf',
     \  },
     \ 'paste': {
-    \    '+': 'win32yank.exe -o --lf',
-    \    '*': 'win32yank.exe -o --lf',
+    \    '+': '/mnt/c/Windows/System32/win32yank.exe -o --lf',
+    \    '*': '/mnt/c/Windows/System32/win32yank.exe -o --lf',
     \ },
     \ 'cache_enabled': 1,
     \ }
