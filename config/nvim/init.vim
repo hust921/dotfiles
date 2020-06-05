@@ -149,13 +149,16 @@ let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
+" -- Neovim LSP Settings {{{2
+" -- nvim-lsp: Usefull (native nvim) lsp configurations
+Plug 'neovim/nvim-lsp'
+
 " -- Deoplete (dark powered neo-completion) {{{2
 " -- Auto-Completion framework for neovim/vim
 
 " -- Specific language support:
 " -- https://github.com/Shougo/deoplete.nvim/wiki/Completion-Sources
 " -----
-Plug 'neovim/nvim-lsp'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/deoplete-lsp'
 let g:deoplete#enable_at_startup = 1
@@ -285,6 +288,12 @@ if PlugLoaded('nvim-lsp')
     " Rust completion
     " Use LSP omni-complete in Rust files
     lua require'nvim_lsp'.rust_analyzer.setup{}
+
+    " Override LSP callback to return nothing. To disable 'Code Lens' style
+    " warnings/errors which is enabled in LSP by default.
+    lua local nvim_lsp = require'nvim_lsp'
+    lua vim.lsp.callbacks["textDocument/publishDiagnostics"] = function() end
+
     autocmd Filetype rust setlocal omnifunc=v:lua.vim.lsp.omnifunc
 endif
 
