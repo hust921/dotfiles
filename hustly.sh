@@ -427,7 +427,7 @@ function mod_nvim() {
             fi
             
             dlog "Installing apt-get deps"
-            sudo apt-get install -y python-dev python-pip python3-dev python3-pip shellcheck && \
+            sudo apt-get install -y python3 python3-dev python3-pip shellcheck && \
             dlog "Installing pip3 deps" && \
             pip3 install pynvim jedi flake8 && \
 

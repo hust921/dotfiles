@@ -200,6 +200,7 @@ Plug 'ekalinin/Dockerfile.vim'
 Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
 let g:neosnippet#enable_completed_snippet = 1
+autocmd CompleteDone * call neosnippet#complete_done()
 imap <C-j> <Plug>(neosnippet_expand_or_jump)
 smap <C-j> <Plug>(neosnippet_expand_or_jump)
 xmap <C-j> <Plug>(neosnippet_expand_target)
@@ -211,6 +212,11 @@ imap <expr><TAB>
     \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
     \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"<Paste>
+
+" For conceal markers.
+if has('conceal')
+  set conceallevel=2 concealcursor=niv
+endif
 
 " -- Colorscheme: tender {{{2
 " -----
@@ -263,13 +269,25 @@ Plug 'ron-rs/ron.vim'
 
 call plug#end()
 
+function! PlugLoaded(name)
+    return (
+        \ has_key(g:plugs, a:name) &&
+        \ isdirectory(g:plugs[a:name].dir))
+    "Not woking:
+    "   :echo &rtp => /path/plugdir/fzf,/path/plugdir/nvim-lsp
+    "   :echo g:plugs['fzf'].dir => /path/plugdir/fzf/
+    "Notice the trailing "/". Makes "stridx" fail
+    "
+    "\ stridx(&rtp, g:plugs[a:name].dir) >= 0)
+endfunction 
 
-" Rust completion
-" Use LSP omni-complete in Rust files
-if luaeval('not vim.tbl_isempty(vim.lsp.buf_get_clients())')
+if PlugLoaded('nvim-lsp')
+    " Rust completion
+    " Use LSP omni-complete in Rust files
     lua require'nvim_lsp'.rust_analyzer.setup{}
     autocmd Filetype rust setlocal omnifunc=v:lua.vim.lsp.omnifunc
 endif
+
 
 
 "=== Local Overwrite {{{1          --

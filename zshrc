@@ -101,3 +101,4 @@ eval $(ssh-agent)
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 autoload -U compinit && compinit
+
