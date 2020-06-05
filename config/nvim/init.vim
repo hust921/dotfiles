@@ -11,10 +11,25 @@ set noswapfile " Saves swap (.swp) files in System var $TEMP.
 set hidden " Allow unsaved files to be in buffer
 
 set spelllang=en,da
-syntax on
-set foldmethod=manual
-autocmd BufWinEnter * silent! :%foldopen!
 autocmd BufEnter * silent! lcd %:p:h
+
+" Ignore folding, syntax & FileType autocmd's for larger files
+augroup LargeFile
+    autocmd BufReadPre * call LargeFileOptions()
+augroup END
+
+function LargeFileOptions()
+    let f=expand("<afile>")
+    if getfsize(f) > (1024 * 150) " > 150KB
+        set eventignore+=FileType 
+        setlocal noswapfile bufhidden=unload buftype=nowrite undolevels=-1 foldmethod=manual
+    else 
+        set eventignore-=FileType
+        syntax on
+        set foldmethod=syntax
+        autocmd BufWinEnter * silent! :%foldopen!
+    endif
+endfunction
 
 " Fix backspace
 set backspace=indent,eol,start
@@ -111,7 +126,7 @@ map <silent> <F10> :q<CR>
 "------------------------------------------
 call plug#begin('~/.local/share/nvim/plugged')
 
-" -- Ale: Async Linting Engine
+" -- Ale: Async Linting Engine {{{2
 " -----
 Plug 'dense-analysis/ale'
 let g:airline#extensions#ale#enabled = 1
@@ -281,4 +296,4 @@ endif
 
 "=== Colorscheme {{{1              --
 " -----------------------------------
-colorscheme afterglow
+colorscheme tender
