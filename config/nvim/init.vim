@@ -153,48 +153,6 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 " -- nvim-lsp: Usefull (native nvim) lsp configurations
 Plug 'neovim/nvim-lsp'
 
-" -- Deoplete (dark powered neo-completion) {{{2
-" -- Auto-Completion framework for neovim/vim
-
-" -- Specific language support:
-" -- https://github.com/Shougo/deoplete.nvim/wiki/Completion-Sources
-" -----
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'Shougo/deoplete-lsp'
-let g:deoplete#enable_at_startup = 1
-autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | silent! pclose | endif " Auto close doc_string window when complete
-
-" -- Deoplete (ish) Plugin: EchoDoc {{{3
-" -- Displays function signatures from completions in the command line.
-Plug 'Shougo/echodoc.vim'
-let g:echodoc#enable_at_startup = 1
-let g:echodoc#type = 'virtual'
-"let g:echodoc#events = ['CompleteDone']
-
-" -- Deoplete Plugin: neoinclude {{{3
-" -- Include completion framekwork for neocomplete/deoplete
-Plug 'Shougo/neoinclude.vim/'
-
-" -- Deoplete Plugin: deoplete-jedi {{{3
-" -- Python support for deoplete
-Plug 'davidhalter/jedi-vim'
-let g:jedi#completion_enabled = 0 " Use deoplete (not jedi-vim) for completion
-let g:jedi#goto_command = "<F12>"
-Plug 'deoplete-plugins/deoplete-jedi'
-let g:deoplete#sources#jedi#show_docstring = 1
-
-" -- Deoplete Plugin: neco-vim {{{3
-" -- Vimscript completion for deoplete
-Plug 'Shougo/neco-vim'
-
-" -- Deoplete Plugin: autocomplete-flow {{{3
-" -- Javascript support for deoplete
-Plug 'wokalski/autocomplete-flow'
-
-" -- Deoplete Plugin: Shougo/deoplete-clangx {{{3
-" -- Clang C/C++ Completion support for deoplete
-Plug 'Shougo/deoplete-clangx'
-
 " -- Dockerfile syntax highlighting {{{2
 Plug 'ekalinin/Dockerfile.vim'
 
