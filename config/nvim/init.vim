@@ -7,11 +7,12 @@ tnoremap <Esc> <C-\><C-n>
 
 "=== Environment {{{1                     --
 "------------------------------------------
+set completeopt=menuone,noinsert,noselect
 set noswapfile " Saves swap (.swp) files in System var $TEMP.
 set hidden " Allow unsaved files to be in buffer
-
 set spelllang=en,da
 autocmd BufEnter * silent! lcd %:p:h
+
 
 " Ignore folding, syntax & FileType autocmd's for larger files
 augroup LargeFile
@@ -30,9 +31,6 @@ function LargeFileOptions()
         autocmd BufWinEnter * silent! :%foldopen!
     endif
 endfunction
-
-" Fix backspace
-set backspace=indent,eol,start
 
 set nowrap
 set number
@@ -126,6 +124,30 @@ map <silent> <F10> :q<CR>
 "------------------------------------------
 call plug#begin('~/.local/share/nvim/plugged')
 
+" -- Completion-nvim & Dianostics {{{2
+" -----
+Plug 'neovim/nvim-lsp'
+Plug 'haorenW1025/completion-nvim'
+Plug 'haorenW1025/diagnostic-nvim'
+
+" -- Snippets {{{2
+" Track the engine.
+Plug 'SirVer/ultisnips'
+
+" Snippets are separated from the engine. Add this if you want them:
+Plug 'honza/vim-snippets'
+
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
+
+" -- Rainbow Parentheses Improved {{{2
+Plug 'luochen1990/rainbow'
+let g:rainbow_active = 1
+
+" -- Syntax Support {{{2
+Plug 'sheerun/vim-polyglot'
+let g:polyglot_disabled = ['v', 'vlang']
+
 " -- Ale: Async Linting Engine {{{2
 " -----
 Plug 'dense-analysis/ale'
@@ -149,30 +171,8 @@ let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
-" -- Neovim LSP Settings {{{2
-" -- nvim-lsp: Usefull (native nvim) lsp configurations
-Plug 'neovim/nvim-lsp'
-
 " -- Dockerfile syntax highlighting {{{2
 Plug 'ekalinin/Dockerfile.vim'
-
-" -- Neosnippet + neosnippet-snippets {{{2
-" -----
-Plug 'Shougo/neosnippet'
-Plug 'Shougo/neosnippet-snippets'
-let g:neosnippet#enable_completed_snippet = 1
-autocmd CompleteDone * call neosnippet#complete_done()
-imap <C-j> <Plug>(neosnippet_expand_or_jump)
-smap <C-j> <Plug>(neosnippet_expand_or_jump)
-xmap <C-j> <Plug>(neosnippet_expand_target)
-" SuperTab like snippets behavior
-" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
-imap <expr><TAB>
-    \ pumvisible() ? "\<C-n>" :
-    \ neosnippet#expandable_or_jumpable() ?
-    \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-    \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"<Paste>
 
 " For conceal markers.
 if has('conceal')
@@ -230,31 +230,33 @@ Plug 'ron-rs/ron.vim'
 
 call plug#end()
 
-function! PlugLoaded(name)
-    return (
-        \ has_key(g:plugs, a:name) &&
-        \ isdirectory(g:plugs[a:name].dir))
-    "Not woking:
-    "   :echo &rtp => /path/plugdir/fzf,/path/plugdir/nvim-lsp
-    "   :echo g:plugs['fzf'].dir => /path/plugdir/fzf/
-    "Notice the trailing "/". Makes "stridx" fail
-    "
-    "\ stridx(&rtp, g:plugs[a:name].dir) >= 0)
-endfunction 
+" Rust completion
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+au Filetype python setl omnifunc=v:lua.vim.lsp.omnifunc
+au Filetype rust setl omnifunc=v:lua.vim.lsp.omnifunc
+au Filetype vim setl omnifunc=v:lua.vim.lsp.omnifunc
 
-if PlugLoaded('nvim-lsp')
-    " Rust completion
-    " Use LSP omni-complete in Rust files
-    lua require'nvim_lsp'.rust_analyzer.setup{}
+" completion-nvim
+let g:completion_enable_auto_hover = 1
+let g:completion_auto_change_source = 0
 
-    " Override LSP callback to return nothing. To disable 'Code Lens' style
-    " warnings/errors which is enabled in LSP by default.
-    lua local nvim_lsp = require'nvim_lsp'
-    lua vim.lsp.callbacks["textDocument/publishDiagnostics"] = function() end
+" - Enable snippet support
+let g:completion_enable_snippet = 'Ultisnips'
+" - Matching Strategy
+let g:completion_matching_strategy_list = ['exact', 'fuzzy']
+let g:completion_matching_ignore_case = 1
 
-    autocmd Filetype rust setlocal omnifunc=v:lua.vim.lsp.omnifunc
-endif
+call sign_define("LspDiagnosticsErrorSign", {"text" : ">>", "texthl" : "LspDiagnosticsError"})
+call sign_define("LspDiagnosticsWarningSign", {"text" : "⚡", "texthl" : "LspDiagnosticsWarning"})
+call sign_define("LspDiagnosticsInformationSign", {"text" : "", "texthl" : "LspDiagnosticsInformation"})
+call sign_define("LspDiagnosticsHintSign", {"text" : "", "texthl" : "LspDiagnosticsWarning"})
 
+" diagnostic-nvim
+let g:diagnostic_level = 'Warning'
+let g:diagnostic_enable_virtual_text = 1
+let g:diagnostic_virtual_text_prefix = ' '
+let g:diagnostic_insert_delay = 1
 
 
 "=== Local Overwrite {{{1          --
@@ -283,3 +285,6 @@ endif
 "=== Colorscheme {{{1              --
 " -----------------------------------
 colorscheme tender
+
+" Run lua init
+luafile ~/.config/nvim/init.lua

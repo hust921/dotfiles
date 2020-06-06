@@ -429,7 +429,9 @@ function mod_nvim() {
             dlog "Installing apt-get deps"
             sudo apt-get install -y python3 python3-dev python3-pip shellcheck && \
             dlog "Installing pip3 deps" && \
-            pip3 install pynvim jedi flake8 && \
+            pip3 install python-language-server pynvim jedi flake8 && \
+            dlog "Installing vim language server" && \
+            sudo npm install -g vim-language-server && \
 
             dlog "Installing Nightly NeoVim"
             sudo apt-get install -y software-properties-common && \
