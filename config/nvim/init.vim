@@ -119,6 +119,7 @@ map <F7> :bp<CR>
 map <F8> :bn<CR>
 map <F9> :bp<CR>:bd #<CR>
 map <silent> <F10> :q<CR>
+map <silent> <C-q> :q<CR>
 
 "=== Plugin Manager (vim-plug) {{{1       --
 "------------------------------------------
