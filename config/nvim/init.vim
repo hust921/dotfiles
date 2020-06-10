@@ -226,6 +226,7 @@ endif
 " -- Colorscheme: tender {{{2
 " -----
 Plug 'jacoborus/tender', { 'as': 'tender' }
+Plug 'joshdick/onedark.vim', { 'as': 'onedark' }
 
 " -- vim-airline {{{2
 " -----
@@ -233,7 +234,7 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
-let g:airline_theme = "tender"
+let g:airline_theme = "onedark"
 
 " -- Auto-pair: Matching brackets {{{2
 " -----
@@ -332,4 +333,4 @@ endif
 
 "=== Colorscheme {{{1              --
 " -----------------------------------
-colorscheme tender
+colorscheme onedark
