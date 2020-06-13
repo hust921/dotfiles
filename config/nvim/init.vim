@@ -91,7 +91,7 @@ endfunction
 " -- Misc Bidings
 imap jk <Esc>
 map <Space> <leader>
-command W w !sudo tee % > /dev/null
+command! W w !sudo tee % > /dev/null
 vmap <leader>t :!cat \|column -t<CR>
 
 " Insert newline remaps
@@ -122,6 +122,7 @@ map <F8> :bn<CR>
 map <F9> :bp<CR>:bd #<CR>
 map <silent> <F10> :q<CR>
 map <silent> <C-q> :q<CR>
+imap <silent> <C-q> <Esc>:q<CR>
 
 "=== Plugin Manager (vim-plug) {{{1       --
 "------------------------------------------
@@ -238,6 +239,7 @@ Plug 'jiangmiao/auto-pairs'
 " -- Surround by Tpope {{{2
 " -----
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
 
 " -- gitgutter {{{2
 " -----
@@ -264,6 +266,10 @@ nnoremap <C-l> :BLines<CR>
 nnoremap <C-f> :Buffers<CR>
 nnoremap <C-k> :Commands<CR>
 nnoremap <C-t> :Tags<CR>
+nnoremap <C-a> :Marks<CR>
+nnoremap qa :History:<CR>
+nnoremap <C-h> :History/<CR>
+nnoremap <C-r> :Rg
 
 " RON (Rust Objection Notation) support
 Plug 'ron-rs/ron.vim'
@@ -329,3 +335,6 @@ endif
 "=== Colorscheme {{{1              --
 " -----------------------------------
 colorscheme onedark
+
+"=== Mappings reminders
+nnoremap g; :!echoerr "Use Ctrl-O (back) and Ctrl-I (forward)"<CR>
