@@ -354,22 +354,3 @@ colorscheme onedark
 
 "=== Mappings reminders
 nnoremap g; :!echoerr "Use Ctrl-O (back) and Ctrl-I (forward)"<CR>
-
-function! CMarks()
-    marks
-    echo('Mark: ')
-
-    " getchar() - prompts user for a single character and returns the chars
-    " ascii representation
-    " nr2char() - converts ASCII `NUMBER TO CHAR'
-
-    let s:mark = nr2char(getchar())
-    " remove the `press any key prompt'
-    redraw
-
-    " build a string which uses the `normal' command plus the var holding the
-    " mark - then eval it.
-    execute "normal! '" . s:mark
-endfunction
-
-nnoremap ' :call CMarks()<CR>
