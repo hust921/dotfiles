@@ -128,6 +128,18 @@ imap <silent> <C-q> <Esc>:q<CR>
 "------------------------------------------
 call plug#begin('~/.local/share/nvim/plugged')
 
+" -- FloatTerm {{{2
+" ----- Make stuff float
+Plug 'voldikss/vim-floaterm'
+let g:floaterm_height = 0.9
+let g:floaterm_width = 0.8
+nnoremap <leader>t :FloatermToggle<CR>
+
+function! s:floatermSettings()
+    setlocal number
+endfunction
+autocmd Filetype floaterm call s:floatermSettings()
+
 " -- Ale: Async Linting Engine {{{2
 " -----
 Plug 'dense-analysis/ale'
