@@ -128,7 +128,7 @@ imap <silent> <C-q> <Esc>:q<CR>
 "------------------------------------------
 call plug#begin('~/.local/share/nvim/plugged')
 
-" -- FloatTerm {{{2
+" -- FloatTerm: Floating terminal {{{2
 " ----- Make stuff float
 Plug 'voldikss/vim-floaterm'
 let g:floaterm_height = 0.9
@@ -139,6 +139,10 @@ function! s:floatermSettings()
     setlocal number
 endfunction
 autocmd Filetype floaterm call s:floatermSettings()
+
+" -- vim-signature: Mark(s) in gutter {{{2
+" -----
+Plug 'kshenoy/vim-signature'
 
 " -- Ale: Async Linting Engine {{{2
 " -----
@@ -350,3 +354,22 @@ colorscheme onedark
 
 "=== Mappings reminders
 nnoremap g; :!echoerr "Use Ctrl-O (back) and Ctrl-I (forward)"<CR>
+
+function! CMarks()
+    marks
+    echo('Mark: ')
+
+    " getchar() - prompts user for a single character and returns the chars
+    " ascii representation
+    " nr2char() - converts ASCII `NUMBER TO CHAR'
+
+    let s:mark = nr2char(getchar())
+    " remove the `press any key prompt'
+    redraw
+
+    " build a string which uses the `normal' command plus the var holding the
+    " mark - then eval it.
+    execute "normal! '" . s:mark
+endfunction
+
+nnoremap ' :call CMarks()<CR>
