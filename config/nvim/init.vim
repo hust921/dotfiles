@@ -335,7 +335,6 @@ endif
 " Forcing this, so not to load xclip.
 " Copied from: https://github.com/neovim/neovim/blob/master/runtime/autoload/provider/clipboard.vim
 if executable('/mnt/c/Windows/System32/win32yank.exe')
-
     let g:clipboard = {
     \ 'name': '/mnt/c/Windows/System32/win32yank.exe',
     \ 'copy': {
@@ -348,6 +347,8 @@ if executable('/mnt/c/Windows/System32/win32yank.exe')
     \ },
     \ 'cache_enabled': 1,
     \ }
+else
+    echo "Failed to locate win32yank.exe: /mnt/c/Windows/System32/win32yank.exe"
 endif
 
 "=== Colorscheme {{{1              --
