@@ -117,6 +117,7 @@ nmap <leader>m %
 
 " -- <F(keys)>
 " Moving between buffers
+map <F6> :e ~/.config/nvim/init.vim<CR>
 map <F7> :bp<CR>
 map <F8> :bn<CR>
 map <F9> :bp<CR>:bd #<CR>
@@ -134,6 +135,8 @@ Plug 'voldikss/vim-floaterm'
 let g:floaterm_height = 0.9
 let g:floaterm_width = 0.8
 nnoremap <leader>t :FloatermToggle<CR>
+let g:floaterm_borderchars =  ['─', '│', '─', '│', '╭', '╮', '╯', '╰']
+
 
 function! s:floatermSettings()
     setlocal number
@@ -285,7 +288,6 @@ nnoremap <C-t> :Tags<CR>
 nnoremap <C-a> :Marks<CR>
 nnoremap qa :History:<CR>
 nnoremap <C-h> :History/<CR>
-nnoremap <C-r> :Rg
 
 " RON (Rust Objection Notation) support
 Plug 'ron-rs/ron.vim'

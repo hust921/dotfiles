@@ -42,6 +42,13 @@ function Video-Download
     youtube-dl --format "best" --prefer-ffmpeg --external-downloader $($ariapath) -o $output $args
 }
 
+function Audio-Download
+{
+    $output = '"' + $(Get-ScriptDirectory) + '\%(title)s.%(ext)s"'
+    $ariapath = '"' + $(Get-Command aria2c | % { $_.Source }) + '"'
+    youtube-dl --prefer-ffmpeg --external-downloader $($ariapath) -o $output --extract-audio --audio-format mp3 $args
+}
+
 # Gets the directory from where a script is located
 # Commands using script will default have PWD %windows%\system32
 function Get-ScriptDirectory
@@ -70,6 +77,11 @@ ssh-agent
 Set-Alias -name 'nvim' -Value 'Start-Vi'
 Set-Alias -name 'vim' -Value 'Start-Vi'
 Set-Alias -name 'vi' -Value 'Start-Vi'
+
+# aliases
+function nixls { Get-ChildItem -Hidden }
+New-Alias ll nixls
+New-Alias la nixls
 
 function Start-Vi ($firstArg)
 {
