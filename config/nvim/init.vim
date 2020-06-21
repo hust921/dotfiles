@@ -323,6 +323,7 @@ if PlugLoaded('nvim-lsp')
     autocmd Filetype python setlocal omnifunc=v:lua.vim.lsp.omnifunc
     autocmd Filetype vim setlocal omnifunc=v:lua.vim.lsp.omnifunc
     autocmd Filetype html setlocal omnifunc=v:lua.vim.lsp.omnifunc
+    autocmd Filetype sh,bash,zsh setlocal omnifunc=v:lua.vim.lsp.omnifunc
 endif
 
 
