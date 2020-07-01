@@ -93,6 +93,8 @@ imap jk <Esc>
 map <Space> <leader>
 command! W w !sudo tee % > /dev/null
 vmap <leader>t :!cat \|column -t<CR>
+nnoremap <leader>b :.FloatermSend<CR>
+nnoremap <leader>k :.FloatermSend<CR>:FloatermShow<CR>
 
 " Insert newline remaps
 nmap oo o<Enter>
