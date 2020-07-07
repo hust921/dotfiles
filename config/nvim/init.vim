@@ -151,18 +151,13 @@ Plug 'kshenoy/vim-signature'
 
 " -- Markdown
 " --- Math, Charts, Diagrams, etc: https://github.com/iamcco/markdown-preview.nvim
-if executable('node') && executable('yarn')
-    Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
-else
-    echoerr "Yarn not installed! Trying fallback.."
-    Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
-endif
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 
 let g:mkdp_auto_start = 1
 let g:mkdp_auto_close = 0
 let g:mkdp_refresh_slow = 0 "Update only when save/leave insert
 "let g:mkdp_browser = '/mnt/c/Program Files/Mozilla Firefox/firefox.exe'
-let g:mkdp_echo_preview_url = 0
+let g:mkdp_echo_preview_url = 1
 let g:mkdp_preview_options = {
     \ 'mkit': {},
     \ 'katex': {},
