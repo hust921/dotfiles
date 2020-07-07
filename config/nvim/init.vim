@@ -149,6 +149,44 @@ autocmd Filetype floaterm call s:floatermSettings()
 " -----
 Plug 'kshenoy/vim-signature'
 
+" -- Markdown
+" --- Math, Charts, Diagrams, etc: https://github.com/iamcco/markdown-preview.nvim
+if executable('node') && executable('yarn')
+    Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
+else
+    echoerr "Yarn not installed! Trying fallback.."
+    Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+endif
+
+let g:mkdp_auto_start = 1
+let g:mkdp_auto_close = 0
+let g:mkdp_refresh_slow = 0 "Update only when save/leave insert
+"let g:mkdp_browser = '/mnt/c/Program Files/Mozilla Firefox/firefox.exe'
+let g:mkdp_echo_preview_url = 0
+let g:mkdp_preview_options = {
+    \ 'mkit': {},
+    \ 'katex': {},
+    \ 'uml': {},
+    \ 'maid': {},
+    \ 'disable_sync_scroll': 0,
+    \ 'sync_scroll_type': 'middle',
+    \ 'hide_yaml_meta': 1,
+    \ 'sequence_diagrams': {},
+    \ 'flowchart_diagrams': {},
+    \ 'content_editable': v:false
+    \ }
+let g:mkdp_browserfunc = 'Xdgopen'
+function! Xdgopen(url) abort
+    let g:mkdp_browser_open_already = 1
+    if executable('xdg-open')
+        execute '!xdg-open ' . a:url 
+    else
+        echoerr "xdg-open command not available!"
+    endif
+endfunction
+
+
+
 " -- Ale: Async Linting Engine {{{2
 " -----
 Plug 'dense-analysis/ale'
