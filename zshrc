@@ -27,6 +27,11 @@ plugins=(git git-flow dirhistory command-not-found colored-man-pages cargo fd ri
 # User configuration
 export PATH=".:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:$HOME/.local/bin"
 export EDITOR='nvim'
+
+# Set Pager
+command -v bat &> /dev/null && export PAGER=bat || export PAGER='less -F -X'
+
+# Oh-My-Zsh
 source $ZSH/oh-my-zsh.sh
 
 # Start ssh-agent
