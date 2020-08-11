@@ -84,5 +84,4 @@ _update_zcomp "$zcachedir"
 unfunction _update_zcomp
 
 # ZSH Profiling
-[[ "$ZPROF" = true ]] && zprof
-exit 0
+[[ "$ZPROF" = true ]] && zprof || return 0
