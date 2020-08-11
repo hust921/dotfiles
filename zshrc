@@ -85,3 +85,4 @@ unfunction _update_zcomp
 
 # ZSH Profiling
 [[ "$ZPROF" = true ]] && zprof
+exit 0
