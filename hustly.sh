@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ===== Default / Options / Flags =====
-readonly HUSTLY_VERSION="1.0.0"
+readonly HUSTLY_VERSION="1.1.0"
 FLAG_i=false
 FLAG_d=false
 readonly DOTDIR="$HOME/dotfiles"

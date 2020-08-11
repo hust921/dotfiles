@@ -23,6 +23,7 @@ WORKDIR /home/tester
 
 # Run Setup
 RUN cat /home/tester/install.sh | sh
+RUN hustly -v
 RUN hustly -d install
 RUN hustly -d check
 RUN hustly -d update
