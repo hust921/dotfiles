@@ -12,13 +12,13 @@ set -o noclobber # the '>' symbol not allowed to overwrite "existing" files
 set -o pipefail  # cmd_a | cmd_b . Fails if cmd_a doesn't cleanly exit (0) 
 
 declare -rgA MODULES=(
+    [RUST]=mod_rust
     [SYS]=mod_sys
     [OMZ]=mod_omz
     [FZF]=mod_fzf
     [TMUX]=mod_tmux
     [MINTTY]=mod_mintty
     [GIT]=mod_git
-    [RUST]=mod_rust
     [NVIM]=mod_nvim
 )
 
@@ -155,6 +155,9 @@ function mod_sys() {
             dlog "Installing xmllint"
             sudo apt install -y libxml2-utils
 
+            dlog "Installing exa"
+            cargo install exa
+
             dlog "=== Finished (sys) install ==="
             ;;
         "uninstall")
@@ -180,6 +183,9 @@ function mod_sys() {
 
             dlog "Uninstalling xmllint"
             sudo apt-get --purge remove -y libxml2-utils || return 1
+
+            dlog "Uninstalling exa"
+            cargo uninstall exa
 
             dlog "=== Finished (sys) uninstall ==="
             ;;
@@ -207,6 +213,9 @@ function mod_sys() {
             dlog "Updating xmllint"
             sudo apt-get upgrade -y libxml2-utils || return 1
 
+            dlog "Updating exa"
+            cargo update exa
+
             dlog "=== Finished (sys) update ==="
             ;;
         "check")
@@ -216,7 +225,8 @@ function mod_sys() {
             which bat && \
             which jq && \
             which xq && \
-            which xmllint || return 1
+            which xmllint && \
+            which exa || return 1
             ;;
         *)
             echo "$1 Didn't match anything operation for SYS"
