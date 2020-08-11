@@ -393,3 +393,6 @@ colorscheme onedark
 
 "=== Mappings reminders
 nnoremap g; :!echoerr "Use Ctrl-O (back) and Ctrl-I (forward)"<CR>
+
+"=== Help open in current window
+command! -nargs=1 -complete=help H :enew | :set buftype=help | :h <args>

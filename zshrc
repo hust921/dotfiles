@@ -37,6 +37,11 @@ source $ZSH/oh-my-zsh.sh
 # Start ssh-agent
 eval $(ssh-agent) &> /dev/null
 
+# Man pages -> Read in vim
+if command -v nvim &> /dev/null; then
+    export MANPAGER='nvim -c "set ft=man|normal gO" -'
+fi
+
 # Local config. Logins / Creds / Etc
 [ -f ~/.zshlocal.zsh ] && source ~/.zshlocal.zsh
 [ -f ~/.cargo/env ] && source ~/.cargo/env

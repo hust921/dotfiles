@@ -388,6 +388,22 @@ function mod_rust() {
             dlog "installing rust-analyzer"
             sudo curl -L https://github.com/rust-analyzer/rust-analyzer/releases/download/nightly/rust-analyzer-linux -o /usr/local/bin/rust-analyzer && \
             sudo chmod 751 /usr/local/bin/rust-analyzer
+
+            dlog "installing Universal-ctags (for rust ctags)"
+            if ! sudo apt-get install -y gcc make pkg-config autoconf automake python3-docutils libseccomp-dev libjansson-dev libyaml-dev libxml2-dev; then
+                sudo apt-get --fix-missing || return 1
+                sudo apt-get install -y gcc make pkg-config autoconf automake python3-docutils libseccomp-dev libjansson-dev libyaml-dev libxml2-dev || return 1
+            fi
+            local ctagsrepo
+            ctagsrepo="$(mktemp -d /tmp/rustctags-XXXXX)"
+            cd "$ctagsrepo"
+            git clone https://github.com/universal-ctags/ctags && \
+            cd ctags && \
+            ./autogen.sh && \
+            ./configure && \
+            make && \
+            sudo make install && \
+
             dlog "=== Finished (rust) install ==="
             ;;
         "uninstall")
