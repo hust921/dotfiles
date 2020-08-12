@@ -153,7 +153,7 @@ Plug 'kshenoy/vim-signature'
 " --- Math, Charts, Diagrams, etc: https://github.com/iamcco/markdown-preview.nvim
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 
-let g:mkdp_auto_start = 1
+let g:mkdp_auto_start = 0
 let g:mkdp_auto_close = 0
 let g:mkdp_refresh_slow = 0 "Update only when save/leave insert
 "let g:mkdp_browser = '/mnt/c/Program Files/Mozilla Firefox/firefox.exe'
@@ -361,12 +361,6 @@ if PlugLoaded('nvim-lsp')
     autocmd Filetype sh,bash,zsh setlocal omnifunc=v:lua.vim.lsp.omnifunc
 endif
 
-
-
-"=== Local Overwrite {{{1          --
-" -----------------------------------
-" From old (Vim 7.4 vimrc config: "source ~/vimfiles/vimlocal.vim
-
 " Always use win32yank if available.
 " Forcing this, so not to load xclip.
 " Copied from: https://github.com/neovim/neovim/blob/master/runtime/autoload/provider/clipboard.vim
@@ -396,3 +390,9 @@ nnoremap g; :!echoerr "Use Ctrl-O (back) and Ctrl-I (forward)"<CR>
 
 "=== Help open in current window
 command! -nargs=1 -complete=help H :enew | :set buftype=help | :h <args>
+
+"=== Local Overwrite {{{1          --
+" -----------------------------------
+if filereadable(expand("~/.vimlocal.vim"))
+    exe 'source ~/.vimlocal.vim'
+endif
