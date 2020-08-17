@@ -159,6 +159,11 @@ function mod_sys() {
             dlog "Installing exa"
             cargo install exa
 
+            dlog '"Installing" colors-test string'
+            sudo cp "$DOTDIR/colors-test" "/usr/local/bin/"
+            sudo chown "root:root" "/usr/local/bin/colors-test"
+            sudo chmod 751 "/usr/local/bin/colors-test"
+
             dlog "=== Finished (sys) install ==="
             ;;
         "uninstall")
@@ -187,6 +192,9 @@ function mod_sys() {
 
             dlog "Uninstalling exa"
             cargo uninstall exa
+
+            dlog '"Uninstalling" colors-test string'
+            sudo rm -rf "/usr/local/bin/colors-test"
 
             dlog "=== Finished (sys) uninstall ==="
             ;;
@@ -227,7 +235,8 @@ function mod_sys() {
             which jq && \
             which xq && \
             which xmllint && \
-            which exa || return 1
+            which exa && \
+            which colors-test || return 1
             ;;
         *)
             echo "$1 Didn't match anything operation for SYS"
