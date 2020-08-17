@@ -11,7 +11,8 @@ set -o nounset   # to cause an error if you use an empty variable
 set -o noclobber # the '>' symbol not allowed to overwrite "existing" files
 set -o pipefail  # cmd_a | cmd_b . Fails if cmd_a doesn't cleanly exit (0) 
 
-declare -rgA MODULES=(
+declare -rg ALL_MODS=('RUST' 'SYS' 'OMZ' 'FZF' 'TMUX' 'MINTTY' 'GIT' 'NVIM')
+declare -rgA MODULE_ACTIONS=(
     [RUST]=mod_rust
     [SYS]=mod_sys
     [OMZ]=mod_omz
@@ -607,13 +608,13 @@ function parse_subcommand_args() {
     mods=()
     if [[ $# == 0 ]]; then
         # All mods
-        mods=${!MODULES[*]}
+        mods=${ALL_MODS[*]}
         dlog "mods=all ${mods[*]}"
     else
         # Check valid arguments
         for m in "$@"; do
             local mUpper=${m^^}
-            if [ ${MODULES["$mUpper"]+x} ]; then
+            if [ ${MODULE_ACTIONS["$mUpper"]+x} ]; then
                 mods+=("$mUpper")
             else
                 print_help "Unknown module name: \"$mUpper\""
@@ -728,11 +729,11 @@ function mod_all() {
         else
             get_log "$key"
             dlog "Key=$key"
-            dlog "MODULES[Key]=${MODULES[$key]}"
+            dlog "MODULE_ACTIONS[Key]=${MODULE_ACTIONS[$key]}"
             
             # Run MODULE+Operation && print SUCCESS
             # Or print FAILURE
-            if ${MODULES[$key]} $operation > $LOGFILE 2>&1; then
+            if ${MODULE_ACTIONS[$key]} $operation > $LOGFILE 2>&1; then
                 echo -e "[\e[32mSUCCESS\e[49m\e[39m] [$key] [${operation^^}] Log: $LOGFILE"
             else
                 exitcode=99
