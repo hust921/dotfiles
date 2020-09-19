@@ -192,6 +192,7 @@ let g:ale_sign_column_always = 1
 let g:ale_set_highlights = 1
 nmap <silent> <leader>e :ALENext<CR>
 nmap <silent> <leader>E :ALEPrevious<CR>
+let g:ale_linters = {'rust': ['analyzer']}
 
 " -- NerdTree {{{2
 " -----
