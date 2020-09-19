@@ -162,6 +162,11 @@ function mod_sys() {
             dlog "Installing cargo-update"
             cargo install cargo-update || return 1
 
+            dlog '"Installing" colors-test string'
+            sudo cp "$DOTDIR/colors-test" "/usr/local/bin/"
+            sudo chown "root:root" "/usr/local/bin/colors-test"
+            sudo chmod 751 "/usr/local/bin/colors-test"
+
             dlog "=== Finished (sys) install ==="
             ;;
         "uninstall")
@@ -193,6 +198,9 @@ function mod_sys() {
 
             dlog "Uninstalling cargo-update"
             cargo uninstall cargo-update
+
+            dlog '"Uninstalling" colors-test string'
+            sudo rm -rf "/usr/local/bin/colors-test"
 
             dlog "=== Finished (sys) uninstall ==="
             ;;
@@ -237,6 +245,7 @@ function mod_sys() {
             which xq && \
             which xmllint && \
             which exa && \
+            which colors-test && \
             cargo install-update -h || return 1
             ;;
         *)

@@ -33,6 +33,9 @@ alias vi='nvim'
 alias grep='grep --color=always'
 alias less='less -R'
 
+alias wi="win32yank.exe -i"
+alias wo="win32yank.exe -o"
+
 # DockerClean all containers & delete images
 if [ -x "$(command -v docker)" ]; then
     dockerclean()
