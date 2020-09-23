@@ -354,7 +354,20 @@ if PlugLoaded('nvim-lsp')
     " warnings/errors which is enabled in LSP by default.
     lua local nvim_lsp = require'nvim_lsp'
     lua vim.lsp.callbacks["textDocument/publishDiagnostics"] = function() end
+    
+    " Code navigation shortcuts
+    nnoremap <silent> <leader>a  <cmd>lua vim.lsp.buf.code_action()<CR>
+    nnoremap <silent> <F12>      <cmd>lua vim.lsp.buf.definition()<CR>
+    nnoremap <silent> <F1>       <cmd>lua vim.lsp.buf.hover()<CR>
+    nnoremap <silent> <F2>       <cmd>lua vim.lsp.buf.rename()<CR>
+    "inoremap <silent> <xxx>  <cmd>lua vim.lsp.buf.signature_help()<CR>
+    "nnoremap <silent> <xxx>  <cmd>lua vim.lsp.buf.implementation()<CR>
+    "nnoremap <silent> <xxx>  <cmd>lua vim.lsp.buf.type_definition()<CR>
+    "nnoremap <silent> <xxx>  <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
+    nnoremap <silent> <leader>r    <cmd>lua vim.lsp.buf.references()<CR>
+    nnoremap <silent> <leader>d    <cmd>lua vim.lsp.buf.document_symbol()<CR>
 
+    " Use omnifunc
     autocmd Filetype rust setlocal omnifunc=v:lua.vim.lsp.omnifunc
     autocmd Filetype python setlocal omnifunc=v:lua.vim.lsp.omnifunc
     autocmd Filetype vim setlocal omnifunc=v:lua.vim.lsp.omnifunc
@@ -385,9 +398,6 @@ endif
 "=== Colorscheme {{{1              --
 " -----------------------------------
 colorscheme onedark
-
-"=== Mappings reminders
-nnoremap g; :!echoerr "Use Ctrl-O (back) and Ctrl-I (forward)"<CR>
 
 "=== Help open in current window
 command! -nargs=1 -complete=help H :enew | :set buftype=help | :h <args>
