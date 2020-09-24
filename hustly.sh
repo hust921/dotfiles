@@ -134,17 +134,17 @@ function mod_sys() {
     case "$1" in
         "install")
             dlog "=== Running (sys) install ==="
-            echo -e "[\e[40m\e[33mWARNING\e[49m\e[39m] Installing fd-find. WARNING! using static .deb url. deprecated"
-            install_deb 'https://github.com/sharkdp/fd/releases/download/v7.5.0/fd-musl_7.5.0_amd64.deb' || return 1
+            echo "Installing fd-find"
+            cargo install fd-find || return 1
 
-            echo -e "[\e[40m\e[33mWARNING\e[49m\e[39m] Installing ripgrep. WARNING! using static .deb url. deprecated"
-            install_deb 'https://github.com/BurntSushi/ripgrep/releases/download/11.0.2/ripgrep_11.0.2_amd64.deb' || return 1
+            echo "Installing ripgrep"
+            cargo install ripgrep || return 1
 
             dlog "Installing ag, the silver searcher"
             sudo apt-get install -y silversearcher-ag || return 1
 
-            echo -e "[\e[40m\e[33mWARNING\e[49m\e[39m] Installing bat (cat alternative). WARNING! using static .deb url. deprecated"
-            install_deb 'https://github.com/sharkdp/bat/releases/download/v0.13.0/bat-musl_0.13.0_amd64.deb' || return 1
+            echo "Installing bat"
+            cargo install bat || return 1
 
             dlog "Installing jq (json processor)"
             sudo apt-get install -y jq || return 1
@@ -157,7 +157,10 @@ function mod_sys() {
             sudo apt install -y libxml2-utils
 
             dlog "Installing exa"
-            cargo install exa
+            cargo install exa || return 1
+
+            dlog "Installing cargo-update"
+            cargo install cargo-update || return 1
 
             dlog '"Installing" colors-test string'
             sudo cp "$DOTDIR/colors-test" "/usr/local/bin/"
@@ -170,16 +173,16 @@ function mod_sys() {
             dlog "=== Running (sys) uninstall ==="
 
             dlog "Uninstalling fd-find"
-            sudo dpkg --purge --force-all fd-find || return 1
+            cargo uninstall fd-find || return 1
 
             dlog "Uninstalling ripgrep"
-            sudo dpkg --purge --force-all ripgrep || return 1
+            cargo uninstall ripgrep || return 1
 
             dlog "Uninstalling ag, the silver searcher"
             sudo apt-get --purge remove -y silversearcher-ag || return 1
 
             dlog "Uninstalling bat (cat alternative)"
-            sudo dpkg --purge --force-all bat || return 1
+            cargo uninstall bat || return 1
 
             dlog "Uninstalling jq (json processor)"
             sudo apt-get --purge remove -y jq || return 1
@@ -193,6 +196,9 @@ function mod_sys() {
             dlog "Uninstalling exa"
             cargo uninstall exa
 
+            dlog "Uninstalling cargo-update"
+            cargo uninstall cargo-update
+
             dlog '"Uninstalling" colors-test string'
             sudo rm -rf "/usr/local/bin/colors-test"
 
@@ -202,16 +208,16 @@ function mod_sys() {
             dlog "=== Running (sys) update ==="
 
             dlog "Updating fd-find"
-            echo -e "[\e[40m\e[33mWARNING\e[49m\e[39m] fd-find is installed using a staic link to a .deb package. Can't do update."
+            cargo install-update -a
 
             dlog "Updating ripgrep"
-            echo -e "[\e[40m\e[33mWARNING\e[49m\e[39m] ripgrep is installed using a staic link to a .deb package. Can't do update."
+            # see above: cargo install-update -a
 
             dlog "Updating ag, the silver searcher"
             sudo apt-get upgrade -y silversearcher-ag || return 1
 
             dlog "Updating bat (cat alternative)"
-            echo -e "[\e[40m\e[33mWARNING\e[49m\e[39m] fd-find is installed using a staic link to a .deb package. Can't do update."
+            # see above: cargo install-update -a
 
             dlog "Updating jq (json processor)"
             sudo apt-get upgrade -y jq || return 1
@@ -223,7 +229,10 @@ function mod_sys() {
             sudo apt-get upgrade -y libxml2-utils || return 1
 
             dlog "Updating exa"
-            cargo update exa
+            # see above: cargo install-update -a
+
+            dlog "Updating cargo-update"
+            # see above: cargo install-update -a
 
             dlog "=== Finished (sys) update ==="
             ;;
@@ -236,7 +245,8 @@ function mod_sys() {
             which xq && \
             which xmllint && \
             which exa && \
-            which colors-test || return 1
+            which colors-test && \
+            cargo install-update -h || return 1
             ;;
         *)
             echo "$1 Didn't match anything operation for SYS"
