@@ -160,6 +160,7 @@ function mod_sys() {
             cargo install exa || return 1
 
             dlog "Installing cargo-update"
+            sudo apt-get install -y libssl-dev
             cargo install cargo-update || return 1
 
             dlog '"Installing" colors-test string'
