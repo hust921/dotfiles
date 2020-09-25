@@ -349,6 +349,7 @@ if PlugLoaded('nvim-lsp')
     lua require'nvim_lsp'.vimls.setup{}
     lua require'nvim_lsp'.pyls.setup{}
     lua require'nvim_lsp'.html.setup{}
+    lua require'nvim_lsp'.bashls.setup{}
 
     " Override LSP callback to return nothing. To disable 'Code Lens' style
     " warnings/errors which is enabled in LSP by default.
