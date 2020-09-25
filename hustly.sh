@@ -627,8 +627,18 @@ function parse_subcommand_args() {
 
     mods=()
     if [[ $# == 0 ]]; then
+        # Reverse ALL_MODS when uninstalling. (eg: uninstall pkgs before pkg-managers)
+        if [[ "${$operation^^}" == "UNINSTALL" ]]; then
+            for i in $(seq $((${#ALL_MODS[@]} - 1)) -1 0); do
+                mods+=(${ALL_MODS[$i]})
+            done
+        else
+            for mod in "${ALL_MODS[@]}"; do
+                mods+=($mod)
+            done
+        fi
+
         # All mods
-        mods=${ALL_MODS[*]}
         dlog "mods=all ${mods[*]}"
     else
         # Check valid arguments
@@ -643,7 +653,6 @@ function parse_subcommand_args() {
     fi
 
     dlog "mods = ${mods[*]}"
-
     mod_all "$operation" "${mods[@]}"
 }
 
