@@ -628,7 +628,7 @@ function parse_subcommand_args() {
     mods=()
     if [[ $# == 0 ]]; then
         # Reverse ALL_MODS when uninstalling. (eg: uninstall pkgs before pkg-managers)
-        if [[ "${$operation^^}" == "UNINSTALL" ]]; then
+        if [[ "${operation^^}" == "UNINSTALL" ]]; then
             for i in $(seq $((${#ALL_MODS[@]} - 1)) -1 0); do
                 mods+=(${ALL_MODS[$i]})
             done
