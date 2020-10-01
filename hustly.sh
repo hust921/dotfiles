@@ -23,6 +23,15 @@ declare -rgA MODULE_ACTIONS=(
     [NVIM]=mod_nvim
 )
 
+# ==================================
+# === Lazy load cargo command    ===
+# ==================================
+function cargo() {
+    unset -f cargo
+    [ -f ~/.cargo/env ] && source ~/.cargo/env
+    cargo "$@"
+}
+
 # ============================== ==============================
 # =====               Module Implementations              =====
 # ============================== ==============================
