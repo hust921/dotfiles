@@ -6,7 +6,7 @@ alias tmux="tmux -2"
 alias exa='exa --icons -h --color=always'
 alias ls='exa'
 alias l1='command ls -1'
-alias ll='exa -l --git'
+alias ll='exa -lg --git'
 alias la='ll -a'
 
 # xclip
