@@ -1,7 +1,7 @@
 #!/bin/zsh
 # If not running WSL => exit
 if grep -iv "microsoft" /proc/version >> /dev/null; then
-    exit 0
+    return 0
 fi
 
 # Windows Aliases
