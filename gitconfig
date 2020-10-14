@@ -8,8 +8,10 @@
     # Windows!
     ignorecase = false
 
-    # Line-endings
+    # Line-endings.
     autocrlf = input
+
+    # Enable for Windows line-endings
     #autocrlf = true
     #safecrlf = false
     #whitespace = cr-at-eol
@@ -17,7 +19,6 @@
     # File permissions
     filemode = false
     
-    # cat short output
     pager = less -F -X
 [diff]
     tool = vimdiff
@@ -25,3 +26,5 @@
     prompt = false
 [alias]
     d = difftool
+[pull]
+	rebase = false
