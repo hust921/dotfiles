@@ -32,6 +32,8 @@ function gcd {git checkout develop $args}
 function glg {git log --stat --graph $args}
 function gd  {git diff $args}
 function gaa {git add --all $args}
+function grv {git remote -v $args}
+function gba {git branch -avv $args}
 
 # ================= Video-Download Functions =================
 # Preset for youtube-dl for ffmpeg and fast download
@@ -79,9 +81,11 @@ Set-Alias -name 'vim' -Value 'Start-Vi'
 Set-Alias -name 'vi' -Value 'Start-Vi'
 
 # aliases
-function nixls { Get-ChildItem -Hidden }
-New-Alias ll nixls
-New-Alias la nixls
+Set-Alias ls Get-ChildItem -Hidden
+Set-Alias la Get-ChildItem
+Set-Alias ll Get-ChildItem
+Set-Alias which Get-Command
+Set-Alias powershell "C:\Program Files\PowerShell\6\pwsh.exe"
 
 function Start-Vi ($firstArg)
 {
