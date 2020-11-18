@@ -30,6 +30,7 @@ export EDITOR='nvim'
 
 # Set Pager
 command -v bat &> /dev/null && export PAGER=bat || export PAGER='less -F -X'
+command -v git &> /dev/null && git config --global core.pager "$PAGER"
 
 # Oh-My-Zsh
 source $ZSH/oh-my-zsh.sh

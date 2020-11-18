@@ -18,15 +18,15 @@ augroup LargeFile
     autocmd BufReadPre * call LargeFileOptions()
 augroup END
 
+set foldmethod=manual
 function LargeFileOptions()
     let f=expand("<afile>")
     if getfsize(f) > (1024 * 150) " > 150KB
         set eventignore+=FileType 
-        setlocal noswapfile bufhidden=unload buftype=nowrite undolevels=-1 foldmethod=manual
+        setlocal noswapfile bufhidden=unload buftype=nowrite undolevels=-1
     else 
         set eventignore-=FileType
         syntax on
-        set foldmethod=syntax
         autocmd BufWinEnter * silent! :%foldopen!
     endif
 endfunction
