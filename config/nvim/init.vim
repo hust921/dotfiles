@@ -345,15 +345,15 @@ endfunction
 if PlugLoaded('nvim-lsp')
     " Rust completion
     " Use LSP omni-complete in Rust files
-    lua require'nvim_lsp'.rust_analyzer.setup{}
-    lua require'nvim_lsp'.vimls.setup{}
-    lua require'nvim_lsp'.pyls.setup{}
-    lua require'nvim_lsp'.html.setup{}
-    lua require'nvim_lsp'.bashls.setup{}
+    lua require'lspconfig'.rust_analyzer.setup{}
+    lua require'lspconfig'.vimls.setup{}
+    lua require'lspconfig'.pyls.setup{}
+    lua require'lspconfig'.html.setup{}
+    lua require'lspconfig'.bashls.setup{}
 
     " Override LSP callback to return nothing. To disable 'Code Lens' style
     " warnings/errors which is enabled in LSP by default.
-    lua local nvim_lsp = require'nvim_lsp'
+    lua local lspconfig = require'lspconfig'
     lua vim.lsp.callbacks["textDocument/publishDiagnostics"] = function() end
     
     " Code navigation shortcuts
