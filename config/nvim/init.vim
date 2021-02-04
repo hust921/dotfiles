@@ -214,6 +214,9 @@ Plug 'sheerun/vim-polyglot'
 " -- Neovim Treesitter
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
+" -- Code action "lightbulb"
+Plug 'kosayoda/nvim-lightbulb'
+
 " -- Deoplete (dark powered neo-completion) {{{2
 " -- Auto-Completion framework for neovim/vim
 
@@ -343,6 +346,10 @@ require'nvim-treesitter.configs'.setup {
   },
 }
 EOF
+
+" code action lightbulb
+autocmd CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()
+lua require'nvim-lightbulb'.update_lightbulb { sign = { enable = true, priority = 10, } }
 
 function! PlugLoaded(name)
     return (
