@@ -211,6 +211,9 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 Plug 'neovim/nvim-lsp'
 Plug 'sheerun/vim-polyglot'
 
+" -- Neovim Treesitter
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+
 " -- Deoplete (dark powered neo-completion) {{{2
 " -- Auto-Completion framework for neovim/vim
 
@@ -329,6 +332,17 @@ nnoremap <C-h> :History/<CR>
 Plug 'ron-rs/ron.vim'
 
 call plug#end()
+
+" Treesitter
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = "all", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  highlight = {
+    enable = true,              -- false will disable the whole extension
+    disable = { "c", "rust", "regex", "css", "javascript", "json", "toml", "c_sharp", "cpp", "lua", "ruby", "python", "yaml", "bash", "html"},  -- list of language that will be disabled
+  },
+}
+EOF
 
 function! PlugLoaded(name)
     return (
