@@ -350,11 +350,6 @@ if PlugLoaded('nvim-lsp')
     lua require'lspconfig'.pyls.setup{}
     lua require'lspconfig'.html.setup{}
     lua require'lspconfig'.bashls.setup{}
-
-    " Override LSP callback to return nothing. To disable 'Code Lens' style
-    " warnings/errors which is enabled in LSP by default.
-    lua local lspconfig = require'lspconfig'
-    lua vim.lsp.callbacks["textDocument/publishDiagnostics"] = function() end
     
     " Code navigation shortcuts
     nnoremap <silent> <leader>a  <cmd>lua vim.lsp.buf.code_action()<CR>
