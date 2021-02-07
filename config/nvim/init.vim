@@ -266,7 +266,7 @@ Plug 'ekalinin/Dockerfile.vim'
 " -----
 Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
-let g:neosnippet#enable_completed_snippet = 1
+let g:neosnippet#enable_completed_snippet = 0
 autocmd CompleteDone * call neosnippet#complete_done()
 imap <C-j> <Plug>(neosnippet_expand_or_jump)
 smap <C-j> <Plug>(neosnippet_expand_or_jump)
