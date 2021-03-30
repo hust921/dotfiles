@@ -211,6 +211,12 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 Plug 'neovim/nvim-lsp'
 Plug 'sheerun/vim-polyglot'
 
+" -- Neovim Treesitter
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+
+" -- Code action "lightbulb"
+Plug 'kosayoda/nvim-lightbulb'
+
 " -- Deoplete (dark powered neo-completion) {{{2
 " -- Auto-Completion framework for neovim/vim
 
@@ -260,7 +266,7 @@ Plug 'ekalinin/Dockerfile.vim'
 " -----
 Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
-let g:neosnippet#enable_completed_snippet = 1
+let g:neosnippet#enable_completed_snippet = 0
 autocmd CompleteDone * call neosnippet#complete_done()
 imap <C-j> <Plug>(neosnippet_expand_or_jump)
 smap <C-j> <Plug>(neosnippet_expand_or_jump)
@@ -330,6 +336,21 @@ Plug 'ron-rs/ron.vim'
 
 call plug#end()
 
+" Treesitter
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = "all", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  highlight = {
+    enable = true,              -- false will disable the whole extension
+    disable = { "c", "rust", "regex", "css", "javascript", "json", "toml", "c_sharp", "cpp", "lua", "ruby", "python", "yaml", "bash", "html"},  -- list of language that will be disabled
+  },
+}
+EOF
+
+" code action lightbulb
+autocmd CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()
+lua require'nvim-lightbulb'.update_lightbulb { sign = { enable = true, priority = 10, } }
+
 function! PlugLoaded(name)
     return (
         \ has_key(g:plugs, a:name) &&
@@ -350,11 +371,6 @@ if PlugLoaded('nvim-lsp')
     lua require'lspconfig'.pyls.setup{}
     lua require'lspconfig'.html.setup{}
     lua require'lspconfig'.bashls.setup{}
-
-    " Override LSP callback to return nothing. To disable 'Code Lens' style
-    " warnings/errors which is enabled in LSP by default.
-    lua local lspconfig = require'lspconfig'
-    lua vim.lsp.callbacks["textDocument/publishDiagnostics"] = function() end
     
     " Code navigation shortcuts
     nnoremap <silent> <leader>a  <cmd>lua vim.lsp.buf.code_action()<CR>

@@ -21,3 +21,4 @@ powershell()
         pwsh -noexit -command "cd $winpath"
     fi
 }
+# pwsh="$(command ls -1 '/mnt/c/Program Files/Powershell2' &> /dev/null && find '/mnt/c/Program Files/Powershell' -iname '*pwsh.exe' |head -n1)"
