@@ -75,10 +75,19 @@ prompt_context() {
 prompt_git() {
   local ref dirty mode repo_path
   repo_path=$(git rev-parse --git-dir 2>/dev/null)
+  ref=$(git symbolic-ref HEAD 2> /dev/null) || ref="➦ $(git show-ref --head -s --abbrev |head -n1 2> /dev/null)"
+
+  # Exit if hide-dirty enabled
+  if [[ "$(__git_prompt_git config --get oh-my-zsh.hide-dirty)" == "1" ]]; then
+    if [[ "${DISABLE_UNTRACKED_FILES_DIRTY:-}" == "true" ]]; then
+      prompt_segment black blue
+      echo -n "${ref/refs\/heads\// }${vcs_info_msg_0_%% }${mode}"
+      return
+    fi
+  fi
 
   if $(git rev-parse --is-inside-work-tree >/dev/null 2>&1); then
     dirty=$(parse_git_dirty)
-    ref=$(git symbolic-ref HEAD 2> /dev/null) || ref="➦ $(git show-ref --head -s --abbrev |head -n1 2> /dev/null)"
     if [[ -n $dirty ]]; then
       prompt_segment yellow black
     else
