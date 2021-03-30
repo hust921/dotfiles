@@ -79,12 +79,10 @@ prompt_git() {
     ref=$(git symbolic-ref HEAD 2> /dev/null) || ref="➦ $(git show-ref --head -s --abbrev |head -n1 2> /dev/null)"
 
     # Exit if hide-dirty enabled
-    if [[ "$(__git_prompt_git config --get oh-my-zsh.hide-dirty)" == "1" ]]; then
-      if [[ "${DISABLE_UNTRACKED_FILES_DIRTY:-}" == "true" ]]; then
+    if [[ "$(__git_prompt_git config --get oh-my-zsh.hide-dirty)" == "1" ]] || [[ "${DISABLE_UNTRACKED_FILES_DIRTY:-}" == "true" ]]; then
         prompt_segment black blue
         echo -n "${ref/refs\/heads\// }${vcs_info_msg_0_%% }${mode}"
         return
-      fi
     fi
 
     dirty=$(parse_git_dirty)
