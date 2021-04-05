@@ -25,4 +25,7 @@ echo "installing rust-analyzer"
 sudo curl -L https://github.com/rust-analyzer/rust-analyzer/releases/download/nightly/rust-analyzer-linux -o /usr/local/bin/rust-analyzer && \
 sudo chmod 751 /usr/local/bin/rust-analyzer
 
+echo "Installing pakages:"
+cargo install bat fd-find ripgrep exa cargo-update
+
 echo "=== Finished (rust) install ==="

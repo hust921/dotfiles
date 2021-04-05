@@ -14,10 +14,3 @@ cd neovim-nightly-bin
 makepkg -si
 ```
 - https://aur.archlinux.org/packages/neovim-nightly-bin
-
-# cargo (rust)
-- bat
-- fd-find
-- ripgrep
-- exa
-- cargo-update
