@@ -9,17 +9,17 @@ echo "=== Running (nvim) install ==="
 
 # **Manual NeovimInstall**
 # ```bash
-# pacman -S base-devel
-# git clone https://aur.archlinux.org/packages/neovim-nightly-bin
-# cd neovim-nightly-bin
-# makepkg -si
+pacman --noconfirm -S base-devel
+git clone https://aur.archlinux.org/packages/neovim-nightly-bin
+cd neovim-nightly-bin
+makepkg -si
 # ```
 # - https://aur.archlinux.org/packages/neovim-nightly-bin
 
 which nvim || echo "Install nvim manually first, see comment above"; exit 122
 
 echo "Installing dependencies"
-sudo pacman -Sy shellcheck
+sudo pacman --noconfirm -Sy shellcheck
 pip3 install pynvim jedi flake8
 
 echo "Downloading and installing vim-plug" && \

@@ -5,7 +5,7 @@ set -o pipefail  # cmd_a | cmd_b . Fails if cmd_a doesn't cleanly exit (0)
 readonly DOTDIR="$HOME/dotfiles"
 
 echo "=== Running (omz) install ==="
-sudo pacman -S zsh screenfetch
+sudo pacman --noconfirm -S zsh screenfetch
 
 rm -rf "$HOME/.oh-my-zsh"
 omzscript=$(mktemp /tmp/omz-XXXXXXXX)

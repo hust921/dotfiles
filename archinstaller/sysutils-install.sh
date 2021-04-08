@@ -5,18 +5,21 @@ set -o pipefail  # cmd_a | cmd_b . Fails if cmd_a doesn't cleanly exit (0)
 readonly DOTDIR="$HOME/dotfiles"
 
 echo "=== Running (sys) install ==="
+echo "Installing fzf"
+sudo pacman --noconfirm -S fzf
+
 echo "Installing ag, the silver searcher"
-sudo pacman -Ss the_silver_searcher
+sudo pacman --noconfirm -S the_silver_searcher
 
 echo "Installing jq (json processor)"
-sudo pacman -S jq
+sudo pacman --noconfirm -S jq
 
 echo "Installing xq (xml processor)"
 sudo curl -o /usr/local/bin/xq 'https://github.com/maiha/xq.cr/releases' && \
 sudo chmod 751 /usr/local/bin/xq
 
 echo "Installing xmllint"
-sudo pacman -S libxml2
+sudo pacman --noconfirm -S libxml2
 
 echo '"Installing" colors-test string'
 sudo cp "$DOTDIR/colors-test" "/usr/local/bin/"
