@@ -27,12 +27,20 @@ alias vi='nvim'
 alias grep='grep --color=always'
 alias less='less -R'
 
-# DockerClean all containers & delete images
+# Docker
 if [ -x "$(command -v docker)" ]; then
+# DockerClean all containers & delete images
     dockerclean()
     {
+        docker system prune -a --force --filter "label!=pruneme=false"
         docker stop $(docker ps -a -q);
         docker rm $(docker ps -a -q);
-        docker rmi $(docker images -q)
+    }
+
+    dockerlabel()
+    {
+        echo
+        echo 'echo "FROM archlinux:base-devel" | docker build --label pruneme="false" -t "archlinux:base-devel" -'
+        echo
     }
 fi
