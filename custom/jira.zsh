@@ -30,7 +30,7 @@ function fjql() {
     jql $1 $req &
   done} | fzf --no-hscroll +m | cut -d ':' -f 1)
 
-  [ ${#ticket} -gt 0 ] && open "https://$JIRA_TEAM.atlassian.net/browse/$ticket"
+  [ ${#ticket} -gt 0 ] && xdg-open "https://$JIRA_TEAM.atlassian.net/browse/$ticket"
 }
 
 alias fj="fjql 'order%20by%20updated%20DESC'"
