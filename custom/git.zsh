@@ -22,3 +22,11 @@ function grhh() {
         git reset --hard HEAD "$@"
     fi
 }
+
+function git_branch_fuzzy_search() {
+    git rev-parse HEAD > /dev/null 2>&1 &&
+        git branch -a -vv --color=always | grep -v '/HEAD\s' |
+        fzf --ansi --multi --tac | sed 's/^..//' | awk '{print $1}' |
+        sed 's#^remotes/[^/]*/##'
+}
+bindkey -s '^g' '"$(git_branch_fuzzy_search)"^M'
