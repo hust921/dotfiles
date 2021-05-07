@@ -24,9 +24,14 @@ function grhh() {
 }
 
 function git_branch_fuzzy_search() {
-    git rev-parse HEAD > /dev/null 2>&1 &&
+    local result=($(git rev-parse HEAD > /dev/null 2>&1 &&
         git branch -a -vv --color=always | grep -v '/HEAD\s' |
         fzf --ansi --multi --tac | sed 's/^..//' | awk '{print $1}' |
-        sed 's#^remotes/[^/]*/##'
+        sed 's#^remotes/[^/]*/##'))
+    LBUFFER="${LBUFFER}${(q)result}"
+    local ret=$?
+    zle reset-prompt
+    return $ret
 }
-bindkey -s '^g' '"$(git_branch_fuzzy_search)"^M'
+zle -N git_branch_fuzzy_search
+bindkey '^g' git_branch_fuzzy_search
