@@ -217,6 +217,12 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 " -- Code action "lightbulb"
 Plug 'kosayoda/nvim-lightbulb'
 
+" -- Cursor line
+Plug 'yamatsum/nvim-cursorline'
+
+" -- Automatically create missing LSP colors
+Plug 'folke/lsp-colors.nvim'
+
 " -- Deoplete (dark powered neo-completion) {{{2
 " -- Auto-Completion framework for neovim/vim
 
