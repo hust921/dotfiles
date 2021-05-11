@@ -390,6 +390,10 @@ if PlugLoaded('nvim-lsp')
     autocmd Filetype vim setlocal omnifunc=v:lua.vim.lsp.omnifunc
     autocmd Filetype html setlocal omnifunc=v:lua.vim.lsp.omnifunc
     autocmd Filetype sh,bash,zsh setlocal omnifunc=v:lua.vim.lsp.omnifunc
+
+    " Open lsp hover menu
+    inoremap <buffer><silent> <C-y><C-y> <Cmd>lua vim.lsp.buf.hover()<CR>
+
 endif
 
 " Always use win32yank if available.
