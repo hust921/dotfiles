@@ -346,6 +346,7 @@ call plug#end()
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
   ensure_installed = "all", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  ignore_install = { "haskell" },
   highlight = {
     enable = true,              -- false will disable the whole extension
     disable = { "c", "rust", "regex", "css", "javascript", "json", "toml", "c_sharp", "cpp", "lua", "ruby", "python", "yaml", "bash", "html"},  -- list of language that will be disabled
@@ -396,6 +397,10 @@ if PlugLoaded('nvim-lsp')
     autocmd Filetype vim setlocal omnifunc=v:lua.vim.lsp.omnifunc
     autocmd Filetype html setlocal omnifunc=v:lua.vim.lsp.omnifunc
     autocmd Filetype sh,bash,zsh setlocal omnifunc=v:lua.vim.lsp.omnifunc
+
+    " Open lsp hover menu
+    inoremap <buffer><silent> <C-y><C-y> <Cmd>lua vim.lsp.buf.hover()<CR>
+
 endif
 
 " Always use win32yank if available.
