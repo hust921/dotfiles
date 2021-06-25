@@ -384,7 +384,7 @@ if PlugLoaded('nvim-lsp')
     nnoremap <silent> <F12>      <cmd>lua vim.lsp.buf.definition()<CR>
     nnoremap <silent> <F1>       <cmd>lua vim.lsp.buf.hover()<CR>
     nnoremap <silent> <F2>       <cmd>lua vim.lsp.buf.rename()<CR>
-    "inoremap <silent> <xxx>  <cmd>lua vim.lsp.buf.signature_help()<CR>
+    inoremap <silent> <C-Space>  <cmd>lua vim.lsp.buf.signature_help()<CR>
     "nnoremap <silent> <xxx>  <cmd>lua vim.lsp.buf.implementation()<CR>
     "nnoremap <silent> <xxx>  <cmd>lua vim.lsp.buf.type_definition()<CR>
     "nnoremap <silent> <xxx>  <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
@@ -402,6 +402,11 @@ if PlugLoaded('nvim-lsp')
     inoremap <buffer><silent> <C-y><C-y> <Cmd>lua vim.lsp.buf.hover()<CR>
 
 endif
+
+" Set Termdebugger
+packadd termdebug
+autocmd Filetype rust let termdebugger="rust-gdb"
+autocmd Filetype c let termdebugger="gdb"
 
 " Always use win32yank if available.
 " Forcing this, so not to load xclip.
