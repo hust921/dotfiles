@@ -6,6 +6,16 @@ alias glola='git log --graph --pretty='\''%Cred%h%Creset -%C(auto)%d%Creset %s %
 alias gba='git branch -avv'
 alias grso='git remote show origin'
 
+# Assume `gd HEAD` if no args is given to `gd`
+unalias gd
+function gd() {
+    if [ $# -eq 0 ]; then
+        git diff HEAD
+    else
+        git diff "$@"
+    fi
+}
+
 # `git reset (--hard) HEAD` alias overrides, with confirmation
 unalias grh
 function grh() {
