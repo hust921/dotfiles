@@ -22,9 +22,9 @@ set foldmethod=manual
 function LargeFileOptions()
     let f=expand("<afile>")
     if getfsize(f) > (1024 * 150) " > 150KB
-        set eventignore+=FileType 
+        set eventignore+=FileType
         setlocal noswapfile bufhidden=unload buftype=nowrite undolevels=-1
-    else 
+    else
         set eventignore-=FileType
         syntax on
         autocmd BufWinEnter * silent! :%foldopen!
@@ -120,8 +120,13 @@ nmap <leader>m %
 " -- <F(keys)>
 " Moving between buffers
 map <F6> :e ~/.config/nvim/init.vim<CR>
+
 map <F7> :bp<CR>
+nmap <C-j> :bp<CR>
 map <F8> :bn<CR>
+nmap <C-k> :bn<CR>
+
+map <leader><F8> :lnext<CR>
 map <F9> :bp<CR>:bd #<CR>
 map <silent> <F10> :q<CR>
 map <silent> <C-q> :q<CR>
@@ -174,7 +179,7 @@ let g:mkdp_browserfunc = 'Xdgopen'
 function! Xdgopen(url) abort
     let g:mkdp_browser_open_already = 1
     if executable('xdg-open')
-        execute '!xdg-open ' . a:url 
+        execute '!xdg-open ' . a:url
     else
         echoerr "xdg-open command not available!"
     endif
@@ -199,12 +204,16 @@ let g:ale_linters = {'rust': ['analyzer']}
 Plug 'scrooloose/nerdtree'
 Plug 'ryanoasis/vim-devicons'
 map <F5> :NERDTreeToggle<CR>
-let g:NERDTreeWinSize=30
+let g:NERDTreeWinSize=40
 let g:NERDTreeRespectWildIgnore = 1
 let g:NERDTreeDirArrows = 1
 let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+" If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
+autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
+    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
+autocmd VimEnter * NERDTree | wincmd p
 
 " -- Neovim LSP Settings {{{2
 " -- nvim-lsp: Usefull (native nvim) lsp configurations
@@ -298,6 +307,7 @@ Plug 'vim-airline/vim-airline-themes'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
 let g:airline_theme = "onedark"
+let g:airline#extensions#whitespace#enabled = 0
 
 " -- Auto-pair: Matching brackets {{{2
 " -----
@@ -330,8 +340,8 @@ Plug 'junegunn/fzf.vim'
 nnoremap <C-p> :Files<CR>
 nnoremap <C-g> :GFiles<CR>
 nnoremap <C-l> :BLines<CR>
-nnoremap <C-f> :Buffers<CR>
-nnoremap <C-k> :Commands<CR>
+nnoremap <C-b> :Buffers<CR>
+nnoremap <C-c> :Commands<CR>
 nnoremap <C-t> :Tags<CR>
 nnoremap <C-a> :Marks<CR>
 nnoremap qa :History:<CR>
@@ -368,7 +378,7 @@ function! PlugLoaded(name)
     "Notice the trailing "/". Makes "stridx" fail
     "
     "\ stridx(&rtp, g:plugs[a:name].dir) >= 0)
-endfunction 
+endfunction
 
 if PlugLoaded('nvim-lsp')
     " Rust completion
@@ -378,7 +388,7 @@ if PlugLoaded('nvim-lsp')
     lua require'lspconfig'.pyls.setup{}
     lua require'lspconfig'.html.setup{}
     lua require'lspconfig'.bashls.setup{}
-    
+
     " Code navigation shortcuts
     nnoremap <silent> <leader>a  <cmd>lua vim.lsp.buf.code_action()<CR>
     nnoremap <silent> <F12>      <cmd>lua vim.lsp.buf.definition()<CR>
@@ -434,6 +444,7 @@ colorscheme onedark
 
 "=== Help open in current window
 command! -nargs=1 -complete=help H :enew | :set buftype=help | :h <args>
+autocmd! BufEnter * AirlineRefresh
 
 "=== Local Overwrite {{{1          --
 " -----------------------------------
