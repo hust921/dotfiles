@@ -272,6 +272,9 @@ Plug 'Shougo/deoplete-clangx'
 " -- Dockerfile syntax highlighting {{{2
 Plug 'ekalinin/Dockerfile.vim'
 
+" -- just / justfile syntax highlighting
+Plug 'vmchale/just-vim'
+
 " -- Neosnippet + neosnippet-snippets {{{2
 " -----
 Plug 'Shougo/neosnippet'
