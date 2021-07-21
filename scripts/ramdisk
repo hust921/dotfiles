@@ -1,4 +1,9 @@
 #!/bin/bash
+# ===== Global Settings / Variables =====
+set -o nounset   # to cause an error if you use an empty variable
+set -o noclobber # the '>' symbol not allowed to overwrite "existing" files
+set -o pipefail  # cmd_a | cmd_b . Fails if cmd_a doesn't cleanly exit (0) 
+
 
 function main() {
     local target_dir
@@ -11,10 +16,13 @@ function main() {
     fi
 
     # Remove target directory
-    echo "Cargo cleaning ..." && \
-        [[ -d "target" ]] && cargo clean && \
-        echo "Creating ramdisk ..." && \
-        mkdir -p target && \
+    if [[ -d "target" ]]; then
+        echo "Cargo cleaning ..."
+        cargo clean || (echo "Failed to run cargo clean" && exit 1)
+    fi
+
+    echo "Creating ramdisk ..."
+    mkdir -p target && \
         sudo mount -t tmpfs none ./target && \
         sudo chown $(whoami):$(whoami) target && \
         echo "Successfully mounted directory $target_dir"
