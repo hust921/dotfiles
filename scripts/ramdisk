@@ -1,0 +1,23 @@
+#!/bin/bash
+
+function main() {
+    local target_dir
+    target_dir="$(readlink -ef $(pwd)/target)"
+
+    # Check if already mounted => exit
+    if grep "$target_dir" /proc/mounts >> /dev/null; then
+        echo "Target directory ($target_dir) is already mounted as ramdisk"
+        exit 0
+    fi
+
+    # Remove target directory
+    echo "Cargo cleaning ..." && \
+        [[ -d "target" ]] && cargo clean && \
+        echo "Creating ramdisk ..." && \
+        mkdir -p target && \
+        sudo mount -t tmpfs none ./target && \
+        sudo chown $(whoami):$(whoami) target && \
+        echo "Successfully mounted directory $target_dir"
+}
+
+main "$@"

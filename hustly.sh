@@ -173,9 +173,14 @@ function mod_sys() {
             cargo install cargo-update || return 1
 
             dlog '"Installing" colors-test string'
-            sudo cp "$DOTDIR/colors-test" "/usr/local/bin/"
+            sudo cp "$DOTDIR/scripts/colors-test" "/usr/local/bin/"
             sudo chown "root:root" "/usr/local/bin/colors-test"
             sudo chmod 751 "/usr/local/bin/colors-test"
+
+            dlog '"Installing" ramdisk script'
+            sudo cp "$DOTDIR/scripts/ramdisk" "/usr/local/bin/"
+            sudo chown "$(whoami):$(whoami)" "/usr/local/bin/ramdisk"
+            sudo chmod 751 "/usr/local/bin/ramdisk"
 
             dlog "=== Finished (sys) install ==="
             ;;
@@ -212,6 +217,9 @@ function mod_sys() {
             dlog '"Uninstalling" colors-test string'
             sudo rm -rf "/usr/local/bin/colors-test"
 
+            dlog '"Uninstalling" ramdisk script'
+            sudo rm -rf "/usr/local/bin/ramdisk"
+
             dlog "=== Finished (sys) uninstall ==="
             ;;
         "update")
@@ -244,6 +252,18 @@ function mod_sys() {
             dlog "Updating cargo-update"
             # see above: cargo install-update -a
 
+            dlog "Updating colors-test"
+            sudo rm -rf "/usr/local/bin/colors-test"
+            sudo cp "$DOTDIR/scripts/colors-test" "/usr/local/bin/"
+            sudo chown "root:root" "/usr/local/bin/colors-test"
+            sudo chmod 751 "/usr/local/bin/colors-test"
+
+            dlog "Updating ramdisk"
+            sudo rm -rf "/usr/local/bin/ramdisk"
+            sudo cp "$DOTDIR/scripts/ramdisk" "/usr/local/bin/"
+            sudo chown "$(whoami):$(whoami)" "/usr/local/bin/ramdisk"
+            sudo chmod 751 "/usr/local/bin/ramdisk"
+
             dlog "=== Finished (sys) update ==="
             ;;
         "check")
@@ -256,6 +276,7 @@ function mod_sys() {
             which xmllint && \
             which exa && \
             which colors-test && \
+            which ramdisk && \
             cargo install-update -h || return 1
             ;;
         *)
@@ -575,7 +596,7 @@ EOF
     echo -e "\tcheck\t\tconfirm installation for module(s)"
     echo -e ""
     echo -e "MODULES:"
-    echo -e "\tOMZ\t\tZsh, zshrc scipts, Oh-My-Zsh and plugins"
+    echo -e "\tOMZ\t\tZsh, zshrc scripts, Oh-My-Zsh and plugins"
     echo -e "\tFZF\t\tFuzzy finder for shell & vim"
     echo -e "\tTMUX\t\tTerminal Multiplexer, setup and plugin manager (tpm)"
     echo -e "\tMINTTY\t\tWSLTTY / MINTTY Setup. Mainly color corrections"
