@@ -36,3 +36,17 @@ if [ -x "$(command -v docker)" ]; then
         docker rmi $(docker images -q)
     }
 fi
+
+# Enforce safe file editing practice
+function sudo() {
+    if [[ $1 == "$EDITOR" ]] || [[ $1 == "vi" ]] || [[ $1 == "vim" ]] || [[ $1 == "nvim" ]]; then
+        echo ""
+        echo "\tStop using \"sudo $1\" ya twit!"
+        echo "\tUse sudoedit <file> or sudo -e <file>"
+        echo ""
+        return 1
+    else
+        command /usr/bin/sudo "$@"
+    fi
+}
+
