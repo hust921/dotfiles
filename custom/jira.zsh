@@ -25,7 +25,7 @@ function jql() {
 }
 
 function fjql() {
-  source ~/dotfiles/zshconfig/jira_creds.zsh
+  source ~/.jira_creds.zsh
   ticket=$({for ((req=0;req<5;req++)); do
     jql $1 $req &
   done} | fzf --no-hscroll +m | cut -d ':' -f 1)
