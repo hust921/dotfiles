@@ -1,0 +1,74 @@
+#!/bin/bash
+# ===== Global Settings / Variables =====
+set -o nounset   # to cause an error if you use an empty variable
+set -o noclobber # the '>' symbol not allowed to overwrite "existing" files
+set -o pipefail  # cmd_a | cmd_b . Fails if cmd_a doesn't cleanly exit (0)
+
+
+function main() {
+    check_files_exist "$@"
+
+    for filename in "$@"; do
+        lint "$filename"
+    done
+}
+
+function lint() {
+    local fullfilepath
+    local filename
+    local ext
+
+    fullfilepath="$1"
+    filename=$(basename "$fullfilepath")
+    ext="${filename##*.}"
+    ext=$(echo "$ext" | tr '[:upper:]' '[:lower:]')
+
+    if [[ $ext == "json" ]]; then
+        json_lint "$fullfilepath"
+    fi
+
+    if [[ $ext == "xml" ]]; then
+        xml_lint "$fullfilepath"
+    fi
+
+}
+
+function json_lint() {
+    local filename
+    filename="$1"
+    if ! command -v jq >> /dev/null; then
+        echo -e "Command jq not in \$PATH. Exitting.."
+        exit 2
+    fi
+
+    tmpfile=$(mktemp /tmp/XXXXXXXXXXXXX.json)
+    ret=$(cat "$filename" | jq . >> "$tmpfile")
+    rm -rf "$filename"
+    mv "$tmpfile" "$filename"
+    echo "Successfully linted: $filename"
+}
+
+function xml_lint() {
+    if ! command -v xmllint >> /dev/null; then
+        echo -e "Command xmllint not in \$PATH. Exitting.."
+        exit 3
+    fi
+
+    tmpfile=$(mktemp /tmp/XXXXXXXXXXXXX.xml)
+    ret=$(xmllint --format "$filename" >> "$tmpfile")
+    rm -rf "$filename"
+    mv "$tmpfile" "$filename"
+    echo "Successfully linted: $filename"
+}
+
+function check_files_exist() {
+    for filename in "$@"; do
+        if ! [ -f "$filename" ]; then
+            echo -e "File '$filename' doesn't exist!"
+            exit 1
+        fi
+    done
+    return 0
+}
+
+main "$@"
