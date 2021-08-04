@@ -11,25 +11,10 @@ set noswapfile " Saves swap (.swp) files in System var $TEMP.
 set hidden " Allow unsaved files to be in buffer
 
 set spelllang=en,da
-autocmd BufEnter * silent! lcd %:p:h
-
-" Ignore folding, syntax & FileType autocmd's for larger files
-augroup LargeFile
-    autocmd BufReadPre * call LargeFileOptions()
-augroup END
-
-set foldmethod=manual
-function LargeFileOptions()
-    let f=expand("<afile>")
-    if getfsize(f) > (1024 * 150) " > 150KB
-        set eventignore+=FileType
-        setlocal noswapfile bufhidden=unload buftype=nowrite undolevels=-1
-    else
-        set eventignore-=FileType
-        syntax on
-        autocmd BufWinEnter * silent! :%foldopen!
-    endif
-endfunction
+syntax on
+set foldmethod=syntax
+set foldlevelstart=99
+set autochdir
 
 " Fix backspace
 set backspace=indent,eol,start
@@ -118,14 +103,7 @@ nmap <leader>0 z=
 nmap <leader>m %
 
 " -- <F(keys)>
-" Moving between buffers
 map <F6> :e ~/.config/nvim/init.vim<CR>
-
-map <F7> :bp<CR>
-nmap <C-j> :bp<CR>
-map <F8> :bn<CR>
-nmap <C-k> :bn<CR>
-
 map <leader><F8> :lnext<CR>
 map <F9> :bp<CR>:bd #<CR>
 map <silent> <F10> :q<CR>
@@ -215,7 +193,7 @@ let g:nvim_tree_highlight_opened_files = 1 "0 by default, will enable folder and
 let g:nvim_tree_auto_resize = 0 "1 by default, will resize the tree to its saved width when opening a file
 let g:nvim_tree_add_trailing = 1 "0 by default, append a trailing slash to folder names
 let g:nvim_tree_lsp_diagnostics = 1 "0 by default, will show lsp diagnostics in the signcolumn. See :help nvim_tree_lsp_diagnostics
-let g:nvim_tree_update_cwd = 1 "0 by default, will update the tree cwd when changing nvim's directory (DirChanged event). Behaves strangely with autochdir set.
+let g:nvim_tree_update_cwd = 0 "0 by default, will update the tree cwd when changing nvim's directory (DirChanged event). Behaves strangely with autochdir set.
 
 let g:nvim_tree_special_files = { 'README.md': 1, 'Makefile': 1, 'justfile': 1, 'cargo.toml': 1 }
 
@@ -345,6 +323,10 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
 let g:airline_theme = "onedark"
 let g:airline#extensions#whitespace#enabled = 0
+
+" -- nvim-bufferline
+" -----
+Plug 'akinsho/nvim-bufferline.lua'
 
 " -- Auto-pair: Matching brackets {{{2
 " -----
@@ -478,6 +460,45 @@ endif
 "=== Colorscheme {{{1              --
 " -----------------------------------
 colorscheme onedark
+set termguicolors
+lua <<EOF
+require("bufferline").setup{
+  options = {
+    separator_style = "slant",
+    numbers = "none",
+    mappings = false,
+    indicator_icon = '',
+    diagnostics = "nvim_lsp",
+    show_tab_indicators = true,
+    show_close_icon = false,
+
+    diagnostics_indicator = function(count, level, diagnostics_dict, context)
+      local s = " "
+      for e, n in pairs(diagnostics_dict) do
+        local sym = e == "error" and " "
+          or (e == "warning" and " " or "" )
+        s = s .. n .. sym
+      end
+      return s
+    end,
+
+    offsets = {
+      {
+          filetype = "NvimTree",
+          text = "Explorer",
+          highlight = "Directory",
+          text_align = "center"
+      }
+    }
+
+  }
+}
+EOF
+
+nnoremap <silent><F7> :BufferLineCyclePrev<CR>
+nnoremap <silent><C-j> :BufferLineCyclePrev<CR>
+nnoremap <silent><F8> :BufferLineCycleNext<CR>
+nnoremap <silent><C-k> :BufferLineCycleNext<CR>
 
 "=== Help open in current window
 command! -nargs=1 -complete=help H :enew | :set buftype=help | :h <args>
