@@ -199,16 +199,55 @@ nmap <silent> <leader>e :ALENext<CR>
 nmap <silent> <leader>E :ALEPrevious<CR>
 let g:ale_linters = {'rust': ['analyzer']}
 
-" -- NerdTree {{{2
+" -- NvimTree {{{2
 " -----
-Plug 'scrooloose/nerdtree'
-Plug 'ryanoasis/vim-devicons'
-map <F5> :NERDTreeToggle<CR>
-let g:NERDTreeWinSize=40
-let g:NERDTreeRespectWildIgnore = 1
-let g:NERDTreeDirArrows = 1
-let g:NERDTreeDirArrowExpandable = '▸'
-let g:NERDTreeDirArrowCollapsible = '▾'
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'kyazdani42/nvim-tree.lua'
+nnoremap <F5> :NvimTreeToggle<CR>
+nnoremap <C-S> :NvimTreeFindFile<CR>
+let g:nvim_tree_width = 40 "30 by default, can be width_in_columns or 'width_in_percent%'
+let g:nvim_tree_ignore = [ '.git', 'node_modules', '.cache' ] "empty by default
+let g:nvim_tree_gitignore = 1 "0 by default
+let g:nvim_tree_auto_ignore_ft = [ 'startify' ] "empty by default, don't auto open tree on specific filetypes.
+let g:nvim_tree_follow = 1 "0 by default, this option allows the cursor to be updated when entering a buffer
+let g:nvim_tree_git_hl = 1 "0 by default, will enable file highlight for git attributes (can be used without the icons).
+let g:nvim_tree_highlight_opened_files = 1 "0 by default, will enable folder and file icon highlight for opened files/directories.
+let g:nvim_tree_auto_resize = 0 "1 by default, will resize the tree to its saved width when opening a file
+let g:nvim_tree_add_trailing = 1 "0 by default, append a trailing slash to folder names
+let g:nvim_tree_lsp_diagnostics = 1 "0 by default, will show lsp diagnostics in the signcolumn. See :help nvim_tree_lsp_diagnostics
+let g:nvim_tree_update_cwd = 1 "0 by default, will update the tree cwd when changing nvim's directory (DirChanged event). Behaves strangely with autochdir set.
+
+let g:nvim_tree_special_files = { 'README.md': 1, 'Makefile': 1, 'justfile': 1, 'cargo.toml': 1 }
+
+let g:nvim_tree_icons = {
+    \ 'default': '',
+    \ 'symlink': '',
+    \ 'git': {
+    \   'unstaged': "",
+    \   'staged': "",
+    \   'unmerged': "",
+    \   'renamed': "ﱴ",
+    \   'untracked': "+",
+    \   'deleted': "",
+    \   'ignored': "◌"
+    \   },
+    \ 'folder': {
+    \   'arrow_open': "",
+    \   'arrow_closed': "",
+    \   'default': "",
+    \   'open': "",
+    \   'empty': "",
+    \   'empty_open': "",
+    \   'symlink': "",
+    \   'symlink_open': "",
+    \   },
+    \   'lsp': {
+    \     'hint': "",
+    \     'info': "",
+    \     'warning': "",
+    \     'error': "",
+    \   }
+    \ }
 
 " -- Neovim LSP Settings {{{2
 " -- nvim-lsp: Usefull (native nvim) lsp configurations
