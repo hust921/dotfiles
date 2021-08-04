@@ -50,3 +50,20 @@ function sudo() {
     fi
 }
 
+# Just / Justfile aliases
+if [ -x $(command -v just) ]; then
+    alias  j='just'
+    alias jl='just --list'
+    alias jr='just run'
+    alias jb='just build'
+    alias jt='just test'
+    alias jc='just clean'
+fi
+
+# Cargo aliases
+if [ -x $(command -v cargo) ]; then
+    alias cr='cargo run'
+    alias ct='cargo test'
+    alias cb='cargo build'
+    alias cc='cargo clean'
+fi

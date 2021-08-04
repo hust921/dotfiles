@@ -8,9 +8,10 @@ fi
 alias wi="win32yank.exe -i"
 alias wo="win32yank.exe -o"
 alias expl='/mnt/c/Windows/explorer.exe $(wslpath -w $(pwd))'
+alias start='/mnt/c/Windows/System32/cmd.exe /c start'
 
 # Run Powershell from WSL
-alias pwsh='/mnt/c/Program\ Files/PowerShell/6/pwsh.exe'
+alias pwsh='/mnt/c/Program\ Files/PowerShell/7/pwsh.exe'
 powershell()
 {
     if [[ $# -eq 0 ]];then
