@@ -15,6 +15,7 @@ syntax on
 set foldmethod=syntax
 set foldlevelstart=99
 set autochdir
+set mouse=a
 
 " Fix backspace
 set backspace=indent,eol,start
@@ -461,6 +462,8 @@ endif
 " -----------------------------------
 colorscheme onedark
 set termguicolors
+hi Normal ctermbg=NONE guibg=#00000
+
 lua <<EOF
 require("bufferline").setup{
   options = {
