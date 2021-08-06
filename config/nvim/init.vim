@@ -169,7 +169,6 @@ endfunction
 " -- Ale: Async Linting Engine {{{2
 " -----
 Plug 'dense-analysis/ale'
-let g:airline#extensions#ale#enabled = 1
 let g:ale_sign_column_always = 1
 "let g:ale_sign_error = '>>'
 "let g:ale_sign_warning = '--'
@@ -311,19 +310,16 @@ imap <expr><TAB>
 smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
     \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"<Paste>
 
-" -- Colorscheme: tender {{{2
+" -- Colorschemes {{{2
 " -----
 Plug 'jacoborus/tender', { 'as': 'tender' }
 Plug 'joshdick/onedark.vim', { 'as': 'onedark' }
+Plug 'marko-cerovac/material.nvim', { 'as': 'material' }
 
-" -- vim-airline {{{2
+" -- Lualine {{{2
 " -----
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-let g:airline#extensions#tabline#enabled = 1
-let g:airline_powerline_fonts = 1
-let g:airline_theme = "onedark"
-let g:airline#extensions#whitespace#enabled = 0
+Plug 'hoob3rt/lualine.nvim'
+
 
 " -- nvim-bufferline
 " -----
@@ -371,18 +367,6 @@ nnoremap <C-h> :History/<CR>
 Plug 'ron-rs/ron.vim'
 
 call plug#end()
-
-" Treesitter
-lua <<EOF
-require'nvim-treesitter.configs'.setup {
-  ensure_installed = "all", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
-  ignore_install = { "haskell" },
-  highlight = {
-    enable = true,              -- false will disable the whole extension
-    disable = { "c", "rust", "regex", "css", "javascript", "json", "toml", "c_sharp", "cpp", "lua", "ruby", "python", "yaml", "bash", "html"},  -- list of language that will be disabled
-  },
-}
-EOF
 
 " code action lightbulb
 autocmd CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()
@@ -460,11 +444,31 @@ endif
 
 "=== Colorscheme {{{1              --
 " -----------------------------------
-colorscheme onedark
+let g:material_style = "darker"
+let g:material_italic_comments = v:true
+let g:material_italic_keywords = v:true
+let g:material_italic_functions = v:true
+let g:material_contrast = v:true
 set termguicolors
 hi Normal ctermbg=NONE guibg=#00000
+colorscheme material
 
 lua <<EOF
+
+-- Treesitter
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = "all", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  ignore_install = { "haskell" },
+  highlight = {
+    enable = true,              -- false will disable the whole extension
+    disable = { "c", "rust", "regex", "css", "javascript", "json", "toml", "c_sharp", "cpp", "lua", "ruby", "python", "yaml", "bash", "html"},  -- list of language that will be disabled
+  },
+}
+
+-- lualine
+require("lualine").setup { options = { theme = 'material-nvim' } }
+
+-- bufferline
 require("bufferline").setup{
   options = {
     separator_style = "slant",
@@ -502,10 +506,6 @@ nnoremap <silent><F7> :BufferLineCyclePrev<CR>
 nnoremap <silent><C-j> :BufferLineCyclePrev<CR>
 nnoremap <silent><F8> :BufferLineCycleNext<CR>
 nnoremap <silent><C-k> :BufferLineCycleNext<CR>
-
-"=== Help open in current window
-command! -nargs=1 -complete=help H :enew | :set buftype=help | :h <args>
-autocmd! BufEnter * AirlineRefresh
 
 "=== Local Overwrite {{{1          --
 " -----------------------------------
