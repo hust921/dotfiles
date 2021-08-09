@@ -8,9 +8,6 @@ if [[ "$(git status --short)" != "" ]]; then
     exit 1
 fi
 
-git clean -xdf
-git clean -Xdf
-
 # Handle Arguments
 if [[ $# != 2 ]]; then
     echo ""
@@ -19,6 +16,10 @@ if [[ $# != 2 ]]; then
     echo ""
     exit 2
 fi
+
+# git cleaning before move
+git clean -xdf
+git clean -Xdf
 
 # Find all "human files"
 
