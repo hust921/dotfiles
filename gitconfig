@@ -28,6 +28,8 @@
     d = difftool
 [pull]
 	rebase = false
+[init]
+	defaultBranch = master
 
 # OMZ template to speed large repo's.
 # Run in repository:
