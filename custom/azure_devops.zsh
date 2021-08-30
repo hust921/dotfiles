@@ -3,9 +3,14 @@
 export AZURE_REPOS_CACHE_FILE="$HOME/.cache/azurefzf/reposcache"
 
 function repo {
-    selectedRepo=$(cat ~/.cache/azurefzf/reposcache | fzf --no-hscroll +m | cut -d ':' -f 2- | tr -d '[:space:]')
-    [ -z "$selectedRepo" ] && return 0
-    xdg-open "$selectedRepo"
+    if which az >> /dev/null; then
+        selectedRepo=$(cat ~/.cache/azurefzf/reposcache | fzf --no-hscroll +m | cut -d ':' -f 2- | tr -d '[:space:]')
+        [ -z "$selectedRepo" ] && return 0
+        xdg-open "$selectedRepo"
+    else
+        echo "Azure cli not installed"
+        exit 1
+    fi
 }
 
 function update_azure_repos_cache() {
@@ -27,12 +32,11 @@ function update_azure_repos_cache() {
 }
 
 function check_azure_repos_cache() {
-    command az >> /dev/null || (echo "Azure cli not installed" && return 0)
-
-
-    # If cache file (dont exist or) was modified more than 360mins ago (6 hours) => Update cache
-    [ -f "$AZURE_REPOS_CACHE_FILE" ] || update_azure_repos_cache &; return 0
-    [[ $(find "$AZURE_REPOS_CACHE_FILE" -mmin +360 -print) ]] && update_azure_repos_cache &
+    if which az >> /dev/null; then
+        # If cache file (dont exist or) was modified more than 360mins ago (6 hours) => Update cache
+        [ -f "$AZURE_REPOS_CACHE_FILE" ] || update_azure_repos_cache &; return 0
+        [[ $(find "$AZURE_REPOS_CACHE_FILE" -mmin +360 -print) ]] && update_azure_repos_cache &
+    fi
 }
 
 check_azure_repos_cache
