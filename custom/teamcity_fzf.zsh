@@ -4,13 +4,12 @@ function tc {
     # Authentication
     credfile="$HOME/.config/teamcityfzf/creds"
     serverfile="$HOME/.config/teamcityfzf/server"
-    if [ -f "$credfile" ]; then
+    if [ -f "$credfile" ] && [ -f $serverfile ]; then
         tctoken="$(cat $credfile)"
         server="$(cat $serverfile)"
 
         # Get projects list
-        rawprojs=$(curl -Sskl -H "Accept: application/json" -H "Authorization: Bearer $tctoken" "$server/app/rest/projects")
-        projects="$(echo $rawprojs | jq '.project[] | "\(.name) | \(.webUrl)"' | sed -e 's/"//g' | sort -f)"
+        projects=$(curl -Sskl -H "Accept: application/json" -H "Authorization: Bearer $tctoken" "$server/app/rest/projects" | jq '.project[] | "\(.name) | \(.webUrl)"' | sed -e 's/"//g' | sort -f)
 
         # Run FZF and launch browser
         selectedProj=$(echo $projects | fzf --no-hscroll +m | cut -d '|' -f 2- | tr -d '[:space:]')
