@@ -4,7 +4,7 @@ export AZURE_REPOS_CACHE_FILE="$HOME/.cache/azurefzf/reposcache"
 
 function repo {
     if which az >> /dev/null; then
-        selectedRepo=$(cat ~/.cache/azurefzf/reposcache | fzf --no-hscroll +m | cut -d ':' -f 2- | tr -d '[:space:]')
+        local selectedRepo=$(cat ~/.cache/azurefzf/reposcache | fzf --no-hscroll +m | cut -d ':' -f 2- | tr -d '[:space:]')
         [ -z "$selectedRepo" ] && return 0
         xdg-open "$selectedRepo"
     else
@@ -15,13 +15,12 @@ function repo {
 
 function update_azure_repos_cache() {
     # Delete (Old) & Create new cache file
-    local readonly cache_dir
-    cache_dir="$(dirname $AZURE_REPOS_CACHE_FILE)"
+    local cache_dir="$(dirname $AZURE_REPOS_CACHE_FILE)"
     [ -d "$cache_dir" ] || mkdir -p "$cache_dir"
     truncate -s 0 "$AZURE_REPOS_CACHE_FILE"
 
     # Get Azure devops Project names
-    declare -a projects=($(az devops project list | jq '.value[].id' | sed -e 's/"//g'))
+    declare -a local projects=($(az devops project list | jq '.value[].id' | sed -e 's/"//g'))
 
     # Iterate projects & get git repos names+urls
     for proj in ${projects[@]}; do
