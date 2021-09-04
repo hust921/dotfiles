@@ -389,7 +389,7 @@ if PlugLoaded('nvim-lsp')
     " Use LSP omni-complete in Rust files
     lua require'lspconfig'.rust_analyzer.setup{}
     lua require'lspconfig'.vimls.setup{}
-    lua require'lspconfig'.pyls.setup{}
+    lua require'lspconfig'.pylsp.setup{}
     lua require'lspconfig'.html.setup{}
     lua require'lspconfig'.bashls.setup{}
 
@@ -445,15 +445,23 @@ endif
 "=== Colorscheme {{{1              --
 " -----------------------------------
 let g:material_style = "darker"
-let g:material_italic_comments = v:true
-let g:material_italic_keywords = v:true
-let g:material_italic_functions = v:true
-let g:material_contrast = v:true
 set termguicolors
 hi Normal ctermbg=NONE guibg=#00000
 colorscheme material
 
 lua <<EOF
+-- Material Theme
+require'material'.setup({
+  contrast = true,
+  borders = false,
+  italics = {
+    comments = true,
+    keywords = true,
+    functions = true,
+    variables = false,
+    strings = false
+  }
+})
 
 -- Treesitter
 require'nvim-treesitter.configs'.setup {
@@ -473,7 +481,6 @@ require("bufferline").setup{
   options = {
     separator_style = "slant",
     numbers = "none",
-    mappings = false,
     indicator_icon = '',
     diagnostics = "nvim_lsp",
     show_tab_indicators = true,
