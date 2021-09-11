@@ -319,6 +319,7 @@ Plug 'marko-cerovac/material.nvim', { 'as': 'material' }
 " -- Lualine {{{2
 " -----
 Plug 'hoob3rt/lualine.nvim'
+Plug 'arkav/lualine-lsp-progress'
 
 
 " -- nvim-bufferline
@@ -474,10 +475,10 @@ require'nvim-treesitter.configs'.setup {
 }
 
 -- lualine
-require("lualine").setup { options = { theme = 'material-nvim' } }
+require('lualine').setup { options = { theme = 'material-nvim' }, sections = { lualine_c = { 'lsp_progress' } } }
 
 -- bufferline
-require("bufferline").setup{
+require('bufferline').setup{
   options = {
     separator_style = "slant",
     numbers = "none",

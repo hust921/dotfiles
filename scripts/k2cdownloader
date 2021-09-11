@@ -1,0 +1,70 @@
+#!/usr/bin/zsh
+
+function login_k2c {
+    echo -n "Username: "
+    read -r username
+    echo -n "Password: "
+    read -s password
+    echo ""
+
+    local response=$(curl -sS -X POST -H "Content-type: application/json" -d "{\"username\":\"$username\",\"password\":\"$password\"}" https://keep2share.cc/api/v2/login)
+    local code=$(echo "$response" | jq '.code')
+
+    if [[ "$code" == '200' ]] ; then
+        echo "[200] Login Successfull"
+        k2c_auth_token=$(echo "$response" | jq -r '.auth_token')
+    else
+        echo "==================== !START OF FAILURE! ===================="
+        echo "Failed to login"
+        (echo "$response" | jq '.') || echo "Raw response: $response"
+        echo "==================== !END OF FAILURE! ===================="
+        exit 1
+    fi
+}
+
+function download_k2c_file {
+    local file_id=$(echo $1 | rg -io '\.cc/file/(.*)/' -r '$1')
+    local response=$(curl -X POST -H "Content-type: application/json" -d '{"auth_token":"'$k2c_auth_token'","file_id":"'$file_id'"}' https://keep2share.cc/api/v2/getUrl)
+    local code=$(echo "$response" | jq '.code')
+
+    if [[ "$code" == '200' ]] ; then
+        echo "[200] Url fetch Successfull"
+        url=$(echo "$response" | jq -r '.url')
+        echo "Downloading file: $url"
+        curl -OJ "$url"
+    else
+        echo "==================== !START OF FAILURE! ===================="
+        echo "Failed to download file: $file_id"
+        (echo "$response" | jq '.') || echo "Raw response: $response"
+        echo "==================== !END OF FAILURE! ===================="
+        exit 2
+    fi
+}
+
+function download_k2c_files_list {
+    # check file
+    if [ "$#" -ne 1 ]; then
+        echo "Wrong number of arguments!"
+        echo "Please use: <k2cdownloader> inputfile"
+        exit 6
+    fi
+
+    input_file="$1"
+    if ! [ -f "$input_file" ]; then
+        echo "File not found: $input_file"
+        exit 5
+    fi
+
+    # Authorize
+    if [ -z ${k2c_auth_token+y} ] ; then
+        login_k2c || exit 3
+    fi
+
+    # Iterate file (skip empty lines)
+    rg -N "\S" "$input_file" | while read line
+    do
+        download_k2c_file "$line"
+    done
+}
+
+download_k2c_files_list "$@"

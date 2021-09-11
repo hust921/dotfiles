@@ -182,6 +182,11 @@ function mod_sys() {
             sudo chown "$(whoami):$(whoami)" "/usr/local/bin/ramdisk"
             sudo chmod 751 "/usr/local/bin/ramdisk"
 
+            dlog '"Installing" k2c downloader script'
+            sudo cp "$DOTDIR/scripts/k2cdownloader" "/usr/local/bin/"
+            sudo chown "$(whoami):$(whoami)" "/usr/local/bin/k2cdownloader"
+            sudo chmod 751 "/usr/local/bin/k2cdownloader"
+
             dlog "=== Finished (sys) install ==="
             ;;
         "uninstall")
@@ -219,6 +224,9 @@ function mod_sys() {
 
             dlog '"Uninstalling" ramdisk script'
             sudo rm -rf "/usr/local/bin/ramdisk"
+
+            dlog '"Uninstalling" k2cdownloader script'
+            sudo rm -rf "/usr/local/bin/k2cdownloader"
 
             dlog "=== Finished (sys) uninstall ==="
             ;;
@@ -264,6 +272,12 @@ function mod_sys() {
             sudo chown "$(whoami):$(whoami)" "/usr/local/bin/ramdisk"
             sudo chmod 751 "/usr/local/bin/ramdisk"
 
+            dlog "Updating k2cdownloader"
+            sudo rm -rf "/usr/local/bin/k2cdownloader"
+            sudo cp "$DOTDIR/scripts/k2cdownloader" "/usr/local/bin/"
+            sudo chown "$(whoami):$(whoami)" "/usr/local/bin/k2cdownloader"
+            sudo chmod 751 "/usr/local/bin/k2cdownloader"
+
             dlog "=== Finished (sys) update ==="
             ;;
         "check")
@@ -277,6 +291,7 @@ function mod_sys() {
             which exa && \
             which colors-test && \
             which ramdisk && \
+            which k2cdownloader && \
             cargo install-update -h || return 1
             ;;
         *)
