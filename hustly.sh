@@ -451,8 +451,14 @@ function mod_rust() {
             rustup component add clippy || return 1
             dlog "installing rls (Rust Language Server) & rust-src"
             rustup component add rls rust-analysis rust-src || return 1
+
             dlog "installing rust-analyzer"
-            sudo curl -L https://github.com/rust-analyzer/rust-analyzer/releases/download/nightly/rust-analyzer-linux -o /usr/local/bin/rust-analyzer && \
+            local tempdir=$(mktemp -d) && \
+            local tempgz="$tempdir/rust-analyzer-x86_64-unknown-linux-gnu.gz" && \
+            sudo curl -L https://github.com/rust-analyzer/rust-analyzer/releases/download/nightly/rust-analyzer-x86_64-unknown-linux-gnu.gz -o "$tempgz" && \
+            sudo gunzip "$tempgz" && \
+            sudo mv "$tempdir/rust-analyzer-x86_64-unknown-linux-gnu" /usr/local/bin/rust-analyzer && \
+            sudo chown "$(whoami):$(whoami)" "/usr/local/bin/rust-analyzer" && \
             sudo chmod 751 /usr/local/bin/rust-analyzer
 
             dlog "installing Universal-ctags (for rust ctags)"
@@ -476,6 +482,7 @@ function mod_rust() {
             dlog "=== Running (rust) uninstall ==="
             source "$HOME/.cargo/env" || return 1
             echo 'y' | rustup self uninstall || return 1
+            sudo rm /usr/local/bin/rust-analyzer || return 1
             dlog "=== Finished (rust) uninstall ==="
             ;;
         "update")
@@ -484,6 +491,17 @@ function mod_rust() {
             rustup self update && \
             rustup update stable && \
             rustup update nightly && \
+
+            dlog "Updating rust-analyzer"
+            sudo rm /usr/local/bin/rust-analyzer && \
+            local tempdir=$(mktemp -d) && \
+            local tempgz="$tempdir/rust-analyzer-x86_64-unknown-linux-gnu.gz" && \
+            sudo curl -L https://github.com/rust-analyzer/rust-analyzer/releases/download/nightly/rust-analyzer-x86_64-unknown-linux-gnu.gz -o "$tempgz" && \
+            sudo gunzip "$tempgz" && \
+            sudo mv "$tempdir/rust-analyzer-x86_64-unknown-linux-gnu" /usr/local/bin/rust-analyzer && \
+            sudo chown "$(whoami):$(whoami)" "/usr/local/bin/rust-analyzer" && \
+            sudo chmod 751 /usr/local/bin/rust-analyzer
+
             dlog "=== Finished (rust) update ==="
             ;;
         "check")
