@@ -23,7 +23,7 @@ function login_k2c {
 }
 
 function download_k2c_file {
-    local file_id=$(echo $1 | rg -io '\.cc/file/(.*)/' -r '$1')
+    local file_id=$(echo $1 | rg -io '\.cc/file/(.*)[/?]' -r '$1')
     local response=$(curl -X POST -H "Content-type: application/json" -d '{"auth_token":"'$k2c_auth_token'","file_id":"'$file_id'"}' https://keep2share.cc/api/v2/getUrl)
     local code=$(echo "$response" | jq '.code')
 
