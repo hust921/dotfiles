@@ -175,6 +175,7 @@ let g:ale_sign_column_always = 1
 let g:ale_set_highlights = 1
 nmap <silent> <leader>e :ALENext<CR>
 nmap <silent> <leader>E :ALEPrevious<CR>
+nmap <silent> <leader>d :ALEDetail<CR>
 let g:ale_linters = {'rust': ['analyzer']}
 
 " -- NvimTree {{{2
@@ -404,7 +405,7 @@ if PlugLoaded('nvim-lsp')
     "nnoremap <silent> <xxx>  <cmd>lua vim.lsp.buf.type_definition()<CR>
     "nnoremap <silent> <xxx>  <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
     nnoremap <silent> <leader>r    <cmd>lua vim.lsp.buf.references()<CR>
-    nnoremap <silent> <leader>d    <cmd>lua vim.lsp.buf.document_symbol()<CR>
+    "nnoremap <silent> <leader>d    <cmd>lua vim.lsp.buf.document_symbol()<CR>
 
     " Use omnifunc
     autocmd Filetype rust setlocal omnifunc=v:lua.vim.lsp.omnifunc
