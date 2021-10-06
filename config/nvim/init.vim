@@ -135,7 +135,7 @@ Plug 'kshenoy/vim-signature'
 
 " -- Markdown
 " --- Math, Charts, Diagrams, etc: https://github.com/iamcco/markdown-preview.nvim
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && npm install'  }
 
 let g:mkdp_auto_start = 0
 let g:mkdp_auto_close = 0

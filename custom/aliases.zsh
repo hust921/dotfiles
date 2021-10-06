@@ -65,5 +65,5 @@ if [ -x $(command -v cargo) ]; then
     alias cr='cargo run'
     alias ct='cargo test'
     alias cb='cargo build'
-    alias cc='cargo clean'
+    alias cc='cargo check'
 fi
