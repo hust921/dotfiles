@@ -9,7 +9,7 @@ function tc {
         local server="$(cat $serverfile)"
 
         # Get projects list
-        local projects=$(curl -Sskl -H "Accept: application/json" -H "Authorization: Bearer $tctoken" "$server/app/rest/projects" | jq '.project[] | "\(.name) | \(.webUrl)"' | sed -e 's/"//g' | sort -f)
+        local projects=$(curl -Sskl -H "Accept: application/json" -H "Authorization: Bearer $tctoken" "$server/app/rest/projects" | jq '.project[] | if (.archived == null or .archived == false) then . else empty end | "\(.name) | \(.webUrl)"' | sed -e 's/"//g' | sort -f)
 
         # Run FZF and launch browser
         local selectedProj=$(echo $projects | fzf --no-hscroll +m | cut -d '|' -f 2- | tr -d '[:space:]')
