@@ -23,3 +23,21 @@ powershell()
     fi
 }
 # pwsh="$(command ls -1 '/mnt/c/Program Files/Powershell2' &> /dev/null && find '/mnt/c/Program Files/Powershell' -iname '*pwsh.exe' |head -n1)"
+
+
+sln()
+{
+    set local gitroot
+    gitroot="$(git rev-parse --show-toplevel)"
+
+    set local slnfile
+    slnfile="$(fd '\.sln$' $gitroot)"
+
+    set local startcmd
+    start='/mnt/c/Windows/System32/cmd.exe /c start'
+
+    set local final
+    final=$(echo "$start \"$(wslpath -w $slnfile)\"")
+
+    bash -c "$final"
+}
