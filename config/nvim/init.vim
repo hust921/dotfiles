@@ -105,15 +105,24 @@ nmap <leader>m %
 
 " -- <F(keys)>
 map <F6> :e ~/.config/nvim/init.vim<CR>
-map <leader><F8> :lnext<CR>
+
+map <F7> :cnext<CR>
+map <leader><F7> :cprev<CR>
+
+map <F8> :lnext<CR>
+map <leader><F8> :lprev<CR>
+
 map <F9> :bp<CR>:bd #<CR>
 map <silent> <F10> :q<CR>
 map <silent> <C-q> :q<CR>
 imap <silent> <C-q> <Esc>:q<CR>
 
+
 "=== Plugin Manager (vim-plug) {{{1       --
 "------------------------------------------
 call plug#begin('~/.local/share/nvim/plugged')
+
+Plug 'neomake/neomake'
 
 " -- FloatTerm: Floating terminal {{{2
 " ----- Make stuff float
@@ -366,6 +375,10 @@ Plug 'ron-rs/ron.vim'
 
 call plug#end()
 
+" Neomake automake on write
+call neomake#configure#automake('rw', 750)
+autocmd! BufWritePost *.rs NeomakeProject cargo
+
 " code action lightbulb
 autocmd CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()
 lua require'nvim-lightbulb'.update_lightbulb { sign = { enable = true, priority = 10, } }
@@ -529,9 +542,7 @@ require('bufferline').setup{
 }
 EOF
 
-nnoremap <silent><F7> :BufferLineCyclePrev<CR>
 nnoremap <silent><C-j> :BufferLineCyclePrev<CR>
-nnoremap <silent><F8> :BufferLineCycleNext<CR>
 nnoremap <silent><C-k> :BufferLineCycleNext<CR>
 
 "=== Local Overwrite {{{1          --
