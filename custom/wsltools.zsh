@@ -27,17 +27,25 @@ powershell()
 
 sln()
 {
+    set local startcmd
+    start='/mnt/c/Windows/System32/cmd.exe /c start'
+
     set local gitroot
     gitroot="$(git rev-parse --show-toplevel)"
 
     set local slnfile
     slnfile="$(fd '\.sln$' $gitroot)"
 
-    set local startcmd
-    start='/mnt/c/Windows/System32/cmd.exe /c start'
+    set local lines
+    lines=$(echo "$slnfile" | wc -l)
 
     set local final
-    final=$(echo "$start \"$(wslpath -w $slnfile)\"")
-
-    bash -c "$final"
+    if [[ $lines -eq 1 ]]; then
+        final=$(echo "$start \"$(wslpath -w $slnfile)\"")
+        bash -c "$final"
+    else
+        slnfile=$(echo "$slnfile" | fzf)
+        final=$(echo "$start \"$(wslpath -w $slnfile)\"")
+        bash -c "$final"
+    fi
 }
