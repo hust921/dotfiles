@@ -498,15 +498,15 @@ require'nvim-tree'.setup {
     ignore = true
   },
   update_focused_file = {
-    enable      = true,
-    update_cwd  = true,
+    enable      = false,
+    update_cwd  = false,
     ignore_list = {}
   },
   view = {
     auto_resize = false,
   },
   lsp_diagnotics = true,
-  update_cwd = true
+  update_cwd = false
 }
 
 -- bufferline
