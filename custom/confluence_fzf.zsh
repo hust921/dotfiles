@@ -17,7 +17,7 @@ function con {
         xdg-open "$selected_page"
     else
         echo "No Confluence server file found (server: \"$serverfile\")"
-        exit 2
+        return 2
     fi
 }
 
@@ -48,7 +48,7 @@ function update_confluence_cache {
         done
     else
         echo "No Confluence creditials and/or server file found: (cred: \"$credfile\", server: \"$serverfile\")"
-        exit 1
+        return 1
     fi
 }
 

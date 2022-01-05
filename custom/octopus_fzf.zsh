@@ -13,6 +13,6 @@ function oc () {
                 xdg-open "$server$selectedProj"
         else
                 echo "No Octopus creditials file found: (cred: \"$credfile\", server: \"$serverfile\")"
-                exit 1
+                return 1
         fi
 }

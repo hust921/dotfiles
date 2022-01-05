@@ -17,6 +17,6 @@ function tc {
         xdg-open "$selectedProj"
     else
         echo "No TeamCity creditials/server file found"
-        exit 1
+        return 1
     fi
 }

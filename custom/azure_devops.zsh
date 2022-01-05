@@ -9,7 +9,7 @@ function repo {
         xdg-open "$selectedRepo"
     else
         echo "Azure cli not installed"
-        exit 1
+        return 1
     fi
 }
 
