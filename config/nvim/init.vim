@@ -481,7 +481,7 @@ require'nvim-treesitter.configs'.setup {
   ignore_install = { "haskell" },
   highlight = {
     enable = true,              -- false will disable the whole extension
-    disable = { "c", "rust", "regex", "css", "javascript", "json", "toml", "c_sharp", "cpp", "lua", "ruby", "python", "yaml", "bash", "html"},  -- list of language that will be disabled
+    -- disable = { "c", "rust", "regex", "css", "javascript", "json", "toml", "c_sharp", "cpp", "lua", "ruby", "python", "yaml", "bash", "html"},  -- list of language that will be disabled
   },
 }
 
