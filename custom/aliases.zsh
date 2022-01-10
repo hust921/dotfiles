@@ -37,6 +37,19 @@ if [ -x "$(command -v docker)" ]; then
     }
 fi
 
+passgen() {
+    # eval 'wi'
+    # the wi alias is set in: linuxtools.zsh OR wsltools.zsh
+    if [ "$#" -eq 1 ] && [ "$1" -ge 0 ] 2>/dev/null; then
+        local plen="$(($1 - 1))"
+        tr -cd '[:alnum:]' < /dev/urandom | fold -w"$plen" | head -n1 | tr -d '\n' | eval 'wi'
+        echo "Password of length: $1 copied to clipboard" 
+    else
+        echo "Functions only takes a possitive integer as argument!"
+        echo "eg: passgen 10"
+    fi
+}
+
 # Enforce safe file editing practice
 function sudo() {
     if [[ $1 == "$EDITOR" ]] || [[ $1 == "vi" ]] || [[ $1 == "vim" ]] || [[ $1 == "nvim" ]]; then
