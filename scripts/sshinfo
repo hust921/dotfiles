@@ -1,0 +1,20 @@
+#!/bin/bash
+
+sshconfig="$HOME/.ssh/config"
+
+if ! [ -f "$sshconfig" ]; then
+    echo -e "No SSH config found: $sshconfig"
+    exit 1
+fi
+
+output="Host HostName User Port Identityfile"
+for currhost in $(grep -oP '(?<=^Host )\w+' $sshconfig | sort | tr '\n' ' '); do
+    sshhostname=$(ssh -G "$currhost" | grep -oP '(?<=^hostname ).*$')
+    sshuser=$(ssh -G "$currhost" | grep -oP '(?<=^user ).*$')
+    sshport=$(ssh -G "$currhost" | grep -oP '(?<=^port ).*$')
+    sshidentityfile=$(ssh -G "$currhost" | grep -oP '(?<=^identityfile ).*$' | tr '\n' ' | ')
+
+    #echo "Host: $currhost Hostname: $sshhostname User: $sshuser Port: $sshport Identityfile: $sshidentityfile"
+    output="${output}"$'\n'"${currhost} ${sshhostname} ${sshuser} ${sshport} ${sshidentityfile}"
+done
+echo "$output" | column -t
