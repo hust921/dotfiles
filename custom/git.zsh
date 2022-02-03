@@ -6,6 +6,7 @@ alias glola='git log --graph --pretty='\''%Cred%h%Creset -%C(auto)%d%Creset %s %
 alias gba='git branch -avv'
 alias grso='git remote show origin'
 alias gcd='git checkout develop'
+alias gclean='git clean -xdfi'
 
 # Assume `gd HEAD` if no args is given to `gd`
 unalias gd
