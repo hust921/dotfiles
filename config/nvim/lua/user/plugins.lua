@@ -65,6 +65,12 @@ return packer.startup(function(use)
     -- Telescope
     use "nvim-telescope/telescope.nvim" -- fuzzy finder
 
+    -- Treesitter: Syntax highlight & more
+    use {
+      "nvim-treesitter/nvim-treesitter",
+      run = ":TSUpdate",
+    }
+
     -- Automatically setup configuration after cloning packer.nvim
     if PACKER_BOOTSTRAP then
         require("packer").sync()

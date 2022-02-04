@@ -3,6 +3,7 @@ require 'user.keymaps'
 require 'user.plugins'
 require 'user.completion'
 require 'user.lsp'
+require 'user.treesitter'
 
 -- Set Colorscheme
 local colorscheme = "one"
