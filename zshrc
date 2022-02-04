@@ -22,7 +22,7 @@ HISTSIZE=1000
 HISTSAVE=1000
 
 # Plugins
-plugins=(git git-flow dirhistory command-not-found colored-man-pages cargo fd ripgrep rust zsh-syntax-highlighting zsh-autosuggestions zsh-completions)
+plugins=(git git-flow dirhistory command-not-found colored-man-pages fd ripgrep rust zsh-syntax-highlighting zsh-autosuggestions zsh-completions)
 
 # User configuration
 export PATH=".:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:$HOME/.local/bin"
