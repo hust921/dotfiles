@@ -37,3 +37,34 @@ lsp_installer.on_server_ready(function(server)
   server:setup(opts)
 end)
 
+-- Automatically install the servers below if not installed
+local lsp_installer_servers = require('nvim-lsp-installer.servers')
+
+local servers = {
+    "bashls",
+    "dockerls",
+    "html",
+    "jsonls",
+    "pyright",
+    "rust_analyzer",
+    "sumneko_lua",
+    "vimls",
+    "tsserver",
+}
+
+-- Loop through the servers listed above.
+for _, server_name in pairs(servers) do
+  local server_available, server = lsp_installer_servers.get_server(server_name)
+  local servers_missing = false
+  if server_available then
+    if not server:is_installed() then
+      server:install()
+      print("Installing [" .. server_name .. "] LSP server...")
+      servers_missing = true
+    end
+  end
+
+  if servers_missing then
+    require'nvim-lsp-installer'.info_window.open()
+  end
+end
