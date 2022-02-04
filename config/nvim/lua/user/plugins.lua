@@ -62,8 +62,8 @@ return packer.startup(function(use)
     use "neovim/nvim-lspconfig" -- enable LSP
     use "williamboman/nvim-lsp-installer" -- simple lsp server installer
 
-
-
+    -- Telescope
+    use "nvim-telescope/telescope.nvim" -- fuzzy finder
 
     -- Automatically setup configuration after cloning packer.nvim
     if PACKER_BOOTSTRAP then

@@ -37,23 +37,12 @@ keymap("n", "<Right>", ":vertical resize +1<CR>", opts)
 --keymap("n", "<C-s>", ":NvimTreeFindFile<CR>", opts)
 keymap("n", "<F5>", ":Lexplore 20<CR>", opts)
 
--- Fzf
---keymap("n", "<C-p>", ":Files<CR>", opts)
---keymap("n", "<C-g>", ":GFiles<CR>", opts)
---keymap("n", "<C-l>", ":BLines<CR>", opts)
---keymap("n", "<C-b>", ":Buffers<CR>", opts)
---keymap("n", "<C-c>", ":Commands<CR>", opts)
---keymap("n", "<C-t>", ":Tags<CR>", opts)
---keymap("n", "<C-a>", ":Marks<CR>", opts)
---keymap("n", "qa",    ":History:<CR>", opts)
---keymap("n", "<C-h>", ":History/<CR>", opts)
-
 -- Extra newline
 keymap("n", "oo", "o<Enter>", opts)
 keymap("n", "OO", "O<Esc>O<Esc>k", opts)
 
 -- Remove search highlight
-keymap("n", "<CR>", ":noh<CR><CR>", opts)
+keymap("n", "<Enter>", ":noh<CR><CR>", opts)
 
 -- Navigate buffers
 keymap("n", "<C-k>", ":bnext<CR>", opts)
@@ -65,7 +54,6 @@ keymap("n", "<C-j>", ":bprevious<CR>", opts)
 keymap("n", "<leader>c", ":setlocal spell!<CR>", opts)
 keymap("n", "<leader>8", "[s", opts)
 keymap("n", "<leader>9", "]s", opts)
-keymap("n", "<leader>0", "z=", opts)
 
 -- FKeys
 keymap("n", "<F6>", ":e ~/config/nvim/init.lua<CR>", opts)
@@ -79,6 +67,30 @@ keymap("n", "<F10>", ":q<CR>", opts)
 -- Close current window
 keymap("n", "<C-q>", ":q<CR>", opts)
 keymap("i", "<C-q>", "<Esc>:q<CR>", opts)
+
+-- Telescope
+keymap("n", "<C-l>", ":Telescope live_grep<CR>", opts)
+keymap("n", "<C-p>", ":Telescope find_files<CR>", opts)
+keymap("n", "<C-g>", ":Telescope git_files<CR>", opts)
+keymap("n", "<C-t>", ":Telescope tags<CR>", opts)
+keymap("n", "<leader>q", ":Telescope quickfix<CR>", opts)
+keymap("n", "<leader>l", ":Telescope loclist<CR>", opts)
+--keymap("n", "<C-m>", ":Telescope marks<CR>", opts)
+keymap("n", "<C-b>", ":Telescope buffers<CR>", opts)
+keymap("n", "<C-c>", ":Telescope commands<CR>", opts)
+keymap("n", "<C-h>", ":Telescope command_history<CR>", opts)
+keymap("n", "qa", ":Telescope command_history<CR>", opts)
+keymap("n", "<leader>j", ":Telescope jumplist<CR>", opts)
+keymap("n", "<leader>0", ":Telescope spell_suggest<CR>", opts)
+
+keymap("n", "<leader>d", ":Telescope lsp_document_symbols<CR>", opts)
+--keymap("n", "<leader>d", ":Telescope lsp_dynamic_workspace_symbols<CR>", opts)
+keymap("n", "<leader>a", ":Telescope lsp_code_actions<CR>", opts)
+keymap("n", "<F12>", ":Telescope lsp_definitions<CR>", opts)
+keymap("n", "<leader><F12>", ":Telescope lsp_implementations<CR>", opts)
+keymap("n", "<leader>r", ":Telescope lsp_references<CR>", opts)
+keymap("n", "<leader><F8>", ":Telescope diagnostics<CR>", opts)
+
 
 --========== Insert ==========--
 -- Press jk fast to enter
