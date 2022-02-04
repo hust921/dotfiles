@@ -17,25 +17,15 @@ vim.g.maplocalleader = " "
 --   term_mode = "t",
 --   command_mode = "c",
 
--- LSP
-keymap("n", "<leader>a",  ":lua vim.lsp.buf.code_action()<CR>", opts)
-keymap("n", "<F12>",      ":lua vim.lsp.buf.definition()<CR>", opts)
-keymap("n", "<F1>",       ":lua vim.lsp.buf.hover()<CR>", opts)
-keymap("n", "<F2>",       ":lua vim.lsp.buf.rename()<CR>", opts)
-keymap("i", "<C-Space>",  ":lua vim.lsp.buf.signature_help()<CR>", opts)
---keymap("n", "<xxx>",  ":lua vim.lsp.buf.implementation()<CR>", opts)
---keymap("n", "<xxx>",  ":lua vim.lsp.buf.type_definition()<CR>", opts)
---keymap("n", "<xxx>",  ":lua vim.lsp.buf.workspace_symbol()<CR>", opts)
-keymap("n", "<leader>r",    ":lua vim.lsp.buf.references()<CR>", opts)
---keymap("n", "<leader>d",    ":lua vim.lsp.buf.document_symbol()<CR>", opts)
-keymap("i", "<C-y><C-y>", ":lua vim.lsp.buf.hover()<CR>", opts)
-
 --========== Normal ==========--
 -- Resize with arrows
 keymap("n", "<Up>", ":resize +1<CR>", opts)
 keymap("n", "<Down>", ":resize -1<CR>", opts)
 keymap("n", "<Left>", ":vertical resize -1<CR>", opts)
 keymap("n", "<Right>", ":vertical resize +1<CR>", opts)
+
+-- Toggle Local & Quick list
+-- TODO: Toggle quickfix/local list. - Check plugin(s)
 
 -- FloatTerm
 --keymap("n", "<leader>b", ":.FloattermSend<CR>", opts)
@@ -45,11 +35,7 @@ keymap("n", "<Right>", ":vertical resize +1<CR>", opts)
 -- NvimTree
 --keymap("n", "<F5>", ":NvimTreeToggle<CR>", opts)
 --keymap("n", "<C-s>", ":NvimTreeFindFile<CR>", opts)
-
--- NeoSnippet
---keymap("i", "<C-j>", "<Plug>(neosnippet_expand_or_jump)", opts)
---keymap("s", "<C-j>", "<Plug>(neosnippet_expand_or_jump)", opts)
---keymap("x", "<C-j>", "<Plug>(neosnippet_expand_target)", opts)
+keymap("n", "<F5>", ":Lexplore 20<CR>", opts)
 
 -- Fzf
 --keymap("n", "<C-p>", ":Files<CR>", opts)
@@ -72,8 +58,8 @@ keymap("n", "<CR>", ":noh<CR><CR>", opts)
 -- Navigate buffers
 keymap("n", "<C-k>", ":bnext<CR>", opts)
 keymap("n", "<C-j>", ":bprevious<CR>", opts)
-keymap("n", "<C-k>", ":BufferLineCycleNext<CR>", opts)
-keymap("n", "<C-j>", ":BufferLineCyclePrev<CR>", opts)
+--keymap("n", "<C-k>", ":BufferLineCycleNext<CR>", opts)
+--keymap("n", "<C-j>", ":BufferLineCyclePrev<CR>", opts)
 
 -- Spelling
 keymap("n", "<leader>c", ":setlocal spell!<CR>", opts)

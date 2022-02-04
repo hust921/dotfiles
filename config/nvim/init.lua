@@ -2,6 +2,7 @@ require 'user.options'
 require 'user.keymaps'
 require 'user.plugins'
 require 'user.completion'
+require 'user.lsp'
 
 -- Set Colorscheme
 local colorscheme = "one"
