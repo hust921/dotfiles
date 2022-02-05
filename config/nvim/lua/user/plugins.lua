@@ -80,6 +80,13 @@ return packer.startup(function(use)
     -- Nvim-tree
     use "kyazdani42/nvim-tree.lua"
 
+    -- Bufferline
+    use "kyazdani42/nvim-web-devicons"
+    use "akinsho/bufferline.nvim"
+
+    -- Onedark colorscheme Theme
+    use "navarasu/onedark.nvim"
+
     -- Automatically setup configuration after cloning packer.nvim
     if PACKER_BOOTSTRAP then
         require("packer").sync()
