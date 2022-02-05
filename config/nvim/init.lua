@@ -6,6 +6,7 @@ require 'user.lsp'
 require 'user.treesitter'
 require 'user.autopairs'
 require 'user.gitsigns'
+require 'user.nvim-tree'
 
 -- Set Colorscheme
 local colorscheme = "one"

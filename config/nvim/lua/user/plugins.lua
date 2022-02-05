@@ -77,6 +77,9 @@ return packer.startup(function(use)
     -- Gitsigns: For staging, blaming, viewing changes, etc
     use "lewis6991/gitsigns.nvim"
 
+    -- Nvim-tree
+    use "kyazdani42/nvim-tree.lua"
+
     -- Automatically setup configuration after cloning packer.nvim
     if PACKER_BOOTSTRAP then
         require("packer").sync()

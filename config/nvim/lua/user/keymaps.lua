@@ -32,9 +32,8 @@ keymap("n", "<Right>", ":vertical resize +1<CR>", opts)
 --keymap("n", "<leader>t", ":FloatermToggle", opts)
 
 -- NvimTree
---keymap("n", "<F5>", ":NvimTreeToggle<CR>", opts)
---keymap("n", "<C-s>", ":NvimTreeFindFile<CR>", opts)
-keymap("n", "<F5>", ":Lexplore 20<CR>", opts)
+keymap("n", "<F5>", ":NvimTreeToggle<CR>", opts)
+keymap("n", "<C-s>", ":NvimTreeFindFile<CR>", opts)
 
 -- Extra newline
 keymap("n", "oo", "o<Enter>", opts)
