@@ -90,6 +90,9 @@ return packer.startup(function(use)
     -- Onedark colorscheme Theme
     use "navarasu/onedark.nvim"
 
+    -- Floaterm
+    use "voldikss/vim-floaterm"
+
     -- Automatically setup configuration after cloning packer.nvim
     if PACKER_BOOTSTRAP then
         require("packer").sync()

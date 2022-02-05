@@ -23,11 +23,6 @@ keymap("n", "<Down>", ":resize -1<CR>", opts)
 keymap("n", "<Left>", ":vertical resize -1<CR>", opts)
 keymap("n", "<Right>", ":vertical resize +1<CR>", opts)
 
--- FloatTerm
---keymap("n", "<leader>b", ":.FloattermSend<CR>", opts)
---keymap("n", "<leader>k", ":.FloattermSend<CR>:FloatermShow<CR>", opts)
---keymap("n", "<leader>t", ":FloatermToggle", opts)
-
 -- NvimTree
 keymap("n", "<F5>", ":NvimTreeToggle<CR>", opts)
 keymap("n", "<C-s>", ":NvimTreeFindFile<CR>", opts)
@@ -92,6 +87,11 @@ keymap('n', '<leader>hr', ':Gitsigns reset_hunk<CR>', opts)
 keymap('n', '<leader>hp', ':Gitsigns preview_hunk<CR>', opts)
 keymap('n', '<leader>hb', ':Gitsigns blame_line<CR>', opts)
 keymap('n', '<leader>hd', ':Gitsigns diffthis<CR>', opts)
+
+-- FloatTerm
+keymap('n', '<leader>t', ':FloatermToggle<CR>', opts)
+keymap('t', 'jk', [[<C-\><C-n>]], opts)
+keymap('t', '<esc>', [[<C-\><C-n>]], opts)
 
 --========== Insert ==========--
 -- Press jk fast to enter

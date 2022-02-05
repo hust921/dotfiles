@@ -40,3 +40,8 @@ vim.opt.shortmess:append "c"
 vim.cmd "set whichwrap+=<,>,[,],h,l"
 --vim.cmd [[set iskeyword+=-]]          -- Eg: `dw` will remove this-entire-word. With `-` set in "iskeyword
 vim.cmd [[set formatoptions-=cro]] -- TODO: this doesn't seem to work
+
+-- Floaterm
+vim.cmd("let g:floaterm_height=0.9")
+vim.cmd("let g:floaterm_width=0.8")
+vim.cmd("let g:floaterm_borderchars = ['─', '│', '─', '│', '╭', '╮', '╯', '╰']")
