@@ -54,6 +54,9 @@ return packer.startup(function(use)
     use "saadparwaiz1/cmp_luasnip" -- Snippet completions
     use "hrsh7th/cmp-nvim-lua"     -- Lua completions
 
+    -- Null-LS: Formatting, Linting & more passed to LSP
+    use "jose-elias-alvarez/null-ls.nvim"
+
     -- Snippets
     use "L3MON4D3/LuaSnip"             -- Snippet engine
     use "rafamadriz/friendly-snippets" -- Library of snippets

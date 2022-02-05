@@ -23,9 +23,6 @@ keymap("n", "<Down>", ":resize -1<CR>", opts)
 keymap("n", "<Left>", ":vertical resize -1<CR>", opts)
 keymap("n", "<Right>", ":vertical resize +1<CR>", opts)
 
--- Toggle Local & Quick list
--- TODO: Toggle quickfix/local list. - Check plugin(s)
-
 -- FloatTerm
 --keymap("n", "<leader>b", ":.FloattermSend<CR>", opts)
 --keymap("n", "<leader>k", ":.FloattermSend<CR>:FloatermShow<CR>", opts)
@@ -67,7 +64,7 @@ keymap("n", "<C-q>", ":q<CR>", opts)
 keymap("i", "<C-q>", "<Esc>:q<CR>", opts)
 
 -- Telescope
-keymap("n", "<C-l>", ":Telescope live_grep<CR>", opts)
+keymap("n", "<C-l>", ":Telescope current_buffer_fuzzy_find<CR>", opts)
 keymap("n", "<C-p>", ":Telescope find_files<CR>", opts)
 keymap("n", "<C-g>", ":Telescope git_files<CR>", opts)
 keymap("n", "<C-t>", ":Telescope tags<CR>", opts)
@@ -113,3 +110,4 @@ keymap("v", "<leader>t", ":!cat |column -t<CR>", opts)
 keymap("x", "<leader>t", ":!cat |column -t<CR>", opts)
 
 --========== Terminal ==========--
+keymap("t", "jk", "<ESC>", { silent = true })

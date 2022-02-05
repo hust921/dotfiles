@@ -535,11 +535,23 @@ function mod_nvim() {
                 dlog "Installing software-properties-common (add-apt-repository command)"
                 sudo apt-get install -y software-properties-common || return 1
             fi
-            
-            dlog "Installing apt-get deps"
-            sudo apt-get install -y python3 python3-dev python3-pip shellcheck && \
+
+            dlog "Installing null-ls linters, formatters [APT-GET]" && \
+            sudo apt-get install -y python3 shellcheck lua-check yamllint && \
+            dlog "Installing null-ls linters, formatters [PIP]" && \
+            pip3 install flake8 vim-vint "ansible-lint[community,yamllint]" && \
+            dlog "Installing null-ls linters, formatters [NPM]" && \
+            npm install -g eslint_d markdownlint markdownlint-cli jsonlint && \
+
+            dlog "Installing null-ls linters, formatters [CURL]" && \
+            sudo curl -o /usr/local/bin/hadolint 'https://github.com/hadolint/hadolint/releases/download/v2.8.0/hadolint-Linux-x86_64' && \
+            sudo chmod 751 /usr/local/bin/hadolint && \
+            sudo chown $(whoami):$(whoami) /usr/local/bin/hadolint && \
+
+            dlog "Installing some apt-get deps" && \
+            sudo apt-get install -y python3-dev python3-pip && \
             dlog "Installing pip3 deps" && \
-            pip3 install pynvim jedi flake8 && \
+            pip3 install pynvim && \
 
             dlog "Installing Nightly NeoVim"
             sudo apt-get install -y software-properties-common && \
@@ -562,6 +574,16 @@ function mod_nvim() {
             ;;
         "uninstall")
             dlog "=== Running (nvim) uninstall ==="
+            dlog "Uninstalling null-ls linters, formatters [APT-GET]" && \
+            sudo apt-get --purge remove -y shellcheck lua-check yamllint && \
+            dlog "Uninstalling null-ls linters, formatters [PIP]" && \
+            pip3 uninstall flake8 vim-vint "ansible-lint[community,yamllint]" && \
+            dlog "Uninstalling null-ls linters, formatters [NPM]" && \
+            npm uninstall -g eslint_d markdownlint markdownlint-cli jsonlint && \
+            dlog "Uninstalling null-ls linters, formatters [CURL]" && \
+            sudo rm -rf /usr/local/bin/hadolint && \
+
+            dlog "Unstalling neovim from apt-get"
             sudo apt-get --purge remove -y neovim && \
             dlog "Uninstalling pynvim (pip3)" && \
             pip3 uninstall -y pynvim && \
@@ -572,12 +594,17 @@ function mod_nvim() {
             ;;
         "update")
             dlog "=== Running (nvim) update ==="
+            dlog "Upgrading null-ls linters, formatters [APT-GET]" && \
+            sudo apt-get install --upgrade -y shellcheck lua-check yamllint && \
+            dlog "Upgrading null-ls linters, formatters [PIP]" && \
+            pip3 install --upgrade flake8 vim-vint "ansible-lint[community,yamllint]" && \
+            dlog "Upgrading null-ls linters, formatters [NPM]" && \
+            npm update -g eslint_d markdownlint markdownlint-cli jsonlint && \
+
             dlog "Upgrading apt-get deps" && \
             sudo apt-get upgrade -y python-dev python-pip python3-dev python3-pip neovim shellcheck && \
             dlog "Installing pynvim, jedi & flake8 (pip3)" && \
             pip3 install --upgrade pynvim jedi flake8 && \
-            dlog "Installing nvim plugins" && \
-            /usr/bin/nvim +PlugUpgrade +PlugUpdate +UpdateRemotePlugins +qall && \
             dlog "=== Finished (nvim) update ==="
             ;;
         "check")
@@ -660,6 +687,7 @@ function print_version() {
 # ===== Module Operations / Helpers =====
 function main() {
     check_os_info
+    check_npm_info
     parse_option_args "${@}"
     parse_subcommand_args "${@}"
 }
@@ -671,6 +699,12 @@ function check_os_info() {
     if [[ "$OS_DISTRO" != "UBUNTU" ]] && [[ "$OS_DISTRO" != "DEBIAN" ]]; then
         print_help "Unknown linux distro: \"$OS_DISTRO\". Only Ubuntu & Debian Supported."
     fi
+}
+
+function check_npm_info() {
+  if ! bash -c "which npm"; then
+    print_help "ERROR! System without npm is not supported yet!"
+  fi
 }
 
 function parse_subcommand_args() {
