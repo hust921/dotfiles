@@ -4,6 +4,7 @@ require 'user.plugins'
 require 'user.completion'
 require 'user.lsp'
 require 'user.treesitter'
+require 'user.autopairs'
 
 -- Set Colorscheme
 local colorscheme = "one"
