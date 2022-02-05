@@ -87,6 +87,10 @@ return packer.startup(function(use)
     use "kyazdani42/nvim-web-devicons"
     use "akinsho/bufferline.nvim"
 
+    -- Lualine
+    use "nvim-lualine/lualine.nvim"
+    use "arkav/lualine-lsp-progress"
+
     -- Onedark colorscheme Theme
     use "navarasu/onedark.nvim"
 
