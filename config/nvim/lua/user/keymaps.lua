@@ -1,5 +1,4 @@
 local opts = { noremap = true, silent = true }
-local term_opts = { silent = true }
 
 -- Shorten function name
 local keymap = vim.api.nvim_set_keymap
@@ -91,6 +90,12 @@ keymap("n", "<leader><F12>", ":Telescope lsp_implementations<CR>", opts)
 keymap("n", "<leader>r", ":Telescope lsp_references<CR>", opts)
 keymap("n", "<leader><F8>", ":Telescope diagnostics<CR>", opts)
 
+-- GitSign
+keymap('n', '<leader>hs', ':Gitsigns stage_hunk<CR>', opts)
+keymap('n', '<leader>hr', ':Gitsigns reset_hunk<CR>', opts)
+keymap('n', '<leader>hp', ':Gitsigns preview_hunk<CR>', opts)
+keymap('n', '<leader>hb', ':Gitsigns blame_line<CR>', opts)
+keymap('n', '<leader>hd', ':Gitsigns diffthis<CR>', opts)
 
 --========== Insert ==========--
 -- Press jk fast to enter

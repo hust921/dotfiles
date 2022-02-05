@@ -74,6 +74,9 @@ return packer.startup(function(use)
     -- Autopairs
     use "windwp/nvim-autopairs"
 
+    -- Gitsigns: For staging, blaming, viewing changes, etc
+    use "lewis6991/gitsigns.nvim"
+
     -- Automatically setup configuration after cloning packer.nvim
     if PACKER_BOOTSTRAP then
         require("packer").sync()

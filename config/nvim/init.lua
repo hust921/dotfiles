@@ -5,6 +5,7 @@ require 'user.completion'
 require 'user.lsp'
 require 'user.treesitter'
 require 'user.autopairs'
+require 'user.gitsigns'
 
 -- Set Colorscheme
 local colorscheme = "one"
