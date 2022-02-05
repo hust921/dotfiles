@@ -97,6 +97,15 @@ return packer.startup(function(use)
     -- Floaterm
     use "voldikss/vim-floaterm"
 
+    -- Alpha "Startify"
+    use {
+        'goolord/alpha-nvim',
+        requires = { 'kyazdani42/nvim-web-devicons' },
+        config = function ()
+            require'alpha'.setup(require'alpha.themes.startify'.config)
+        end
+    }
+
     -- Automatically setup configuration after cloning packer.nvim
     if PACKER_BOOTSTRAP then
         require("packer").sync()
