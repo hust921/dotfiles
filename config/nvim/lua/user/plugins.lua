@@ -101,6 +101,12 @@ return packer.startup(function(use)
     use "tpope/vim-surround"
     use "tpope/vim-repeat"
 
+    -- Markdown
+    use {
+        "iamcco/markdown-preview.nvim",
+        run = ":call mkdp#util#install()",
+    }
+
     -- Alpha "Startify"
     use {
         'goolord/alpha-nvim',

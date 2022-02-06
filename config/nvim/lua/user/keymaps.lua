@@ -58,6 +58,14 @@ keymap("n", "<F10>", ":q<CR>", opts)
 keymap("n", "<C-q>", ":q<CR>", opts)
 keymap("i", "<C-q>", "<Esc>:q<CR>", opts)
 
+-- LSP
+keymap("n", "<F1>", ":lua vim.lsp.buf.hover()<CR>", opts)
+keymap("n", "<F2>", ":lua vim.lsp.buf.rename()<CR>", opts)
+keymap("n", "<C-S-Space>", ":lua vim.lsp.buf.signature_help()<CR>", opts)
+keymap("n", "<F8>", ':lua vim.diagnostic.goto_next({ border = "rounded" })<CR>', opts)
+keymap("n", "<leader>e", ':lua vim.diagnostic.open_float()<CR>', opts)
+
+
 -- Telescope
 keymap("n", "<C-l>", ":Telescope current_buffer_fuzzy_find<CR>", opts)
 keymap("n", "<C-p>", ":Telescope find_files<CR>", opts)
