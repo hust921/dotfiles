@@ -19,10 +19,10 @@ null_ls.setup {
     diagnostics.hadolint,     -- Dockerfile
     diagnostics.luacheck,     -- Lua
     diagnostics.markdownlint, -- Markdownlint via markdownlint-cli
-    --diagnostics.shellcheck,   -- Bash, etc
+    diagnostics.shellcheck,   -- Bash, etc
     diagnostics.vint,         -- Vim-vint
     code_actions.gitsigns,    -- For Gitsigns (nvim plugin)
     code_actions.eslint_d,    -- Javescript
-    --code_actions.shellcheck,  -- Bash, etc
+    code_actions.shellcheck,  -- Bash, etc
   },
 }

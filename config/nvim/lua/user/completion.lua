@@ -104,12 +104,18 @@ cmp.setup {
         luasnip = "[Snippet]",
         buffer = "[Buffer]",
         path = "[Path]",
+        crates = "[Crates]",
+        treesitter = "[Treesitter]",
+        zsh = "[ZSH]",
       })[entry.source.name]
       return vim_item
     end,
   },
   sources = {
     { name = "nvim_lsp" },
+    { name = "crates" },
+    { name = "zsh" },
+    { name = "treesitter" },
     { name = "nvim_lua" },
     { name = "luasnip" },
     { name = "buffer" },

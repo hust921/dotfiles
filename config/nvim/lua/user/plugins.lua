@@ -47,12 +47,23 @@ return packer.startup(function(use)
 
     -- Completion (cmp)
     use "hrsh7th/nvim-cmp"         -- The completion plugin
-    use "hrsh7th/cmp-nvim-lsp"     -- LSP completions
-    use "hrsh7th/cmp-buffer"       -- Buffer completions
-    use "hrsh7th/cmp-path"         -- Path completions
-    use "hrsh7th/cmp-cmdline"      -- Cmdline completions
-    use "saadparwaiz1/cmp_luasnip" -- Snippet completions
-    use "hrsh7th/cmp-nvim-lua"     -- Lua completions
+    use "hrsh7th/cmp-nvim-lsp"     -- LSP completion
+    use "hrsh7th/cmp-buffer"       -- Buffer completion
+    use "hrsh7th/cmp-path"         -- Path completion
+    use "hrsh7th/cmp-cmdline"      -- Cmdline completion
+    use "saadparwaiz1/cmp_luasnip" -- Snippet completion
+    use "hrsh7th/cmp-nvim-lua"     -- Lua completion
+    use {                          -- Cargo.toml completion
+            'saecki/crates.nvim',
+            event = { "BufRead Cargo.toml" },
+            requires = { { 'nvim-lua/plenary.nvim' } },
+            config = function()
+                require('crates').setup()
+            end,
+        }
+    use "ray-x/cmp-treesitter"     -- Treesitter nodes as completion
+    use "tamago324/cmp-zsh"        -- Zsh completion
+
 
     -- Null-LS: Formatting, Linting & more passed to LSP
     use "jose-elias-alvarez/null-ls.nvim"
