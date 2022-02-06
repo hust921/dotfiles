@@ -46,23 +46,25 @@ return packer.startup(function(use)
     use "nvim-lua/plenary.nvim"  -- Useful lua functions
 
     -- Completion (cmp)
-    use "hrsh7th/nvim-cmp"         -- The completion plugin
-    use "hrsh7th/cmp-nvim-lsp"     -- LSP completion
-    use "hrsh7th/cmp-buffer"       -- Buffer completion
-    use "hrsh7th/cmp-path"         -- Path completion
-    use "hrsh7th/cmp-cmdline"      -- Cmdline completion
-    use "saadparwaiz1/cmp_luasnip" -- Snippet completion
-    use "hrsh7th/cmp-nvim-lua"     -- Lua completion
-    use {                          -- Cargo.toml completion
-            'saecki/crates.nvim',
-            event = { "BufRead Cargo.toml" },
-            requires = { { 'nvim-lua/plenary.nvim' } },
-            config = function()
-                require('crates').setup()
-            end,
-        }
-    use "ray-x/cmp-treesitter"     -- Treesitter nodes as completion
-    use "tamago324/cmp-zsh"        -- Zsh completion
+    use "hrsh7th/nvim-cmp"          -- The completion plugin
+    use "hrsh7th/cmp-nvim-lsp"      -- LSP completion
+    use "hrsh7th/cmp-buffer"        -- Buffer completion
+    use "hrsh7th/cmp-path"          -- Path completion
+    use "saadparwaiz1/cmp_luasnip"  -- Snippet completion
+    use { "hrsh7th/cmp-nvim-lua",   -- Lua completion
+        ft = { 'lua' },
+    }
+    use { "saecki/crates.nvim",     -- Cargo.toml completion
+        event = { "BufRead Cargo.toml" },
+        requires = { { 'nvim-lua/plenary.nvim' } },
+        config = function()
+            require('crates').setup()
+        end,
+    }
+    use "ray-x/cmp-treesitter"      -- Treesitter nodes as completion
+    use { "tamago324/cmp-zsh",      -- Zsh completion
+        ft = { 'zsh' }
+    }
 
 
     -- Null-LS: Formatting, Linting & more passed to LSP
@@ -116,6 +118,7 @@ return packer.startup(function(use)
     use {
         "iamcco/markdown-preview.nvim",
         run = ":call mkdp#util#install()",
+        ft = { 'markdown' },
     }
 
     -- Alpha "Startify"
