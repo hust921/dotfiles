@@ -45,3 +45,8 @@ vim.cmd [[set formatoptions-=cro]] -- TODO: this doesn't seem to work
 vim.cmd("let g:floaterm_height=0.9")
 vim.cmd("let g:floaterm_width=0.8")
 vim.cmd("let g:floaterm_borderchars = ['─', '│', '─', '│', '╭', '╮', '╯', '╰']")
+
+-- Folding
+vim.o.foldmethod = 'expr'
+vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
+vim.o.foldlevelstart = 99
