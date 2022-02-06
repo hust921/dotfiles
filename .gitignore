@@ -17,3 +17,5 @@ tags
 
 plugins/*
 !plugins/install.sh
+
+config/nvim/plugin
