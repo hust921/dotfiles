@@ -97,6 +97,10 @@ return packer.startup(function(use)
     -- Floaterm
     use "voldikss/vim-floaterm"
 
+    -- tpope
+    use "tpope/vim-surround"
+    use "tpope/vim-repeat"
+
     -- Alpha "Startify"
     use {
         'goolord/alpha-nvim',
