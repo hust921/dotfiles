@@ -124,6 +124,9 @@ return packer.startup(function(use)
         end
     }
 
+    -- NeoMake
+    use "neomake/neomake"
+
     -- Automatically setup configuration after cloning packer.nvim
     if PACKER_BOOTSTRAP then
         require("packer").sync()

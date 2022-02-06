@@ -50,3 +50,12 @@ vim.cmd("let g:floaterm_borderchars = ['─', '│', '─', '│', '╭', '╮',
 vim.o.foldmethod = 'expr'
 vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
 vim.o.foldlevelstart = 99
+
+-- NeoMake
+vim.cmd("call neomake#configure#automake('rw', 750)")
+vim.cmd("autocmd! BufWritePost *.rs NeomakeProject cargo")
+
+-- Termdebug
+vim.cmd('packadd termdebug')
+vim.cmd('autocmd Filetype rust let termdebugger="rust-gdb"')
+vim.cmd('autocmd Filetype c let termdebugger="gdb"')
