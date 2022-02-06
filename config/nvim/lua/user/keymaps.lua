@@ -46,7 +46,7 @@ keymap("n", "<leader>8", "[s", opts)
 keymap("n", "<leader>9", "]s", opts)
 
 -- FKeys
-keymap("n", "<F6>", ":e ~/config/nvim/init.lua<CR>", opts)
+keymap("n", "<F6>", ":NvimTreeOpen<CR> :e ~/.config/nvim/init.lua<CR>:e ~/.config/nvim/lua/user/plugins.lua<CR>:e ~/.config/nvim/lua/user/keymaps.lua<CR>:e ~/.config/nvim/lua/user/options.lua<CR>", opts)
 keymap("n", "<F7>", ":cnext<CR>", opts)
 keymap("n", "<leader><F7>", ":cprev<CR>", opts)
 keymap("n", "<F8>", ":lnext<CR>", opts)
