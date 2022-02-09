@@ -541,7 +541,7 @@ function mod_nvim() {
             dlog "Installing null-ls linters, formatters [PIP]" && \
             pip3 install flake8 vim-vint "ansible-lint[community,yamllint]" && \
             dlog "Installing null-ls linters, formatters [NPM]" && \
-            npm install -g eslint_d markdownlint markdownlint-cli jsonlint && \
+            npm install -g eslint_d markdownlint markdownlint-cli jsonlint typescript-language-server && \
 
             dlog "Installing null-ls linters, formatters [CURL]" && \
             sudo curl -o /usr/local/bin/hadolint 'https://github.com/hadolint/hadolint/releases/download/v2.8.0/hadolint-Linux-x86_64' && \
@@ -579,7 +579,7 @@ function mod_nvim() {
             dlog "Uninstalling null-ls linters, formatters [PIP]" && \
             pip3 uninstall flake8 vim-vint "ansible-lint[community,yamllint]" && \
             dlog "Uninstalling null-ls linters, formatters [NPM]" && \
-            npm uninstall -g eslint_d markdownlint markdownlint-cli jsonlint && \
+            npm uninstall -g eslint_d markdownlint markdownlint-cli jsonlint typescript-language-server && \
             dlog "Uninstalling null-ls linters, formatters [CURL]" && \
             sudo rm -rf /usr/local/bin/hadolint && \
 
@@ -599,7 +599,7 @@ function mod_nvim() {
             dlog "Upgrading null-ls linters, formatters [PIP]" && \
             pip3 install --upgrade flake8 vim-vint "ansible-lint[community,yamllint]" && \
             dlog "Upgrading null-ls linters, formatters [NPM]" && \
-            npm update -g eslint_d markdownlint markdownlint-cli jsonlint && \
+            npm update -g eslint_d markdownlint markdownlint-cli jsonlint typescript-language-server && \
 
             dlog "Upgrading apt-get deps" && \
             sudo apt-get upgrade -y python-dev python-pip python3-dev python3-pip neovim shellcheck && \
