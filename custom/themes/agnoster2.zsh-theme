@@ -152,12 +152,21 @@ prompt_status() {
   [[ -n "$symbols" ]] && prompt_segment black default "$symbols"
 }
 
+prompt_gitset() {
+  if [[ -f "$HOME/.local/share/gitset" ]]; then
+    local icon
+    icon=$(cat "$HOME/.local/share/gitset")
+    prompt_segment black green "$icon"
+  fi
+}
+
 ## Main prompt
 build_prompt() {
   RETVAL=$?
   prompt_status
   prompt_virtualenv
   prompt_context
+  prompt_gitset
   prompt_dir
   prompt_git
   prompt_end
