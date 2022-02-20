@@ -66,6 +66,14 @@ return packer.startup(function(use)
         ft = { 'zsh' }
     }
 
+    -- LSP Signature
+    use {
+        'ray-x/lsp_signature.nvim',
+        config = function()
+            require('lsp_signature').setup()
+        end
+    }
+
 
     -- Null-LS: Formatting, Linting & more passed to LSP
     use "jose-elias-alvarez/null-ls.nvim"
