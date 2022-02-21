@@ -107,8 +107,8 @@ keymap("i", "jk", "<ESC>", opts)
 
 --========== Visual ==========--
 -- Stay in indent mode
-keymap("v", "<", "<gv", opts)
-keymap("v", ">", ">gv", opts)
+--keymap("v", "<", "<gv", opts)
+--keymap("v", ">", ">gv", opts)
 
 -- Run Column -t on visual selection
 keymap("v", "<leader>t", ":!cat |column -t<CR>", opts)
