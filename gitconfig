@@ -27,7 +27,23 @@
 [alias]
     d = difftool
 [pull]
-	rebase = false
+    rebase = false
+[pager]
+    diff = delta
+    log = delta
+    reflog = delta
+    show = delta
+
+[delta]
+    plus-style = "syntax #004500"
+    minus-style = "syntax #450000"
+    side-by-side = true
+    syntax-theme = Monokai Extended
+    navigate = true
+    line-numbers = true
+
+[interactive]
+    diffFilter = delta --color-only
 [init]
 	defaultBranch = master
 
