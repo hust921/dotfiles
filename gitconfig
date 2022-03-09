@@ -37,7 +37,6 @@
 [delta]
     plus-style = "syntax #004500"
     minus-style = "syntax #450000"
-    side-by-side = true
     syntax-theme = Monokai Extended
     navigate = true
     line-numbers = true
