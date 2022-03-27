@@ -59,25 +59,3 @@ vim.cmd("autocmd! BufWritePost *.rs NeomakeProject cargo")
 vim.cmd('packadd termdebug')
 vim.cmd('autocmd Filetype rust let termdebugger="rust-gdb"')
 vim.cmd('autocmd Filetype c let termdebugger="gdb"')
-
--- JSON format + syntax
-vim.cmd [[
-    function! FormatJson()
-        :%!jq
-        set syntax=json
-    endfunction
-
-    command FormatJson :call FormatJson()
-    command JsonFormat :call FormatJson()
-]]
-
--- XML format + syntax
-vim.cmd [[
-    function! FormatXml()
-        :%!xmllint --format -
-        set syntax=xml
-    endfunction
-
-    command FormatXml :call FormatXml()
-    command XmlFormat :call FormatXml()
-]]

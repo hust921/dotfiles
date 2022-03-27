@@ -1,4 +1,4 @@
-#! /usr/bin/zsh
+#!/usr/bin/zsh
 
 function jjf ()
 {
@@ -14,4 +14,12 @@ function xxf ()
     tmpfile=$(mktemp "/tmp/formattet_XXXXXXXXXXX.xml")
     win32yank.exe -o >> "$tmpfile"
     nvim +FormatXml +w "$tmpfile"
+}
+
+function hhf ()
+{
+    local tmpfile
+    tmpfile=$(mktemp "/tmp/formattet_XXXXXXXXXXX.html")
+    win32yank.exe -o >> "$tmpfile"
+    nvim +FormatHtml +w "$tmpfile"
 }

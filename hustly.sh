@@ -537,7 +537,7 @@ function mod_nvim() {
             fi
 
             dlog "Installing null-ls linters, formatters [APT-GET]" && \
-            sudo apt-get install -y python3 shellcheck lua-check yamllint unzip && \
+            sudo apt-get install -y python3 shellcheck lua-check yamllint unzip tidy && \
             dlog "Installing null-ls linters, formatters [PIP]" && \
             pip3 install flake8 vim-vint "ansible-lint[community,yamllint]" && \
             dlog "Installing null-ls linters, formatters [NPM]" && \
@@ -575,7 +575,7 @@ function mod_nvim() {
         "uninstall")
             dlog "=== Running (nvim) uninstall ==="
             dlog "Uninstalling null-ls linters, formatters [APT-GET]" && \
-            sudo apt-get --purge remove -y shellcheck lua-check yamllint && \
+            sudo apt-get --purge remove -y shellcheck lua-check yamllint tidy && \
             dlog "Uninstalling null-ls linters, formatters [PIP]" && \
             pip3 uninstall flake8 vim-vint "ansible-lint[community,yamllint]" && \
             dlog "Uninstalling null-ls linters, formatters [NPM]" && \
@@ -595,7 +595,7 @@ function mod_nvim() {
         "update")
             dlog "=== Running (nvim) update ==="
             dlog "Upgrading null-ls linters, formatters [APT-GET]" && \
-            sudo apt-get install --upgrade -y shellcheck lua-check yamllint unzip && \
+            sudo apt-get install --upgrade -y shellcheck lua-check yamllint unzip tidy && \
             dlog "Upgrading null-ls linters, formatters [PIP]" && \
             pip3 install --upgrade flake8 vim-vint "ansible-lint[community,yamllint]" && \
             dlog "Upgrading null-ls linters, formatters [NPM]" && \
