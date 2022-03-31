@@ -95,6 +95,9 @@ return packer.startup(function(use)
       run = ":TSUpdate",
     }
 
+    -- 3rd Party Syntax Highlight
+    use "vmchale/just-vim"
+
     -- Autopairs
     use "windwp/nvim-autopairs"
 
