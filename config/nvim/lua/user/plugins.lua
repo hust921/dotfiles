@@ -107,6 +107,15 @@ return packer.startup(function(use)
     -- Nvim-tree
     use "kyazdani42/nvim-tree.lua"
 
+    -- Project-nvim
+    use {
+        "ahmedkhalf/project.nvim",
+        config = function()
+        require("project_nvim").setup {
+        }
+        end
+    }
+
     -- Bufferline
     use "kyazdani42/nvim-web-devicons"
     use "akinsho/bufferline.nvim"
