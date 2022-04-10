@@ -102,3 +102,6 @@ nvim_tree.setup {
     tree_width = 40,
   },
 }
+
+-- Auto Close when last buffer
+vim.cmd("autocmd BufEnter * ++nested if winnr('$') == 1 && bufname() == 'NvimTree_' . tabpagenr() | quit | endif")
