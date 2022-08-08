@@ -32,9 +32,9 @@ function update_azure_repos_cache() {
 
 function check_azure_repos_cache() {
     if which az >> /dev/null; then
-        # If cache file (dont exist or) was modified more than 360mins ago (6 hours) => Update cache
+        # If cache file (dont exist or) was modified more than 2880mins ago (48 hours) => Update cache
         [ -f "$AZURE_REPOS_CACHE_FILE" ] || (update_azure_repos_cache &; return 0)
-        [[ $(find "$AZURE_REPOS_CACHE_FILE" -mmin +360 -print) ]] && update_azure_repos_cache &
+        [[ $(find "$AZURE_REPOS_CACHE_FILE" -mmin +2880 -print) ]] && update_azure_repos_cache &
     fi
 }
 
