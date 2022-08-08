@@ -14,7 +14,7 @@ function fzf_jira {
 
 function check_jira_cache {
   # If cache file (dont exist or) was modified more than 60mins ago (1 hours) => Update cache
-  [ -f "$1" ] || update_jira_cache $1 $2; return 0
+  [ -f "$1" ] || (update_jira_cache $1 $2; return 0)
   [[ $(find "$1" -mmin +60 -print) ]] && update_jira_cache $1 $2
 }
 

@@ -55,6 +55,6 @@ function update_confluence_cache {
 
 function check_confluence_cache {
     # If cache file (dont exist or) was modified more than 60mins ago (1 hours) => Update cache
-    [ -f "$CONFLUENCE_FZF_CACHE_FILE" ] || update_confluence_cache; return 0
+    [ -f "$CONFLUENCE_FZF_CACHE_FILE" ] || (update_confluence_cache; return 0)
     [[ $(find "$CONFLUENCE_FZF_CACHE_FILE" -mmin +60 -print) ]] && update_confluence_cache
 }
