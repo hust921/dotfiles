@@ -1,4 +1,4 @@
-﻿# Check administrator
+# Check administrator
 if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator"))
 {
     Write-Output "Not running as administrator.."

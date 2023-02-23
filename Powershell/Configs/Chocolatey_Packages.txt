@@ -1,4 +1,4 @@
-﻿# ====== Runtime Enviroments & Drivers ======
+# ====== Runtime Enviroments & Drivers ======
 javaruntime
 python python2
 geforce-experience

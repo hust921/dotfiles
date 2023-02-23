@@ -1,4 +1,4 @@
-﻿function PrepareNextStage ($dotInstallPath, $dotInstallStage)
+function PrepareNextStage ($dotInstallPath, $dotInstallStage)
 {
     # Key (Register "directory")
     $dotKeyPath = "HKCU:\Software\Microsoft\Windows NT\CurrentVersion\"
