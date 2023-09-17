@@ -79,7 +79,6 @@ return packer.startup(function(use)
         end
     }
 
-
     -- Null-LS: Formatting, Linting & more passed to LSP
     use "jose-elias-alvarez/null-ls.nvim"
 
@@ -89,7 +88,6 @@ return packer.startup(function(use)
 
     -- Emmet
     use "mattn/emmet-vim"
-
 
     -- LSP
     use "neovim/nvim-lspconfig" -- enable LSP
@@ -113,9 +111,6 @@ return packer.startup(function(use)
     -- Gitsigns: For staging, blaming, viewing changes, etc
     use "lewis6991/gitsigns.nvim"
 
-    -- Nvim-tree
-    use "kyazdani42/nvim-tree.lua"
-
     -- Project-nvim
     use {
         "ahmedkhalf/project.nvim",
@@ -124,6 +119,9 @@ return packer.startup(function(use)
         }
         end
     }
+
+    -- nvim-tree
+    use "nvim-tree/nvim-tree.lua"
 
     -- Bufferline
     use "kyazdani42/nvim-web-devicons"
@@ -154,14 +152,6 @@ return packer.startup(function(use)
     use {
         'goolord/alpha-nvim',
         requires = { 'kyazdani42/nvim-web-devicons' }
-    }
-
-    -- Whichkey
-    use {
-        "folke/which-key.nvim",
-        config = function()
-            require("which-key").setup { }
-        end
     }
 
     -- NeoMake

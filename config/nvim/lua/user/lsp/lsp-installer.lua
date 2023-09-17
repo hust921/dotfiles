@@ -22,10 +22,10 @@ lsp_installer.on_server_ready(function(server)
     opts = vim.tbl_deep_extend("force", jsonls_opts, opts)
   end
 
-  if server.name == "lua_ls" then
-    local sumneko_opts = require("user.lsp.settings.lua_ls")
-    opts = vim.tbl_deep_extend("force", sumneko_opts, opts)
-  end
+--  if server.name == "sumneko_lua" then
+--    local sumneko_opts = require("user.lsp.settings.sumneko_lua")
+--    opts = vim.tbl_deep_extend("force", sumneko_opts, opts)
+--  end
 
   if server.name == "pyright" then
     local pyright_opts = require("user.lsp.settings.pyright")
@@ -47,7 +47,7 @@ local servers = {
     "jsonls",
     "pyright",
     "rust_analyzer",
-    "lua_ls",
+    --"sumneko_lua",
     "vimls",
     "tsserver",
 }
@@ -62,6 +62,8 @@ for _, server_name in pairs(servers) do
       print("Installing [" .. server_name .. "] LSP server...")
       servers_missing = true
     end
+    else
+      print("LSP Server [" .. server_name .. "] not found...")
   end
 
   if servers_missing then
