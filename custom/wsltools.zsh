@@ -41,11 +41,11 @@ sln()
 
     set local final
     if [[ $lines -eq 1 ]]; then
-        final=$(echo "$start \"$(wslpath -w $slnfile)\"")
+        final=$(printf '%s\' "$start \"$(wslpath -w $slnfile)\"")
         bash -c "$final"
     else
         slnfile=$(echo "$slnfile" | fzf)
-        final=$(echo "$start \"$(wslpath -w $slnfile)\"")
+        final=$(printf '%s\' "$start \"$(wslpath -w $slnfile)\"")
         bash -c "$final"
     fi
 }

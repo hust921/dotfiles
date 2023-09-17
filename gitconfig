@@ -45,6 +45,8 @@
     diffFilter = delta --color-only
 [init]
 	defaultBranch = master
+[push]
+	autoSetupRemote = true
 
 # OMZ template to speed large repo's.
 # Run in repository:
