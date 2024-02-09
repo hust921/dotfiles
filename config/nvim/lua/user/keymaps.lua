@@ -28,6 +28,8 @@ keymap("n", "<F5>", ":NvimTreeToggle<CR>", opts)
 keymap("n", "<C-s>", ":NvimTreeFindFile<CR>", opts)
 
 -- Extra newline
+keymap("n", "ojk", "o<Esc>", opts)
+keymap("n", "Ojk", "O<Esc>", opts)
 keymap("n", "oo", "o<Enter>", opts)
 keymap("n", "OO", "O<Esc>O<Esc>k", opts)
 

@@ -80,3 +80,49 @@ if [ -x $(command -v cargo) ]; then
     alias cb='cargo build'
     alias cc='cargo check'
 fi
+
+# Working with UTC epoch times
+function utcnow {
+    if [[ "$1" == "-h" ]]; then
+        date -u +"%Y-%m-%dT%H:%M:%S.%3NZ"
+    else
+        date -u +%s%3N
+    fi
+}
+function minago  { date -u --date="$1 minutes ago" +%s%3N }
+function hourago { date -u --date="$1 hours ago" +%s%3N }
+function dayago  { date -u --date="$1 days ago" +%s%3N }
+function secago  { date -u --date="$1 seconds ago" +%s%3N }
+
+# From Human readable to utc timestamp with miliseconds
+function toepoch { date -u -d "$1" +"%s%3N" }
+
+# From UTC (with or without miliseconds) to human readable UTC
+function tohuman {
+    local datetime="$1"
+    local show_local_time=0
+
+    if [[ "$1" == "-l" || "$1" == "--local" ]]; then 
+        local datetime="$2"
+        local show_local_time=1
+    elif [[ "$2" == "-l" || "$2" == "--local" ]]; then 
+        show_local_time=1
+    fi
+
+    if [ "${#datetime}" -eq 13 ]; then
+        # Extract milliseconds by getting the last 3 digits
+        local milliseconds="${datetime: -3}"
+        # Convert the timestamp to seconds for the 'date' command
+        local seconds="${datetime:0:-3}"
+        # Format the date, excluding milliseconds
+        local formatted_date=$(date $([[ "$show_local_time" -eq 0 ]] && echo "-u") -d @"$seconds" +"%Y-%m-%dT%H:%M:%S")
+        # Append milliseconds and 'Z' to match the desired format
+        echo "${formatted_date}.${milliseconds}Z"
+    elif [ "${#datetime}" -eq 10 ]; then
+        # For 10-digit seconds timestamp, simply format without milliseconds
+        date $([[ "$show_local_time" -eq 0 ]] && echo "-u") -d @"$datetime" +"%Y-%m-%dT%H:%M:%S.000Z"
+
+    else
+        echo -e "Invalid epoch time length. Should be 10 chars without and 13 chars with miliseconds"
+    fi
+}
