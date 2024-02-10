@@ -35,9 +35,6 @@ command -v git &> /dev/null && git config --global core.pager "$PAGER"
 # Oh-My-Zsh
 source $ZSH/oh-my-zsh.sh
 
-# Start ssh-agent
-eval $(ssh-agent) &> /dev/null
-
 # Local config. Logins / Creds / Etc
 [ -f ~/.zshlocal.zsh ] && source ~/.zshlocal.zsh
 [ -f ~/.cargo/env ] && source ~/.cargo/env
