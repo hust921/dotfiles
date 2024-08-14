@@ -56,7 +56,7 @@ vim.cmd("call neomake#configure#automake('rw', 750)")
 vim.cmd("autocmd! BufWritePost *.rs NeomakeProject cargo")
 
 -- Termdebug
-vim.cmd('packadd termdebug')
+vim.cmd('packadd! termdebug')
 vim.cmd('autocmd Filetype rust let termdebugger="rust-gdb"')
 vim.cmd('autocmd Filetype c let termdebugger="gdb"')
 

@@ -109,7 +109,10 @@ return packer.startup(function(use)
     use "windwp/nvim-autopairs"
 
     -- Gitsigns: For staging, blaming, viewing changes, etc
-    use "lewis6991/gitsigns.nvim"
+    use {
+        "lewis6991/gitsigns.nvim",
+        require('gitsigns').setup()
+    }
 
     -- Project-nvim
     use {
