@@ -7,6 +7,7 @@ alias gba='git branch -avv'
 alias grso='git remote show origin'
 alias gcd='git checkout develop'
 alias gclean='git clean -xdfi'
+alias gcm='git checkout master'
 
 # Assume `gd HEAD` if no args is given to `gd`
 unalias gd

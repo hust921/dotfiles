@@ -172,6 +172,9 @@ function mod_sys() {
             sudo apt-get install -y libssl-dev
             cargo install cargo-update || return 1
 
+            dlog "Installing cdhist"
+            pip install cdhist || return 1
+
             dlog '"Installing" colors-test string'
             sudo cp "$DOTDIR/scripts/colors-test" "/usr/local/bin/"
             sudo chown "root:root" "/usr/local/bin/colors-test"
@@ -219,6 +222,9 @@ function mod_sys() {
             dlog "Uninstalling cargo-update"
             cargo uninstall cargo-update
 
+            dlog "Uninstalling cdhist"
+            pip uninstall cdhist || return 1
+
             dlog '"Uninstalling" colors-test string'
             sudo rm -rf "/usr/local/bin/colors-test"
 
@@ -260,6 +266,9 @@ function mod_sys() {
             dlog "Updating cargo-update"
             # see above: cargo install-update -a
 
+            dlog "Updating cdhist"
+            pip install -U cdhist || return 1
+
             dlog "Updating colors-test"
             sudo rm -rf "/usr/local/bin/colors-test"
             sudo cp "$DOTDIR/scripts/colors-test" "/usr/local/bin/"
@@ -292,6 +301,7 @@ function mod_sys() {
             which colors-test && \
             which ramdisk && \
             which k2cdownloader && \
+            which cdhist && \
             cargo install-update -h || return 1
             ;;
         *)

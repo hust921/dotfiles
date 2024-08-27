@@ -40,6 +40,40 @@ source $ZSH/oh-my-zsh.sh
 [ -f ~/.cargo/env ] && source ~/.cargo/env
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+echo "
++------------------------------------------------------------+
+|                    Bash/Zsh Keybindings                    |
++------------------+-----------------------------------------+
+| Key Combination  | Description                             |
++------------------+-----------------------------------------+
+| Ctrl + U         | Clear the text before the cursor        |
+| Ctrl + K         | Clear the text after the cursor         |
+| Ctrl + Y         | Yank (paste) the last cut/deleted       |
++------------------+-----------------------------------------+
+| Ctrl + B         | Move the cursor back one character      |
+| Alt  + B         | Move the cursor back one word           |
+| Ctrl + F         | Move the cursor forward one character   |
+| Alt  + F         | Move the cursor forward one word        |
++------------------+-----------------------------------------+
+| Ctrl + W         | Delete the word before the cursor       |
+| Ctrl + H         | Delete the character before the cursor  |
+| Ctrl + D         | Delete the character after the cursor   |
+| Alt  + D         | Delete the word after the cursor        |
++------------------+-----------------------------------------+
++------------------+-----------------------------------------+
+| Ctrl + P         | Recall the previous command             |
+| Ctrl + N         | Recall the next command                 |
++------------------+-----------------------------------------+
+| Alt  + K         | Kafka Topic FZF                         |
+| Ctrl + Z         | CD History                              |
++------------------+-----------------------------------------+
+" 
+
+# cdhist
+if type cdhist &>/dev/null; then
+    . <(cdhist -i)
+fi
+
 # Only refresh compinit once a day
 ## completion stuff
 zstyle ':compinstall' filename '$HOME/.zshrc'
