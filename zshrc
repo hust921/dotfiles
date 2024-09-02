@@ -42,32 +42,32 @@ source $ZSH/oh-my-zsh.sh
 
 echo "
 +------------------------------------------------------------+
-|                    Bash/Zsh Keybindings                    |
-+------------------+-----------------------------------------+
-| Key Combination  | Description                             |
-+------------------+-----------------------------------------+
-| Ctrl + U         | Clear the text before the cursor        |
-| Ctrl + K         | Clear the text after the cursor         |
-| Ctrl + Y         | Yank (paste) the last cut/deleted       |
-+------------------+-----------------------------------------+
-| Ctrl + B         | Move the cursor back one character      |
-| Alt  + B         | Move the cursor back one word           |
-| Ctrl + F         | Move the cursor forward one character   |
-| Alt  + F         | Move the cursor forward one word        |
-+------------------+-----------------------------------------+
-| Ctrl + W         | Delete the word before the cursor       |
-| Ctrl + H         | Delete the character before the cursor  |
-| Ctrl + D         | Delete the character after the cursor   |
-| Alt  + D         | Delete the word after the cursor        |
-+------------------+-----------------------------------------+
-+------------------+-----------------------------------------+
-| Ctrl + P         | Recall the previous command             |
-| Ctrl + N         | Recall the next command                 |
-+------------------+-----------------------------------------+
-| Alt  + K         | Kafka Topic FZF                         |
-| Ctrl + Z         | CD History                              |
-| Ctrl + X         | Easy-Motion                             |
-+------------------+-----------------------------------------+
+|                    Bash/Zsh Keybindings                    |                             TOOLS                                         csvkit
++------------------+-----------------------------------------+                                                                    
+| Key Combination  | Description                             |                     View: csvlens                                  +-------------------+
++------------------+-----------------------------------------+                                                                    | Input             |
+| Ctrl + U         | Clear the text before the cursor        |                                                                    +-------------------+
+| Ctrl + K         | Clear the text after the cursor         |                                                                    |    in2csv         |
+| Ctrl + Y         | Yank (paste) the last cut/deleted       |                                                                    |    sql2csv        |
++------------------+-----------------------------------------+                                                                    +-------------------+
+| Ctrl + B         | Move the cursor back one character      |                                                                    | Processing        |
+| Alt  + B         | Move the cursor back one word           |                                                                    +-------------------+
+| Ctrl + F         | Move the cursor forward one character   |                                                                    |    csvclean       |
+| Alt  + F         | Move the cursor forward one word        |                                                                    |    csvcut         |
++------------------+-----------------------------------------+                                                                    |    csvgrep        |
+| Ctrl + W         | Delete the word before the cursor       |                                                                    |    csvjoin        |
+| Ctrl + H         | Delete the character before the cursor  |                                                                    |    csvsort        |
+| Ctrl + D         | Delete the character after the cursor   |                                                                    |    csvstack       |
+| Alt  + D         | Delete the word after the cursor        |                                                                    +-------------------+
++------------------+-----------------------------------------+                                                                    | Output & Analysis |
++------------------+-----------------------------------------+                                                                    +-------------------+
+| Ctrl + P         | Recall the previous command             |                                                                    |    csvformat      |
+| Ctrl + N         | Recall the next command                 |                                                                    |    csvjson        |
++------------------+-----------------------------------------+                                                                    |    csvlook        |
+| Alt  + K         | Kafka Topic FZF                         |                                                                    |    csvpy          |
+| Ctrl + Z         | CD History                              |                                                                    |    csvsql         |
+| Ctrl + X         | Easy-Motion                             |                                                                    |    csvstat        |
++------------------+-----------------------------------------+                                                                    +-------------------+
 " 
 
 # cdhist

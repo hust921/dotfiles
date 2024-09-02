@@ -175,6 +175,12 @@ function mod_sys() {
             dlog "Installing cdhist"
             pip install cdhist || return 1
 
+            dlog "Installing csvkit"
+            sudo apt-get install -y csvkit || return 1
+
+            dlog "Installing csvlens"
+            cargo install csvlens || return 1
+
             dlog '"Installing" colors-test string'
             sudo cp "$DOTDIR/scripts/colors-test" "/usr/local/bin/"
             sudo chown "root:root" "/usr/local/bin/colors-test"
@@ -225,6 +231,12 @@ function mod_sys() {
             dlog "Uninstalling cdhist"
             pip uninstall cdhist || return 1
 
+            dlog "Uninstalling csvkit"
+            sudo apt-get --purge remove -y csvkit || return 1
+
+            dlog "Uninstalling csvlens"
+            cargo uninstall csvlens || return 1
+
             dlog '"Uninstalling" colors-test string'
             sudo rm -rf "/usr/local/bin/colors-test"
 
@@ -269,6 +281,12 @@ function mod_sys() {
             dlog "Updating cdhist"
             pip install -U cdhist || return 1
 
+            dlog "Updating csvkit"
+            sudo apt-get upgrade -y csvkit || return 1
+
+            dlog "Updating csvlens"
+            # see above: cargo install-update -a
+
             dlog "Updating colors-test"
             sudo rm -rf "/usr/local/bin/colors-test"
             sudo cp "$DOTDIR/scripts/colors-test" "/usr/local/bin/"
@@ -302,6 +320,8 @@ function mod_sys() {
             which ramdisk && \
             which k2cdownloader && \
             which cdhist && \
+            which csvstat && \
+            which csvlens && \
             cargo install-update -h || return 1
             ;;
         *)
