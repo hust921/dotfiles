@@ -22,7 +22,7 @@ HISTSIZE=1000
 HISTSAVE=1000
 
 # Plugins
-plugins=(git git-flow dirhistory command-not-found colored-man-pages fd ripgrep rust zsh-syntax-highlighting zsh-autosuggestions zsh-completions)
+plugins=(autoswitch_virtualenv zsh-autopair git git-flow dirhistory command-not-found colored-man-pages rust zsh-syntax-highlighting zsh-autosuggestions zsh-completions jq)
 
 # User configuration
 export PATH=".:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:$HOME/.local/bin"
@@ -40,34 +40,38 @@ source $ZSH/oh-my-zsh.sh
 [ -f ~/.cargo/env ] && source ~/.cargo/env
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+# jq plugin
+bindkey '^j' jq-complete
+
 echo "
-+------------------------------------------------------------+
-|                    Bash/Zsh Keybindings                    |                             TOOLS                                         csvkit
++------------------------------------------------------------+--------------------------------------------------------------------+-------------------+
+|                    Bash/Zsh Keybindings                    |                             TOOLS                                  |      csvkit       |
++------------------+-----------------------------------------+--------------------------------------------------------------------+-------------------+
+| Key Combination  | Description                             |                     View: csvlens                                  | Input             |
++------------------+-----------------------------------------+                                                                    +-------------------+
+| Ctrl + U         | Clear the text before the cursor        |                     venv: autoswitch_virtualenv                    |    in2csv         |
+| Ctrl + K         | Clear the text after the cursor         |                        mkvenv                                      |    sql2csv        |
+| Ctrl + Y         | Yank (paste) the last cut/deleted       |                        mkvenv --python=/usr/bin/python2            +-------------------+
++------------------+-----------------------------------------+                        rmvenv                                      | Processing        |
+| Ctrl + B         | Move the cursor back one character      |                                                                    +-------------------+
+| Alt  + B         | Move the cursor back one word           |                                                                    |    csvclean       |
+| Ctrl + F         | Move the cursor forward one character   |                                                                    |    csvcut         |
+| Alt  + F         | Move the cursor forward one word        |                                                                    |    csvgrep        |
++------------------+-----------------------------------------+                                                                    |    csvjoin        |
+| Ctrl + W         | Delete the word before the cursor       |                                                                    |    csvsort        |
+| Ctrl + H         | Delete the character before the cursor  |                                                                    |    csvstack       |
+| Ctrl + D         | Delete the character after the cursor   |                                                                    +-------------------+
+| Alt  + D         | Delete the word after the cursor        |                                                                    | Output & Analysis |
++------------------+-----------------------------------------+                                                                    +-------------------+
++------------------+-----------------------------------------+                                                                    |    csvformat      |
+| Ctrl + P         | Recall the previous command             |                                                                    |    csvjson        |
+| Ctrl + N         | Recall the next command                 |                                                                    |    csvlook        |
++------------------+-----------------------------------------+                                                                    |    csvpy          |
+| Alt  + K         | Kafka Topic FZF                         |                                                                    |    csvsql         |
+| Ctrl + Z         | CD History                              |                                                                    |    csvstat        |
+| Ctrl + X         | Easy-Motion                             |                                                                    +-------------------+
+| Ctrl + J         | jq REPL                                 |
 +------------------+-----------------------------------------+                                                                    
-| Key Combination  | Description                             |                     View: csvlens                                  +-------------------+
-+------------------+-----------------------------------------+                                                                    | Input             |
-| Ctrl + U         | Clear the text before the cursor        |                                                                    +-------------------+
-| Ctrl + K         | Clear the text after the cursor         |                                                                    |    in2csv         |
-| Ctrl + Y         | Yank (paste) the last cut/deleted       |                                                                    |    sql2csv        |
-+------------------+-----------------------------------------+                                                                    +-------------------+
-| Ctrl + B         | Move the cursor back one character      |                                                                    | Processing        |
-| Alt  + B         | Move the cursor back one word           |                                                                    +-------------------+
-| Ctrl + F         | Move the cursor forward one character   |                                                                    |    csvclean       |
-| Alt  + F         | Move the cursor forward one word        |                                                                    |    csvcut         |
-+------------------+-----------------------------------------+                                                                    |    csvgrep        |
-| Ctrl + W         | Delete the word before the cursor       |                                                                    |    csvjoin        |
-| Ctrl + H         | Delete the character before the cursor  |                                                                    |    csvsort        |
-| Ctrl + D         | Delete the character after the cursor   |                                                                    |    csvstack       |
-| Alt  + D         | Delete the word after the cursor        |                                                                    +-------------------+
-+------------------+-----------------------------------------+                                                                    | Output & Analysis |
-+------------------+-----------------------------------------+                                                                    +-------------------+
-| Ctrl + P         | Recall the previous command             |                                                                    |    csvformat      |
-| Ctrl + N         | Recall the next command                 |                                                                    |    csvjson        |
-+------------------+-----------------------------------------+                                                                    |    csvlook        |
-| Alt  + K         | Kafka Topic FZF                         |                                                                    |    csvpy          |
-| Ctrl + Z         | CD History                              |                                                                    |    csvsql         |
-| Ctrl + X         | Easy-Motion                             |                                                                    |    csvstat        |
-+------------------+-----------------------------------------+                                                                    +-------------------+
 " 
 
 # cdhist

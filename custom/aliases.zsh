@@ -26,6 +26,7 @@ alias vim='nvim'
 alias vi='nvim'
 alias grep='grep --color=always'
 alias less='less -R'
+alias watch='watch --color'
 
 # DockerClean all containers & delete images
 if [ -x "$(command -v docker)" ]; then
