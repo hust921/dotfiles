@@ -15,7 +15,7 @@ lsp_installer.setup({
         "rust_analyzer",
         "sumneko_lua",
         "vimls",
-        "tsserver",
+        "ts_ls",
     }
 })
 
@@ -29,4 +29,4 @@ require("lspconfig").rust_analyzer.setup{}
 -- deprecated
 --require("lspconfig").sumneko_lua.setup{}
 require("lspconfig").vimls.setup{}
-require("lspconfig").tsserver.setup{}
+require("lspconfig").ts_ls.setup{}
