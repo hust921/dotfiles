@@ -18,3 +18,15 @@ lsp_installer.setup({
         "tsserver",
     }
 })
+
+require("lspconfig").pyright.setup{}
+require("lspconfig").bashls.setup{}
+require("lspconfig").dockerls.setup{}
+require("lspconfig").html.setup{}
+require("lspconfig").jsonls.setup{}
+require("lspconfig").pyright.setup{}
+require("lspconfig").rust_analyzer.setup{}
+-- deprecated
+--require("lspconfig").sumneko_lua.setup{}
+require("lspconfig").vimls.setup{}
+require("lspconfig").tsserver.setup{}
