@@ -79,9 +79,6 @@ return packer.startup(function(use)
         end
     }
 
-    -- Null-LS: Formatting, Linting & more passed to LSP
-    use "jose-elias-alvarez/null-ls.nvim"
-
     -- Snippets
     use "L3MON4D3/LuaSnip"             -- Snippet engine
     use "rafamadriz/friendly-snippets" -- Library of snippets
@@ -91,7 +88,8 @@ return packer.startup(function(use)
 
     -- LSP
     use "neovim/nvim-lspconfig" -- enable LSP
-    use "williamboman/nvim-lsp-installer" -- simple lsp server installer
+    use { "williamboman/mason.nvim" }
+    use { "williamboman/mason-lspconfig.nvim" }
 
     -- Telescope
     use "nvim-telescope/telescope.nvim" -- fuzzy finder
