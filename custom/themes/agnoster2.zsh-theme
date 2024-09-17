@@ -30,8 +30,10 @@ CURRENT_BG='NONE'
 # Fix odd char on mac
 if [[ `uname` == 'Darwin' ]]; then
     SEGMENT_SEPARATOR='\ue0b0'
+    REVERSE_SEGMENT_SEPARATOR='\ue0b2'
 else
     SEGMENT_SEPARATOR=''
+    REVERSE_SEGMENT_SEPARATOR=''
 fi
 
 # Begin a segment
@@ -173,3 +175,4 @@ build_prompt() {
 }
 
 PROMPT='%{%f%b%k%}$(build_prompt) '
+RPROMPT='%{%F{blue}%}%{%K{black}%} $REVERSE_SEGMENT_SEPARATOR%{%F{black}%}%{%K{blue}%} %D{%f/%m/%y} %{%F{black}%}%{%K{blue}%}$REVERSE_SEGMENT_SEPARATOR%{%F{#C1C1C1}%}%{%K{black}%} %D{%H:%M:%S} %{%F{#909090}%}%{%K{black}%}$(date "+%z" | cut -c1,3)%{$reset_color%}'

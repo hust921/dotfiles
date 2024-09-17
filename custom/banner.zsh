@@ -13,18 +13,16 @@ banner="                                                                        
 
 print_cheatsheet_banner()
 {
-   echo "$banner"
+   clear;echo "$banner"
+
+   # Only reset if using keybinding
+   if [ -z $1 ]; then
+       zle reset-prompt
+   fi
 }
-print_cheatsheet_banner
+print_cheatsheet_banner 0
 
 # Override C-l
 orig_ctrl_l=$(bindkey "^L")
-function custom_clear_screen()
-{
-    zle clear-screen # original
-    echo ""
-    print_cheatsheet_banner
-    zle reset-prompt
-}
-zle -N custom_clear_screen
-bindkey "^L" custom_clear_screen
+zle -N print_cheatsheet_banner
+bindkey "^L" print_cheatsheet_banner
