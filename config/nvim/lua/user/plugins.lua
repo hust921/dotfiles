@@ -83,8 +83,11 @@ return packer.startup(function(use)
     use "jose-elias-alvarez/null-ls.nvim"
 
     -- Snippets
-    use "L3MON4D3/LuaSnip"             -- Snippet engine
     use "rafamadriz/friendly-snippets" -- Library of snippets
+    use { -- Snippet engine
+      "L3MON4D3/LuaSnip",
+      dependencies = { "rafamadriz/friendly-snippets" },
+    }
 
     -- Emmet
     use "mattn/emmet-vim"

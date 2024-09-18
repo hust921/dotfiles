@@ -1,0 +1,105 @@
+{
+  "Boilerplate Bash": {
+    "prefix": [
+      "boilerplate",
+      "init",
+      "argcheck"
+    ],
+    "body": [
+      "#!/bin/bash",
+      "set -e # Exit on error",
+      "set -o pipefail # Cascade return values",
+      "set -u # Error on undefined variable",
+      "#set -x # Prints commands before execution",
+      "",
+      "if [[ $# -ne 1 ]]; then",
+      "    echo \"Usage: \\$0 <firstarg>\"",
+      "    exit 1",
+      "fi",
+      "",
+      "trap cancel SIGINT",
+      "cancel() {",
+      "    echo \"\"",
+      "    echo \"Script exited with Ctrl-C..\"",
+      "    exit 2",
+      "}",
+      "",
+      "function main() {",
+      "    $0",
+      "}",
+      "",
+      "main \"$@\""
+    ],
+    "description": "Bash script boilerplate with argument check and error handling"
+  },
+    "Failure": {
+        "prefix": ["fail", "color failure", "failure message"],
+        "body": [
+            "echo -e \"[\\033[1;31mFailure\\033[0m] $0\""
+        ],
+        "description": "Red color FAILURE message with bold text"
+    },
+    "Success": {
+        "prefix": ["success", "color success", "success message"],
+        "body": [
+            "echo -e \"[\\033[1;32mSuccess\\033[0m] $0\""
+        ],
+        "description": "Green color SUCCESS message with bold text"
+    },
+    "Red Color": {
+        "prefix": ["red", "color red"],
+        "body": [
+            "echo -e \"\\033[31m$0\\033[0m\""
+        ],
+        "description": "Red color ANSI escape code for Bash"
+    },
+    "Green Color": {
+        "prefix": ["green", "color green"],
+        "body": [
+            "echo -e \"\\033[32m$0\\033[0m\""
+        ],
+        "description": "Green color ANSI escape code for Bash"
+    },
+    "Yellow Color": {
+        "prefix": ["yellow", "color yellow"],
+        "body": [
+            "echo -e \"\\033[33m$0\\033[0m\""
+        ],
+        "description": "Yellow color ANSI escape code for Bash"
+    },
+    "Blue Color": {
+        "prefix": ["blue", "color blue"],
+        "body": [
+            "echo -e \"\\033[34m$0\\033[0m\""
+        ],
+        "description": "Blue color ANSI escape code for Bash"
+    },
+    "Magenta Color": {
+        "prefix": ["magenta", "color magenta"],
+        "body": [
+            "echo -e \"\\033[35m$0\\033[0m\""
+        ],
+        "description": "Magenta color ANSI escape code for Bash"
+    },
+    "Cyan Color": {
+        "prefix": ["cyan", "color cyan"],
+        "body": [
+            "echo -e \"\\033[36m$0\\033[0m\""
+        ],
+        "description": "Cyan color ANSI escape code for Bash"
+    },
+    "White Color": {
+        "prefix": ["white", "color white"],
+        "body": [
+            "echo -e \"\\033[37m$0\\033[0m\""
+        ],
+        "description": "White color ANSI escape code for Bash"
+    },
+    "Black Color": {
+        "prefix": ["black", "color black"],
+        "body": [
+            "echo -e \"\\033[30m$0\\033[0m\""
+        ],
+        "description": "Black color ANSI escape code for Bash"
+    }
+}

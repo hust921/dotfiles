@@ -1,0 +1,26 @@
+{
+  "Boilerplate Python": {
+    "prefix": [
+      "boilerplate",
+      "init",
+      "argcheck"
+    ],
+    "body": [
+      "#!/usr/bin/env python3",
+      "import sys",
+      "",
+      "def main():",
+      "    $0",
+      "",
+      "def argcheck():",
+      "    if len(sys.argv) != 1:",
+      "        print(f\"Usage: {sys.argv[0]}\")",
+      "        exit(1)",
+      "",
+      "if __name__ == \"__main__\":",
+      "    argcheck()",
+      "    main()"
+    ],
+    "description": "Python script boilerplate with argument check"
+  }
+}
