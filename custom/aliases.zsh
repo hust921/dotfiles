@@ -29,6 +29,8 @@ alias grep='grep --color=always'
 alias less='less -R'
 alias watch='watch --color'
 
+alias sortip='sort -t . -k 3,3n -k 4,4n'
+
 # DockerClean all containers & delete images
 if [ -x "$(command -v docker)" ]; then
     dockerclean()
