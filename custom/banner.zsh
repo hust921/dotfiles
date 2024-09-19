@@ -6,9 +6,23 @@ banner="                                                                        
  | Alt  + K         | Kafka Topic FZF                         |      | Ctrl + N         | Recall the next command                 |      +------------------+-----------------------------------------+
  | Ctrl + Z         | CD History                              |      +------------------+-----------------------------------------+      | Ctrl + W         | Delete the word before the cursor       |
  | Ctrl + X         | Easy-Motion                             |      | Ctrl + U         | Clear the text before the cursor        |      | Ctrl + H         | Delete the character before the cursor  |
- | Ctrl + J         | jq REPL                                 |      | Ctrl + K         | Clear the text after the cursor         |      | Ctrl + D         | Delete the character after the cursor   |
+ | Alt  + J         | jq REPL                                 |      | Ctrl + K         | Clear the text after the cursor         |      | Ctrl + D         | Delete the character after the cursor   |
  | Alt  + A         | ASN IP Lookup                           |      | Ctrl + Y         | Yank (paste) the last cut/deleted       |      | Alt  + D         | Delete the word after the cursor        |
- +------------------+-----------------------------------------+      +------------------+-----------------------------------------+      +------------------+-----------------------------------------+"
+ +------------------+-----------------------------------------+      +------------------+-----------------------------------------+      +------------------+-----------------------------------------+
+
+ !! !n !-n                     CMD number (or prev)
+ !* !$/\$_ alt-.                Arg Last
+ !^                            Arg First
+ !:n !n-m                      Arg numbered (or range)
+ !string                       Arg string
+ ^foo ^foo^bar !:gs/foo/bar    Remove, Remove (or globally)
+
+ ASN{0000..9999}
+ ls *~*.txt                    Everything EXCEPT .txt
+ ls *.(py|sh|bash)             List all (.py OR .sh OR .bash)
+
+ cat <(find ~) <(find .)       Concat cmd outputs
+ "
 
 
 print_cheatsheet_banner()

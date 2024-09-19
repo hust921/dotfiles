@@ -41,7 +41,7 @@ source $ZSH/oh-my-zsh.sh
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # jq plugin
-bindkey '^j' jq-complete
+bindkey '^[j' jq-complete
 
 # cdhist
 if type cdhist &>/dev/null; then
