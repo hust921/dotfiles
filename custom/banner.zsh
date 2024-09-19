@@ -17,10 +17,7 @@ banner="                                                                        
  !string                       Arg string
  ^foo ^foo^bar !:gs/foo/bar    Remove, Remove (or globally)
 
- ASN{0000..9999}
- ls *~*.txt                    Everything EXCEPT .txt
  ls *.(py|sh|bash)             List all (.py OR .sh OR .bash)
-
  cat <(find ~) <(find .)       Concat cmd outputs
  "
 
