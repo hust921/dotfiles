@@ -61,5 +61,6 @@ vim.cmd('autocmd Filetype rust let termdebugger="rust-gdb"')
 vim.cmd('autocmd Filetype c let termdebugger="gdb"')
 
 -- Emmet
-vim.cmd('let g:user_emmet_leader_key="<C-e>"')
-vim.cmd('autocmd BufEnter *.html,*.hbs setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab')
+vim.cmd('let g:user_emmet_mode="a"')
+vim.cmd('let g:user_emmet_leader_key="<C-E>"')
+vim.cmd('autocmd BufEnter *.html,*.hbs,*.tsx setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab')
