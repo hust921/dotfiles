@@ -1,6 +1,16 @@
 -- following options are the default
 -- each of these are documented in `:help nvim-tree.OPTION_NAME`
-require("nvim-tree").setup()
+require'nvim-tree'.setup {
+  update_cwd = true,
+  view = {
+    adaptive_size = true,
+    centralize_selection = true,
+  },
+  update_focused_file = {
+    enable = false,
+    update_cwd = true,
+  },
+}
 
 -- NON OF THIS WORKS ......
 --
