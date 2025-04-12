@@ -9,6 +9,7 @@ alias l1='command ls -1'
 alias ll='exa -lg --git'
 alias la='ll -a'
 alias lsd='ls -1d */'
+alias lss='ls -l --sort extension *.(py|sh|bash|zsh|lua|ps1)'
 
 # xclip
 alias xc="xclip -selection c"

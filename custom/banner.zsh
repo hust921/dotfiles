@@ -32,8 +32,8 @@ print_cheatsheet_banner()
    fi
 }
 print_cheatsheet_banner 0
-
-# Override C-l
-orig_ctrl_l=$(bindkey "^L")
-zle -N print_cheatsheet_banner
-bindkey "^L" print_cheatsheet_banner
+#
+## Override C-l
+#orig_ctrl_l=$(bindkey "^L")
+#zle -N print_cheatsheet_banner
+#bindkey "^L" print_cheatsheet_banner

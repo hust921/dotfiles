@@ -8,14 +8,16 @@ alias grso='git remote show origin'
 alias gcd='git checkout develop'
 alias gclean='git clean -xdfi'
 alias gcm='git checkout master'
+alias gaa='git add --all . ":(exclude)**/appsettings.json"'
+alias gaaa='git add --all'
 
 # Assume `gd HEAD` if no args is given to `gd`
 unalias gd
 function gd() {
     if [ $# -eq 0 ]; then
-        git diff HEAD
+        git diff --staged HEAD
     else
-        git diff "$@"
+        git diff --staged "$@"
     fi
 }
 
