@@ -79,9 +79,6 @@ return packer.startup(function(use)
         end
     }
 
-    -- Null-LS: Formatting, Linting & more passed to LSP
-    use "jose-elias-alvarez/null-ls.nvim"
-
     -- Snippets
     use "rafamadriz/friendly-snippets" -- Library of snippets
     use { -- Snippet engine
@@ -92,9 +89,75 @@ return packer.startup(function(use)
     -- Emmet
     use "mattn/emmet-vim"
 
-    -- LSP
-    use "neovim/nvim-lspconfig" -- enable LSP
-    use "williamboman/nvim-lsp-installer" -- simple lsp server installer
+-- LSP
+use {
+  "williamboman/mason.nvim",
+  run = ":MasonUpdate",
+  config = function()
+    require("mason").setup()
+  end,
+}
+
+use {
+  "williamboman/mason-lspconfig.nvim",
+  after = "mason.nvim",  -- ensures mason.nvim loads first
+  requires = { "williamboman/mason.nvim" },  -- Ensure mason.nvim is loaded first
+  config = function()
+    require("mason").setup()
+    require("mason-lspconfig").setup({
+      ensure_installed = { "lua_ls", "pyright", "ts_ls", "vimls", "rust_analyzer", "jsonls", "html", "dockerls", "bashls" },
+    })
+  end,
+}
+
+use {
+  "neovim/nvim-lspconfig",
+  config = function()
+    local lspconfig = require("lspconfig")
+    local capabilities = require("cmp_nvim_lsp").default_capabilities()
+    local servers = { "lua_ls", "pyright", "ts_ls", "vimls", "rust_analyzer", "jsonls", "html", "dockerls", "bashls" }
+
+    for _, server in ipairs(servers) do
+      lspconfig[server].setup({
+        capabilities = capabilities,
+      })
+    end
+  end,
+}
+
+use {
+  "nvimtools/none-ls.nvim",
+  requires = {
+    "nvim-lua/plenary.nvim",
+    "nvimtools/none-ls-extras.nvim",
+  },
+  config = function()
+    local null_ls = require("null-ls")
+
+    null_ls.setup({
+      sources = {
+        -- Formatting
+        null_ls.builtins.formatting.stylua,
+      },
+    })
+  end,
+}
+        -- Diagnostics from none-ls-extras
+        -- require("none-ls.diagnostics.flake8")
+        -- require("none-ls.diagnostics.ansiblelint")
+        -- require("none-ls.diagnostics.eslint_d")
+        -- require("none-ls.diagnostics.jsonlint")
+        -- require("none-ls.diagnostics.yamllint")
+        -- require("none-ls.diagnostics.hadolint")
+        -- require("none-ls.diagnostics.luacheck")
+        -- require("none-ls.diagnostics.markdownlint")
+        -- require("none-ls.diagnostics.shellcheck")
+        -- require("none-ls.diagnostics.vint")
+
+        -- -- Code Actions from none-ls-extra
+        -- require("none-ls.code_actions.gitsigns")
+        -- require("none-ls.code_actions.eslint_d")
+        -- require("none-ls.code_actions.shellcheck")
 
     -- Telescope
     use "nvim-telescope/telescope.nvim" -- fuzzy finder
@@ -106,7 +169,6 @@ return packer.startup(function(use)
     }
 
     -- 3rd Party Syntax Highlight
-    use "vmchale/just-vim"
 
     -- Autopairs
     use "windwp/nvim-autopairs"
