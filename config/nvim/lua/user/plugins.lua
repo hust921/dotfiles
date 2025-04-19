@@ -125,23 +125,23 @@ use {
   end,
 }
 
-use {
-  "nvimtools/none-ls.nvim",
-  requires = {
-    "nvim-lua/plenary.nvim",
-    "nvimtools/none-ls-extras.nvim",
-  },
-  config = function()
-    local null_ls = require("null-ls")
-
-    null_ls.setup({
-      sources = {
-        -- Formatting
-        null_ls.builtins.formatting.stylua,
-      },
-    })
-  end,
-}
+-- use {
+--   "nvimtools/none-ls.nvim",
+--   requires = {
+--     "nvim-lua/plenary.nvim",
+--     "nvimtools/none-ls-extras.nvim",
+--   },
+--   config = function()
+--     local null_ls = require("none-ls")
+-- 
+--     null_ls.setup({
+--       sources = {
+--         -- Formatting
+--         null_ls.builtins.formatting.stylua,
+--       },
+--     })
+--   end,
+-- }
         -- Diagnostics from none-ls-extras
         -- require("none-ls.diagnostics.flake8")
         -- require("none-ls.diagnostics.ansiblelint")
