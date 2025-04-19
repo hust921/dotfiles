@@ -17,12 +17,12 @@ end
 
 -- Create snapshot (with autotmatic naming) before running PackerSync
 ---- Autocommand to reload neovim whenever you save plugins.lua
---vim.cmd [[
---    augroup packer_user_config
---        autocmd!
---        autocmd BufWritePost plugins.lua source <afile> | PackerSync
---    augroup end
---]]
+vim.cmd [[
+    augroup packer_user_config
+        autocmd!
+        autocmd BufWritePost plugins.lua source <afile> | PackerSync
+    augroup end
+]]
 
 -- Guard to not blow up with errors, if packer fails
 local status_ok, packer = pcall(require, "packer")
@@ -89,75 +89,41 @@ return packer.startup(function(use)
     -- Emmet
     use "mattn/emmet-vim"
 
--- LSP
-use {
-  "williamboman/mason.nvim",
-  run = ":MasonUpdate",
-  config = function()
-    require("mason").setup()
-  end,
-}
+    -- LSP
+    use {
+      "williamboman/mason.nvim",
+      run = ":MasonUpdate",
+      config = function()
+        require("mason").setup()
+      end,
+    }
 
-use {
-  "williamboman/mason-lspconfig.nvim",
-  after = "mason.nvim",  -- ensures mason.nvim loads first
-  requires = { "williamboman/mason.nvim" },  -- Ensure mason.nvim is loaded first
-  config = function()
-    require("mason").setup()
-    require("mason-lspconfig").setup({
-      ensure_installed = { "lua_ls", "pylsp", "ts_ls", "vimls", "rust_analyzer", "jsonls", "html", "dockerls", "bashls" },
-    })
-  end,
-}
+    use {
+      "williamboman/mason-lspconfig.nvim",
+      after = "mason.nvim",  -- ensures mason.nvim loads first
+      requires = { "williamboman/mason.nvim" },  -- Ensure mason.nvim is loaded first
+      config = function()
+        require("mason").setup()
+        require("mason-lspconfig").setup({
+          ensure_installed = { "lua_ls", "pylsp", "ts_ls", "vimls", "rust_analyzer", "jsonls", "html", "dockerls", "bashls" },
+        })
+      end,
+    }
 
-use {
-  "neovim/nvim-lspconfig",
-  config = function()
-    local lspconfig = require("lspconfig")
-    local capabilities = require("cmp_nvim_lsp").default_capabilities()
-    local servers = { "lua_ls", "pylsp", "ts_ls", "vimls", "rust_analyzer", "jsonls", "html", "dockerls", "bashls" }
+    use {
+      "neovim/nvim-lspconfig",
+      config = function()
+        local lspconfig = require("lspconfig")
+        local capabilities = require("cmp_nvim_lsp").default_capabilities()
+        local servers = { "lua_ls", "pylsp", "ts_ls", "vimls", "rust_analyzer", "jsonls", "html", "dockerls", "bashls" }
 
-    for _, server in ipairs(servers) do
-      lspconfig[server].setup({
-        capabilities = capabilities,
-      })
-    end
-  end,
-}
-
--- use {
---   "nvimtools/none-ls.nvim",
---   requires = {
---     "nvim-lua/plenary.nvim",
---     "nvimtools/none-ls-extras.nvim",
---   },
---   config = function()
---     local null_ls = require("none-ls")
--- 
---     null_ls.setup({
---       sources = {
---         -- Formatting
---         null_ls.builtins.formatting.stylua,
---       },
---     })
---   end,
--- }
-        -- Diagnostics from none-ls-extras
-        -- require("none-ls.diagnostics.flake8")
-        -- require("none-ls.diagnostics.ansiblelint")
-        -- require("none-ls.diagnostics.eslint_d")
-        -- require("none-ls.diagnostics.jsonlint")
-        -- require("none-ls.diagnostics.yamllint")
-        -- require("none-ls.diagnostics.hadolint")
-        -- require("none-ls.diagnostics.luacheck")
-        -- require("none-ls.diagnostics.markdownlint")
-        -- require("none-ls.diagnostics.shellcheck")
-        -- require("none-ls.diagnostics.vint")
-
-        -- -- Code Actions from none-ls-extra
-        -- require("none-ls.code_actions.gitsigns")
-        -- require("none-ls.code_actions.eslint_d")
-        -- require("none-ls.code_actions.shellcheck")
+        for _, server in ipairs(servers) do
+          lspconfig[server].setup({
+            capabilities = capabilities,
+          })
+        end
+      end,
+    }
 
     -- Telescope
     use "nvim-telescope/telescope.nvim" -- fuzzy finder
@@ -172,12 +138,6 @@ use {
 
     -- Autopairs
     use "windwp/nvim-autopairs"
-
-    -- Gitsigns: For staging, blaming, viewing changes, etc
-    --use {
-    --    "lewis6991/gitsigns.nvim",
-    --    require('gitsigns').setup()
-    --}
 
     -- Project-nvim
     use {
