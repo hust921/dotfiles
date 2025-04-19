@@ -44,5 +44,5 @@ configs.setup {
     additional_vim_regex_highlighting = true,
 
   },
-  indent = { enable = false, disable = { "yaml" } },
+  indent = { enable = true, disable = { "yaml" } },
 }
