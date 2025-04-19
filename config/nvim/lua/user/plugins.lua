@@ -110,20 +110,41 @@ return packer.startup(function(use)
       end,
     }
 
-    use {
-      "neovim/nvim-lspconfig",
-      config = function()
-        local lspconfig = require("lspconfig")
-        local capabilities = require("cmp_nvim_lsp").default_capabilities()
-        local servers = { "lua_ls", "pylsp", "ts_ls", "vimls", "rust_analyzer", "jsonls", "html", "dockerls", "bashls" }
+use {
+  "neovim/nvim-lspconfig",
+  config = function()
+    local lspconfig    = require("lspconfig")
+    local capabilities = require("cmp_nvim_lsp").default_capabilities()
+    local servers      = { "lua_ls", "pylsp", "ts_ls", "vimls", "rust_analyzer", "jsonls", "html", "dockerls", "bashls" }
 
-        for _, server in ipairs(servers) do
-          lspconfig[server].setup({
-            capabilities = capabilities,
-          })
-        end
-      end,
-    }
+    for _, srv in ipairs(servers) do
+      local opts = { capabilities = capabilities }
+
+      if srv == "pylsp" then
+        opts.settings = {
+          pylsp = {
+            plugins = {
+              -- disable flake8 entirely and import pyflakes & pycodestyle manually
+              flake8 = {
+                  enabled = false,
+                  maxLineLength = 100
+              },
+              pyflakes = {
+                  enabled = true,
+              },
+              pycodestyle = {
+                enabled        = true,
+                maxLineLength  = 100,   -- (optional override)
+              },
+            },
+          },
+        }
+      end
+
+      lspconfig[srv].setup(opts)
+    end
+  end,
+}
 
     -- Telescope
     use "nvim-telescope/telescope.nvim" -- fuzzy finder
