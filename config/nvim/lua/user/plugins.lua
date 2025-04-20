@@ -190,6 +190,29 @@ use {
     use "tpope/vim-surround"
     use "tpope/vim-repeat"
 
+    -- flash / peasy-motion
+    use {
+      'folke/flash.nvim',
+      -- Lazy load when opening files (similar to VeryLazy)
+      -- Alternatively, you could use cmd = 'Flash' to load on first command,
+      -- or event = 'VeryLazy' if your packer version supports it well.
+      --event = {'BufReadPre', 'BufNewFile'},
+      config = function()
+        -- Call the setup function (passing opts if you had any)
+        -- Since your original opts = {}, we pass an empty table.
+        require('flash').setup({})
+        require('flash').toggle()
+
+        -- Define the key mappings using Neovim's API
+        -- Note: packer doesn't have a built-in 'keys' table like lazy.nvim
+        -- We use vim.keymap.set(mode, lhs, rhs, opts)
+
+        vim.keymap.set({'n', 'x', 'o'}, ' ', function() require('flash').jump() end, { desc = 'Flash Jump' })
+        vim.keymap.set('o', 'r', function() require('flash').remote() end, { desc = 'Remote Flash' })
+      end,
+    }
+
+
     -- Markdown
     use {
         "iamcco/markdown-preview.nvim",

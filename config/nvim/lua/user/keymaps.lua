@@ -4,9 +4,42 @@ local opts = { noremap = true, silent = true }
 local keymap = vim.api.nvim_set_keymap
 
 --Remap space as leader key
-keymap("", "<Space>", "<Nop>", opts)
-vim.g.mapleader = " "
-vim.g.maplocalleader = " "
+keymap("", ",", "<Nop>", opts)
+vim.g.mapleader = ","
+vim.g.maplocalleader = ","
+
+-- Define the function to list leader key mappings in the global scope
+_G.list_leader_mappings = function()
+  local leader = vim.g.mapleader
+  if not leader or leader == "" then
+    print("Leader key is not set.")
+    return
+  end
+
+  local mappings = {}
+  for _, modes in pairs({'n', 'v', 'x', 's', 'o', 'i', 'l', 'c', 't'}) do
+    for _, mapping in ipairs(vim.api.nvim_get_keymap(modes)) do
+      if mapping.lhs:sub(1, 1) == leader then
+        table.insert(mappings, string.format("%s %s -> %s", modes, mapping.lhs, mapping.rhs))
+      end
+    end
+  end
+
+  if #mappings == 0 then
+    print("No leader key mappings found.")
+  else
+    print("Leader key mappings:")
+    for _, mapping in ipairs(mappings) do
+      print(mapping)
+    end
+  end
+end
+
+-- Map `,,` to call the list_leader_mappings function
+vim.api.nvim_set_keymap('n', ',,', '<cmd>lua list_leader_mappings()<CR>', { noremap = true, silent = true })
+
+-- Map `,,` to call the list_leader_mappings function
+vim.api.nvim_set_keymap('n', ',,', '<cmd>lua list_leader_mappings()<CR>', { noremap = true, silent = true })
 
 -- Modes
 --   normal_mode = "n",
