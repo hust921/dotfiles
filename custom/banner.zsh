@@ -31,7 +31,12 @@ print_cheatsheet_banner()
        zle reset-prompt
    fi
 }
-print_cheatsheet_banner 0
+
+
+# Only print banner if not in tmux session
+if ! [[ -n "$TMUX" ]]; then
+    print_cheatsheet_banner 0
+fi
 #
 ## Override C-l
 #orig_ctrl_l=$(bindkey "^L")
