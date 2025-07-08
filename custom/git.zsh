@@ -8,7 +8,7 @@ alias grso='git remote show origin'
 alias gcd='git checkout develop'
 alias gclean='git clean -xdfi'
 alias gcm='git checkout master'
-alias gaa='git add --all . ":(exclude)**/appsettings.json"'
+alias gaa='git add --all . ":(exclude)**/appsettings*.json"'
 alias gaaa='git add --all'
 
 # Assume `gd HEAD` if no args is given to `gd`
