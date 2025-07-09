@@ -8,8 +8,20 @@ alias grso='git remote show origin'
 alias gcd='git checkout develop'
 alias gclean='git clean -xdfi'
 alias gcm='git checkout master'
-alias gaa='git add --all . ":(exclude)**/appsettings*.json"'
 alias gaaa='git add --all'
+
+git_add_all_not_secrets() {
+  local root
+  root=$(git rev-parse --show-toplevel 2>/dev/null) || {
+    echo "gadd: not inside a git repo" >&2
+    return 1
+  }
+  git -C "$root" add -A \
+        ':(glob,exclude)**/appsettings*.json' \
+        ':(exclude)appsettings*.json' \
+        "$@"
+}
+alias gaa='git_add_all_not_secrets'
 
 # Assume `gd HEAD` if no args is given to `gd`
 unalias gd
