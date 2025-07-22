@@ -173,7 +173,7 @@ function mod_sys() {
             cargo install cargo-update || return 1
 
             dlog "Installing cdhist"
-            pip install cdhist || return 1
+            pipx install cdhist || return 1
 
             dlog "Installing csvkit"
             sudo apt-get install -y csvkit || return 1
@@ -229,7 +229,7 @@ function mod_sys() {
             cargo uninstall cargo-update
 
             dlog "Uninstalling cdhist"
-            pip uninstall cdhist || return 1
+            pipx uninstall cdhist || return 1
 
             dlog "Uninstalling csvkit"
             sudo apt-get --purge remove -y csvkit || return 1
@@ -279,7 +279,7 @@ function mod_sys() {
             # see above: cargo install-update -a
 
             dlog "Updating cdhist"
-            pip install -U cdhist || return 1
+            pipx install -U cdhist || return 1
 
             dlog "Updating csvkit"
             sudo apt-get upgrade -y csvkit || return 1
@@ -479,8 +479,8 @@ function mod_rust() {
             rustup component add rustfmt || return 1
             dlog "installing clippy (for semantic linting)"
             rustup component add clippy || return 1
-            dlog "installing rls (Rust Language Server) & rust-src"
-            rustup component add rls rust-analysis rust-src || return 1
+            dlog "installing (Rust Language Server) & rust-src"
+            rustup component add rust-analysis rust-src || return 1
 
             dlog "installing rust-analyzer"
             local tempdir=$(mktemp -d) && \
@@ -569,7 +569,7 @@ function mod_nvim() {
             dlog "Installing null-ls linters, formatters [APT-GET]" && \
             sudo apt-get install -y python3 shellcheck lua-check yamllint unzip tidy && \
             dlog "Installing null-ls linters, formatters [PIP]" && \
-            pip3 install flake8 vim-vint "ansible-lint[community,yamllint]" && \
+            pipx install flake8 vim-vint "ansible-lint[community,yamllint]" && \
             dlog "Installing null-ls linters, formatters [NPM]" && \
             npm install -g eslint_d markdownlint markdownlint-cli jsonlint typescript-language-server && \
 
@@ -579,9 +579,9 @@ function mod_nvim() {
             sudo chown $(whoami):$(whoami) /usr/local/bin/hadolint && \
 
             dlog "Installing some apt-get deps" && \
-            sudo apt-get install -y python3-dev python3-pip && \
+            sudo apt-get install -y python3-dev python3-pip python3-full pipx python3-venv && \
             dlog "Installing pip3 deps" && \
-            pip3 install pynvim && \
+            pipx install pynvim && \
 
             dlog "Installing Nightly NeoVim"
             sudo apt-get install -y software-properties-common && \
@@ -607,7 +607,7 @@ function mod_nvim() {
             dlog "Uninstalling null-ls linters, formatters [APT-GET]" && \
             sudo apt-get --purge remove -y shellcheck lua-check yamllint tidy && \
             dlog "Uninstalling null-ls linters, formatters [PIP]" && \
-            pip3 uninstall flake8 vim-vint "ansible-lint[community,yamllint]" && \
+            pipx uninstall flake8 vim-vint "ansible-lint[community,yamllint]" && \
             dlog "Uninstalling null-ls linters, formatters [NPM]" && \
             npm uninstall -g eslint_d markdownlint markdownlint-cli jsonlint typescript-language-server && \
             dlog "Uninstalling null-ls linters, formatters [CURL]" && \
@@ -616,7 +616,7 @@ function mod_nvim() {
             dlog "Unstalling neovim from apt-get"
             sudo apt-get --purge remove -y neovim && \
             dlog "Uninstalling pynvim (pip3)" && \
-            pip3 uninstall -y pynvim && \
+            pipx uninstall -y pynvim && \
             dlog "Deleting nvim config directories" && \
             rm -rf "$HOME/.local/share/nvim" && \
             rm -rf "$HOME/.config/nvim" && \
@@ -627,14 +627,14 @@ function mod_nvim() {
             dlog "Upgrading null-ls linters, formatters [APT-GET]" && \
             sudo apt-get install --upgrade -y shellcheck lua-check yamllint unzip tidy && \
             dlog "Upgrading null-ls linters, formatters [PIP]" && \
-            pip3 install --upgrade flake8 vim-vint "ansible-lint[community,yamllint]" && \
+            pipx install --upgrade flake8 vim-vint "ansible-lint[community,yamllint]" && \
             dlog "Upgrading null-ls linters, formatters [NPM]" && \
             npm update -g eslint_d markdownlint markdownlint-cli jsonlint typescript-language-server && \
 
             dlog "Upgrading apt-get deps" && \
-            sudo apt-get upgrade -y python-dev python-pip python3-dev python3-pip neovim shellcheck && \
+            sudo apt-get upgrade -y python-dev python-pip python3-dev python3-pip neovim shellcheck pipx python3-venv && \
             dlog "Installing pynvim, jedi & flake8 (pip3)" && \
-            pip3 install --upgrade pynvim jedi flake8 && \
+            pipx install --upgrade pynvim jedi flake8 && \
             dlog "=== Finished (nvim) update ==="
             ;;
         "check")
