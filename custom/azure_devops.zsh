@@ -2,6 +2,18 @@
 
 export AZURE_REPOS_CACHE_FILE="$HOME/.cache/azurefzf/reposcache"
 
+#azq() { PYTHONWARNINGS=ignore::UserWarning az "$@"; }
+
+function azq() {
+    local cutoff=20251030
+    local today=$(date +%Y%m%d)
+    if [[ $today -lt $cutoff ]]; then
+        PYTHONWARNINGS="ignore:pkg_resources is deprecated as an API:UserWarning" az "$@"
+    else
+        az "$@"
+    fi
+}
+
 function repo {
     if which az >> /dev/null; then
         local selectedRepo=$(cat ~/.cache/azurefzf/reposcache | fzf --no-hscroll +m | cut -d ':' -f 2- | tr -d '[:space:]')
@@ -20,11 +32,11 @@ function update_azure_repos_cache() {
     truncate -s 0 "$AZURE_REPOS_CACHE_FILE"
 
     # Get Azure devops Project names
-    declare -a local projects=($(az devops project list | jq '.value[].id' | sed -e 's/"//g'))
+    declare -a local projects=($(azq devops project list | jq '.value[].id' | sed -e 's/"//g'))
 
     # Iterate projects & get git repos names+urls
     for proj in ${projects[@]}; do
-        az repos list -p "$proj" | jq -r '.[]  | "\(.name): \(.webUrl)"' >> "$AZURE_REPOS_CACHE_FILE"
+        azq repos list -p "$proj" | jq -r '.[]  | "\(.name): \(.webUrl)"' >> "$AZURE_REPOS_CACHE_FILE"
     done
 
     sort -o "$AZURE_REPOS_CACHE_FILE" "$AZURE_REPOS_CACHE_FILE"
