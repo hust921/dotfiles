@@ -10,16 +10,14 @@ banner="                                                                        
  | Alt  + A         | ASN IP Lookup                           |      | Ctrl + Y         | Yank (paste) the last cut/deleted       |      | Alt  + D         | Delete the word after the cursor        |
  +------------------+-----------------------------------------+      +------------------+-----------------------------------------+      +------------------+-----------------------------------------+
 
- !! !n !-n                     CMD number (or prev)
- !* !$/\$_ alt-.                Arg Last
- !^                            Arg First
- !:n !n-m                      Arg numbered (or range)
- !string                       Arg string
- ^foo ^foo^bar !:gs/foo/bar    Remove, Remove (or globally)
+ <<EOF   here-doc with    expansion                                  <() process as file                                                 < stdin
+ <<'EOF' here-doc without expansion
 
- ls *.(py|sh|bash)             List all (.py OR .sh OR .bash)
- cat <(find ~) <(find .)       Concat cmd outputs
- "
+ ls *.(py|sh|bash)             List all (.py OR .sh OR .bash)                                                                            lsd            List Directories
+ cat <(find ~) <(find .)       Concat cmd outputs                                                                                        lls/lsscript   List All script files: (py|sh|bash|zsh|lua|ps1)
+ join -t, <(sort -t, -k1 a.csv) <(sort -t, -k1 b.csv)                                                                                    lld/lsdata     List All data files:   (csv|txt|json)
+ paste <(cut -f1 a.tsv) <(cut -f2 b.tsv)                                                                                                 lln/lsnew      List All new files:    changed-within 2 days
+"
 
 
 print_cheatsheet_banner()

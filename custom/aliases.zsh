@@ -8,7 +8,15 @@ alias l1='command ls -1'
 alias ll='exa -lg --git'
 alias la='ll -a'
 alias lsd='ls -1d */'
-alias lss='ls -l --sort extension *.(py|sh|bash|zsh|lua|ps1)'
+
+alias lsscript='echo "# ls Scripts #";ls -l --sort time *.(py|sh|bash|zsh|lua|ps1)' # ls scripts
+alias lls='echo "# ls Scripts #";ls -l --sort time *.(py|sh|bash|zsh|lua|ps1)' # ls scripts
+
+alias lsdata='echo "# ls Data #";ls -l --sort time *.(csv|txt|json)' # ls data
+alias lld='echo "# ls Data #";ls -l --sort time *.(csv|txt|json)' # ls data
+
+alias lln='echo "# last 2 days #";fd -0 --changed-within 2d | xargs -0r exa --sort=time -l'
+alias lsnew='echo "# last 2 days #";fd -0 --changed-within 2d | xargs -0r exa --sort=time -l'
 
 # xclip
 alias xc="xclip -selection c"
