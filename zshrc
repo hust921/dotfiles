@@ -22,7 +22,7 @@ HISTSIZE=1000
 HISTSAVE=1000
 
 # Plugins
-plugins=(autoswitch_virtualenv zsh-autopair git git-flow dirhistory command-not-found colored-man-pages rust zsh-syntax-highlighting zsh-autosuggestions zsh-completions jq python pip fzf uv)
+plugins=(autoswitch_virtualenv zsh-autopair git git-flow dirhistory command-not-found colored-man-pages rust zsh-syntax-highlighting zsh-autosuggestions zsh-completions jq python pip fzf uv globalias)
 
 # User configuration
 export PATH=".:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:$HOME/.local/bin"

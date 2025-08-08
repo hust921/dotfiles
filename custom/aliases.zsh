@@ -18,6 +18,20 @@ alias lld='echo "# ls Data #";ls -l --sort time *.(csv|txt|json)' # ls data
 alias lln='echo "# last 2 days #";fd -0 --changed-within 2d | xargs -0r exa --sort=time -l'
 alias lsnew='echo "# last 2 days #";fd -0 --changed-within 2d | xargs -0r exa --sort=time -l'
 
+# Docker
+alias di="sudo docker image"
+alias dils="sudo docker image ls"
+alias dv="sudo docker volume"
+alias dvls="sudo docker volume ls"
+alias dps="sudo docker ps"
+alias dpsa="sudo docker ps -a"
+alias dstop="sudo docker stop"
+alias dstart="sudo docker start"
+alias drestart="sudo docker restart"
+
+function dstopall { sudo docker stop $(docker ps -q) "$@" }
+function drestartall { sudo docker restart $(docker ps -q) "$@" }
+
 # xclip
 alias xc="xclip -selection c"
 
