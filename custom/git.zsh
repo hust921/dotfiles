@@ -27,11 +27,12 @@ alias gaa='git_add_all_not_secrets'
 unalias gd
 function gd() {
     if [ $# -eq 0 ]; then
-        git diff --staged HEAD
+        git diff HEAD
     else
-        git diff --staged "$@"
+        git diff "$@"
     fi
 }
+
 
 # `git reset (--hard) HEAD` alias overrides, with confirmation
 unalias grh
