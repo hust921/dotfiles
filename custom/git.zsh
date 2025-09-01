@@ -9,6 +9,8 @@ alias gcd='git checkout develop'
 alias gclean='git clean -xdfi'
 alias gcm='git checkout master'
 alias gaaa='git add --all'
+alias cdgit='cd "$(git rev-parse --show-toplevel)"'
+alias cdg='cd "$(git rev-parse --show-toplevel)"'
 
 git_add_all_not_secrets() {
   local root
