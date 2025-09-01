@@ -19,18 +19,18 @@ alias lln='echo "# last 2 days #";fd -0 --changed-within 2d | xargs -0r exa --so
 alias lsnew='echo "# last 2 days #";fd -0 --changed-within 2d | xargs -0r exa --sort=time -l'
 
 # Docker
-alias di="sudo docker image"
-alias dils="sudo docker image ls"
-alias dv="sudo docker volume"
-alias dvls="sudo docker volume ls"
-alias dps="sudo docker ps"
-alias dpsa="sudo docker ps -a"
-alias dstop="sudo docker stop"
-alias dstart="sudo docker start"
-alias drestart="sudo docker restart"
+alias di="docker image"
+alias dils="docker image ls"
+alias dv="docker volume"
+alias dvls="docker volume ls"
+alias dps="docker ps"
+alias dpsa="docker ps -a"
+alias dstop="docker stop"
+alias dstart="docker start"
+alias drestart="docker restart"
 
-function dstopall { sudo docker stop $(docker ps -q) "$@" }
-function drestartall { sudo docker restart $(docker ps -q) "$@" }
+function dstopall { docker stop $(docker ps -q) "$@" }
+function drestartall { docker restart $(docker ps -q) "$@" }
 
 # xclip
 alias xc="xclip -selection c"
