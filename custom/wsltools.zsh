@@ -24,7 +24,6 @@ powershell()
 }
 # pwsh="$(command ls -1 '/mnt/c/Program Files/Powershell2' &> /dev/null && find '/mnt/c/Program Files/Powershell' -iname '*pwsh.exe' |head -n1)"
 
-
 sln()
 {
     set local startcmd
@@ -49,3 +48,21 @@ sln()
         bash -c "$final"
     fi
 }
+
+# Expand alias (once) on Ctrl-Space
+expand-now() { zle _expand_alias || zle .expand-word }  # alias first, then normal expansion
+zle -N expand-now
+bindkey -M emacs '^@' expand-now
+
+# Recursively expand alias on Ctrl-Meta-Space
+expand-aliases-line() {
+  unset 'functions[_ea]'
+  functions[_ea]=$BUFFER
+  if (( $+functions[_ea] )); then
+    BUFFER=${functions[_ea]#$'\t'}
+    CURSOR=$#BUFFER
+  fi
+}
+# NOTE: Not all terminals send Meta+Ctrl+Space
+zle -N expand-aliases-line
+bindkey -M emacs '^[^@' expand-aliases-line 2>/dev/null
