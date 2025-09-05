@@ -35,6 +35,26 @@ function gd() {
     fi
 }
 
+if alias gdp; then
+    unalias gdp
+fi
+function gdp() {
+  # Clean diff: no pager, no external difftool, no colors
+  local gitc=(git --no-pager
+    -c color.ui=false
+    -c pager.diff=false
+    -c core.pager=cat
+    -c interactive.diffFilter=
+    -c diff.external=
+  )
+  local common=(diff --no-ext-diff --no-color --binary)
+
+  case "$#" in
+    0)  "${gitc[@]}" "${common[@]}" HEAD ;;                # uncommitted vs HEAD
+    1)  "${gitc[@]}" "${common[@]}" "$1" HEAD ;;           # <from> vs HEAD
+    *)  "${gitc[@]}" "${common[@]}" "$@" ;;                # <from> <to> [-- paths...]
+  esac
+}
 
 # `git reset (--hard) HEAD` alias overrides, with confirmation
 unalias grh
