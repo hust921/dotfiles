@@ -7,7 +7,7 @@ fi
 # Windows Aliases
 alias wi="win32yank.exe -i"
 alias wo="win32yank.exe -o"
-alias expl='/mnt/c/Windows/explorer.exe $(wslpath -w $(pwd))'
+alias expl='/mnt/c/Windows/explorer.exe $(wslpath -w "$(pwd)")'
 alias start='/mnt/c/Windows/System32/cmd.exe /c start'
 
 # Run Powershell from WSL
