@@ -113,9 +113,23 @@ return packer.startup(function(use)
 use {
   "neovim/nvim-lspconfig",
   config = function()
-    local lspconfig    = require("lspconfig")
     local capabilities = require("cmp_nvim_lsp").default_capabilities()
     local servers      = { "lua_ls", "pylsp", "ts_ls", "vimls", "rust_analyzer", "jsonls", "html", "dockerls", "bashls" }
+
+    -- Prefer the new vim.lsp.config/vim.lsp.enable API (Neovim 0.11+), but fall back to
+    -- the legacy lspconfig.setup when running on older versions.
+    local function setup_lsp(server, opts)
+      if vim.lsp and vim.lsp.config and vim.lsp.enable then
+        vim.lsp.config(server, opts)
+        vim.lsp.enable(server)
+        return
+      end
+
+      local ok, lspconfig = pcall(require, "lspconfig")
+      if ok and lspconfig[server] then
+        lspconfig[server].setup(opts)
+      end
+    end
 
     for _, srv in ipairs(servers) do
       local opts = { capabilities = capabilities }
@@ -141,7 +155,7 @@ use {
         }
       end
 
-      lspconfig[srv].setup(opts)
+      setup_lsp(srv, opts)
     end
   end,
 }
