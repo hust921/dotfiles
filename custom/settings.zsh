@@ -23,3 +23,6 @@ export FZF_DEFAULT_OPTS="--ansi"
 # Behave like bash
 bindkey "^U" backward-kill-line
 bindkey "^[D" kill-word
+
+# eza (former exa) config
+export EZA_CONFIG_DIR="$HOME/dotfiles/eza"

@@ -2,10 +2,10 @@
 alias hist="fc -lE -200"
 
 # ls aliases
-alias exa='exa --icons -h --color=always'
-alias ls='exa'
+alias eza='eza --icons -h --color=always'
+alias ls='eza'
 alias l1='command ls -1'
-alias ll='exa -lg --git'
+alias ll='eza -lg --git'
 alias la='ll -a'
 alias lsd='ls -1d */'
 
@@ -15,8 +15,8 @@ alias lls='echo "# ls Scripts #";ls -l --sort time *.(py|sh|bash|zsh|lua|ps1)' #
 alias lsdata='echo "# ls Data #";ls -l --sort time *.(csv|txt|json)' # ls data
 alias lld='echo "# ls Data #";ls -l --sort time *.(csv|txt|json)' # ls data
 
-alias lln='echo "# last 2 days #";fd -0 --changed-within 2d | xargs -0r exa --sort=time -l'
-alias lsnew='echo "# last 2 days #";fd -0 --changed-within 2d | xargs -0r exa --sort=time -l'
+alias lln='echo "# last 2 days #";fd -0 --changed-within 2d | xargs -0r eza --sort=time -l'
+alias lsnew='echo "# last 2 days #";fd -0 --changed-within 2d | xargs -0r eza --sort=time -l'
 
 # Docker
 alias di="docker image"

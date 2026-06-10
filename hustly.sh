@@ -165,8 +165,8 @@ function mod_sys() {
             dlog "Installing xmllint"
             sudo apt install -y libxml2-utils
 
-            dlog "Installing exa"
-            cargo install exa || return 1
+            dlog "Installing eza"
+            cargo install eza || return 1
 
             dlog "Installing cargo-update"
             sudo apt-get install -y libssl-dev
@@ -222,8 +222,8 @@ function mod_sys() {
             dlog "Uninstalling xmllint"
             sudo apt-get --purge remove -y libxml2-utils || return 1
 
-            dlog "Uninstalling exa"
-            cargo uninstall exa
+            dlog "Uninstalling eza"
+            cargo uninstall eza
 
             dlog "Uninstalling cargo-update"
             cargo uninstall cargo-update
@@ -272,7 +272,7 @@ function mod_sys() {
             dlog "Updating xmllint"
             sudo apt-get upgrade -y libxml2-utils || return 1
 
-            dlog "Updating exa"
+            dlog "Updating eza"
             # see above: cargo install-update -a
 
             dlog "Updating cargo-update"
@@ -315,7 +315,7 @@ function mod_sys() {
             which jq && \
             which xq && \
             which xmllint && \
-            which exa && \
+            which eza && \
             which colors-test && \
             which ramdisk && \
             which k2cdownloader && \
