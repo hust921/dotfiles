@@ -31,6 +31,10 @@ export EDITOR='nvim'
 # Oh-My-Zsh
 source $ZSH/oh-my-zsh.sh
 
+# Keep writable directories readable in completion lists, especially on WSL
+# Windows mounts where directories often appear as 777.
+zstyle ':completion:*' list-colors ${(s.:.)${${LS_COLORS//ow=34;42/ow=01;34}//tw=30;42/tw=01;34}}
+
 # Local config. Logins / Creds / Etc
 [ -f ~/.zshlocal.zsh ] && source ~/.zshlocal.zsh
 [ -f ~/.cargo/env ] && source ~/.cargo/env
