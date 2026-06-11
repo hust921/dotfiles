@@ -54,6 +54,7 @@ vim.o.foldlevelstart = 99
 -- NeoMake
 vim.cmd("call neomake#configure#automake('rw', 750)")
 vim.cmd("autocmd! BufWritePost *.rs NeomakeProject cargo")
+vim.g.neomake_python_enabled_makers = {}
 
 -- Termdebug
 vim.cmd('packadd! termdebug')

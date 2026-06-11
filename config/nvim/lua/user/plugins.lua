@@ -148,7 +148,7 @@ use {
               },
               pycodestyle = {
                 enabled        = true,
-                maxLineLength  = 100,   -- (optional override)
+                maxLineLength  = 500,   -- (optional override)
               },
             },
           },
